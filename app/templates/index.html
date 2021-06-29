@@ -1,0 +1,176 @@
+{% extends "appbuilder/base.html" %}
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/index.css')}}"></link>
+{% endblock %}
+{% block content %}
+<div class="well well-sm">
+    <h3 style="color: #4082ed">Welcome to the GoMRedSnapperMSE Project</h3>
+    <h4>An interactive web-based decision-support tool for better managing Gulf of Mexico red snapper fishery resources.    	
+    </h4>
+    <h4>Designed and maintained by the <a href="https://www.fiufeal.com/" target="blank">Fisheries and Ecosystem Assessment Lab</a> supported by <a href="https://restoreactscienceprogram.noaa.gov/" target="blank">NOAA RESTORE ACT PROGRAM</a>. 	
+    </h4>
+</div>
+<div class="row center">
+  <h5>We are working on this video.</h5>
+ <iframe width="650" height="400"
+src="" frameborder="0" allowfullscreen>
+</iframe> 
+</div>
+ <div class="row" style="margin-top:30px;margin-left: 5px; margin-right: 5px;">
+            <!-- <div class="col-md-1"></div> -->
+            <div class="col-md-12 panel panel-default" style="padding:25px">
+                <h4>If you want to test your own MSE scenario, please <a href="{{url_for('PublicMSE.add_public_scenario')}}">create</a>.</h4>
+                <h4>If you want to test more  MSE scenarios and save them, please <a href="/register/form">register</a>.</h4>
+                <h4>If you want to see one basic run, <a href="/demo/basicRun">click here</a>.</h4>
+                <h4>You can also evaluate the effect of using different allocations for Commercial and Recreational Sectors, <a href="/demo/allocation">click here</a>.</h4>
+                <h4>You can also evaluate the effect of using different legal sizes, <a href="demo/legalSize"> click here</a>.</h4>
+            </div>
+        </div>
+<div class="well well-sm"><h3>Objectives</h3></div>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;In this project, the research team will develop a decision-support tool based on a management strategy evaluation (MSE) framework for the Gulf of Mexico red snapper fishery. The tool will help quantify the risks and trade-offs among the various alternative long-term management strategies and potential short-term regulations that might be used for the rebuilding and sustainable management of the Gulf of Mexico red snapper resource.<a href="/intro/detailedBackground/"> See Background details.</a>
+</p>
+
+<div class="well well-sm"><h3>Features</h3></div>
+<p>Two versions have been developed for this Red Snapper MSE tool. The Standard Version is oriented to users with limited MSE background, while the Professional Version faces to stock assessment stock scientists and managers who want to dig deeper in the technical details. The output formats for both the General and the Professional Versions are the same, so that they can be compared horizontally.</p>
+<p>Both, the General and Professional Versions, can test and compare alternative management strategies under:</p>
+<ul>
+  <li class="mt-1">Three levels of natural mortality.</li>
+  <li class="mt-1">Three types of recruitment settings.</li>
+  <li class="mt-1">Various constant fishing mortality harvest control rules.</li>
+  <li class="mt-1">Numerous allocations among and within sectors.</li>
+  <li class="mt-1">A range of probability of overfishing.</li>
+  <li class="mt-1">Multiple levels of ACT buffer.</li>
+  <li class="mt-1">A number of legal size and bag limit regulations.</li>
+  <li class="mt-1">Diverse release mortality.</li>
+  <li class="mt-1">Reasonable federal for-hire and state angling catch rates.</li>
+  <li class="mt-1">Several penalty and carryover plans.</li>
+  <li class="mt-1">A variety of allocations among 5 Gulf States.</li>
+  <li class="mt-1">Extensive observation, process and implementation errors.</li>
+</ul>
+
+<table class="table"> 
+  <tr>
+    <th class="col"> </th>
+    <th class="col"><strong>Standard Version (for public)</strong></th> 
+    <th class="col"><strong>Professional Version (for stock assessment scientists)</strong></th>
+  </tr>
+  <tr>
+    <td class="row"><strong>Initial setting</strong></td>
+    <td>Must be the same with the latest stock assesment.</td> 
+    <td>Can be different from the latest stock assesment.</td>
+  </tr>
+  <tr>
+    <td class="row"><strong>Natural mortality</strong></td>
+    <td>Must be the same among years.</td> 
+    <td>Can be different from year to year (under construction).</td>
+  </tr>
+  <tr>
+    <td class="row"><strong>Recruitment</strong></td>
+    <td>Either from historical data or fixed Beverton-Holt Model</td> 
+    <td>Can also modify Beverton-Holt Model parameters.</td>
+  </tr>
+  <tr>
+    <td class="row"><strong>Stock mixing assumption</strong></td>
+    <td>No mixing.</td> 
+    <td>Mixing occurs between the East and West Gulf (under construction).</td>
+  </tr>
+  <tr>
+    <td class="row"><strong>Assesment error</strong> </td>
+    <td>Not included.</td> 
+    <td>Incorporated (under construction).</td>
+  </tr>
+  <tr>
+    <td class="row"><strong>Selectivity setting</strong> </td>
+    <td>Must be the same with the latest stock assesment.</td> 
+    <td>The asymptote of the selectivity curve can be modified (under construction).</i></td>
+  </tr>
+</table>
+
+<div class="well well-sm"><h3>Support videos</h3></div>
+<div class="row">
+  <div class="col-sm-4 center"> <video width="250" height="200" controls>
+  <source src="{{url_for('static',filename='assets/images/index/1 MSE 101.mp4')}}" type="video/mp4">
+Your browser does not support the video tag.
+</video> </div>
+
+
+	<div class="col-sm-4 center"> <video width="250" height="200" controls>
+  <source src="{{url_for('static',filename='assets/images/index/2 MSE components.mp4')}}" type="video/mp4">
+Your browser does not support the video tag.
+</video> </div>
+
+<div class="col-sm-4 center"> <h5>We are working on this video.</h5><iframe width="250" height="200"
+src="" allowfullscreen frameborder="0">
+</iframe> </div>
+</div>
+<div class="well well-sm"><h3>Statistics</h3></div>
+<p>
+	<table class="table table-condensed">
+	  <thead>
+	    <tr>
+	      <th scope="col" class="stats-label" style="width:33.3%;text-align: center">Visitors</th>
+	      <th scope="col" class="stats-label" style="width:33.3%;text-align: center">Registered Users</th>
+	      <th scope="col" class="stats-label" style="text-align: center">Saved Management Scenarios</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td id="vistors_count" class="stats-number" style="width:33.3%;text-align: center">1000</td>
+	      <td id="registed_count" class="stats-number" style="width:33.3%;text-align: center">500</td>
+	      <td id="mse_count" class="stats-number" style="text-align: center">50</td>
+	    </tr>
+	  </tbody>
+	</table>
+</p>
+<div class="well well-sm"><h3>Contact Us</h3></div>
+<div class="row">
+  <div class="col-md-4">
+<b>Principal Investigator</b></br>
+
+Yuying Zhang</br>
+
+Florida International University</br>
+
+3000 NE 151st Street MSB 358</br> 
+
+Miami, FL, 33181</br>
+
+Phone: 305-919-4105</br>
+
+Email: yzhang13@fiu.edu</br>
+  </div>
+  <div class="col-md-4">
+<b>Co-Principal Investigators</b></br>
+
+Daniel Goethel</br>NOAA Southeast Fisheries Science Center</br>
+
+Matthew Smith</br>NOAA Southeast Fisheries Science Center</br>
+
+Laura Picariello</br>Texas Sea Grant</br>
+  </div>
+  <div class="col-md-4">
+<b>Contributors</b></br>
+
+Yong Chen</br>University of Maine</br> 
+
+Luiz Barbieri</br>Fish and Wildlife Research Institute</br>
+
+Christina Verlinde</br>Florida Sea Grant</br>
+  </div>
+</div>
+<p>
+</p>
+<div class="copyright">
+	&copy; 2020 The Fisheries and Ecosystem Assessment Lab, Florida International University
+</div>
+{% endblock %}
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/framework/easy-number-animate/dist/jquery.easy_number_animate.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/index.js')}}"></script>   
+{% endblock %}

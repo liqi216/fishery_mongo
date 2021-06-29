@@ -1,0 +1,1330 @@
+{% extends "appbuilder/base.html" %}
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/framework/acc-wizard/acc-wizard.min.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/bootstrap-table.min.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/jquery-file-upload/css/uploadfile.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+{% endblock %}
+{% block content %}
+
+    <div class="row">
+      <div class="lead well" style="padding-top: 0.1em; padding-left: 2em; padding-right: 2em;">
+      <p>
+        <h2>Guest professional version : {{process_name}}</h2>
+        {{process_description}}. <a href="{{url_for('GuestProcessView.list')}}" class="btn btn-warning" role="button" aria-pressed="true">Return</a>
+      </p>
+      </div>
+    </div>
+       <div id="process-part" class="row acc-wizard">
+      <div class="col-md-3" style="padding-left: 2em;">
+        <p style="margin-bottom: 2em;">
+          Follow the Management Options below:
+        </p>
+        <ol class="acc-wizard-sidebar">
+          <li class="acc-wizard-todo"><a href="#stockassessment">Stock Assessment Model Input</a></li>
+          <li class="acc-wizard-todo"><a href="#generalinput">General Input</a></li>
+          <li class="acc-wizard-todo"><a href="#mixingpattern">Mixing Pattern</a></li>
+          <li class="acc-wizard-todo"><a href="#ibParam">Initial Population</a></li>
+          <li class="acc-wizard-todo"><a href="#bioParam">Biological Parameters</a></li>
+          <li class="acc-wizard-todo"><a href="#naturalmortality">Natural Mortality</a></li>
+          <li class="acc-wizard-todo"><a href="#recruitment">Recruitment</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt1">Management Options I</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt2">Management Options II</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt3">Management Options III</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt4">Management Options IV</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt5">Management Options V</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt6">Management Options VI</a></li>
+        </ol>
+      </div>
+      <div class="col-md-9" style="padding-right: 2em;">
+        <div id="accordion-demo" class="panel-group">
+
+          <div id="step1_id" data-step1id="{{process_step1['id']}}" data-rndfiles="{{process_rndfilenames}}" data-stock1filename="{{process_stock1filename}}" data-current_F_ratio="{{process_current_F_ratio}}" data-current_SSB_ratio="{{process_current_SSB_ratio}}"></div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#stockassessment" data-parent="#accordion-demo" data-toggle="collapse">
+                  Stock Assessment Model Input
+                </a>
+              </h4>
+            </div>
+            <div id="stockassessment" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-stockassessment">
+                  <div class="form-group">
+                    <label class="col-md-2 control-label">Model Type</label>
+                    <label class="radio-inline">
+                      <input type="radio" name="stock1_model_type" disabled id="mt1SS3" value="1" {{ 'checked' if process_step1['stock1_model_type']=='1'}}> Stock Synthesis 3
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 control-label">Input File</label>
+                    <label class="radio-inline">
+                      <input type="radio" name="stock1_input_file_type" disabled id="st1adminDefault" value="1" {{ 'checked' if process_step1['stock1_input_file_type']=='1'}}> Official Stock Assessment Model
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="stock1_input_file_type" disabled id="st1selfDefine" value="2" {{ 'checked' if process_step1['stock1_input_file_type']=='2'}}> Self-defined Model
+                    </label>
+                  </div>
+                    <div id="stock1_upload_div" class="form-group" style="display: {{ 'none' if process_step1['stock1_input_file_type']=='1'}}">
+                      <label class="col-md-2 control-label"></label>
+                      <!--div class="col-md-5 col-sm-5 input-group" id="rnd_seed_file">Upload</div-->
+                      <div class="form-group">
+                      <div class="col-md-5 col-sm-5 input-group" id="stock1_filepath">Upload</div>
+                      </div>
+
+                    </div>
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#generalinput" data-parent="#accordion-demo" data-toggle="collapse">
+                  General Input
+                </a>
+              </h4>
+            </div>
+            <div id="generalinput" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-generalinput">
+                  {% if process_step1 %}
+                  <div class="form-group">
+                    <label class="col-md-3 control-label">Time Step</label>
+                    <label class="radio-inline">
+                      <input type="radio" name="time_step" disabled id="1YearRadio" value="Y" {{ 'checked' if process_step1['time_step']=='Y'}}> 1 year
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3 control-label">Start Projection</label>
+                    <div class='col-md-5 input-group date' id='start_projection' name='start_projection'>
+                      <input type='text' class="form-control" value="{{process_step1['start_projection']}}" readonly="readonly"/>
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <label class="col-md-3 control-label">Short-term Management&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <div class="col-md-3 input-group">
+                      <input title="short term Management" maxlength="3" type="number" class="form-control" style="border-radius: 4px" id="short_term_mgt" name="short_term_mgt" placeholder="3" value="{{process_step1['short_term_mgt'] if process_step1['short_term_mgt'] != None else ''}}" readonly="readonly"/>
+                    </div>
+                    <div class="col-md-2 input-group">
+                      <select id="short_term_unit" name="short_term_unit" class="form-control">
+                              <option value="Y" disabled {{'selected' if process_step1['short_term_unit']=='Y'}}>Years</option>
+                              <option value="S" disabled {{'selected' if process_step1['short_term_unit']=='S'}}>Seasons</option>
+                              <option value="M" disabled {{'selected' if process_step1['short_term_unit']=='M'}}>Months</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <label class="col-md-3 control-label">Long-term Management&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <div class="col-md-3 input-group">
+                      <input maxlength="3" type="number" class="form-control" style="border-radius: 4px" id="long_term_mgt" name="long_term_mgt" placeholder="3" value="{{process_step1['long_term_mgt'] if process_step1['long_term_mgt'] != None else ''}}" readonly="readonly"/>
+                    </div>
+                    <div class="col-md-2 input-group">
+                      <select id="long_term_unit" name="long_term_unit" class="form-control">
+                              <option value="Y" disabled {{'selected' if process_step1['long_term_unit']=='Y'}}>Years</option>
+                              <option value="S" disabled {{'selected' if process_step1['long_term_unit']=='S'}}>Seasons</option>
+                              <option value="M" disabled {{'selected' if process_step1['long_term_unit']=='M'}}>Months</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3 col-sm-3 control-label">Last Age in the Plus Group</label>
+                    <div class="col-md-5 col-sm-5 input-group">
+                      <input maxlength="3" type="number" class="form-control" style="border-radius: 4px" id="last_age" name="last_age" placeholder="20" value="{{process_step1['last_age'] if process_step1['last_age'] != None else ''}}" readonly="readonly" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3 col-sm-3 control-label">Number of </br>Iterations</label>
+                    <div class="col-md-5 col-sm-5 input-group">
+                      <input maxlength="3" type="number" class="form-control" style="border-radius: 4px" id="no_of_interations" name="no_of_interations" placeholder="100" value="{{process_step1['no_of_interations'] if process_step1['no_of_interations'] != None else ''}}" readonly="readonly" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3 col-sm-3 control-label">Effective Sample Size For Initial Distribution</label>
+                    <div class="col-md-5 col-sm-5 input-group">
+                      <input maxlength="5" type="number" class="form-control" style="border-radius: 4px" id="sample_size" name="sample_size" placeholder="100" value="{{process_step1['sample_size'] if process_step1['sample_size'] != None else ''}}" readonly="readonly" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3 col-sm-3 control-label">Random Seed Setting</label>
+                    <label class="radio-inline">
+                      <input type="radio" name="rnd_seed_setting" disabled id="seedDefault" value="1" {{ 'checked' if process_step1['rnd_seed_setting']=='1'}}> Default Seed CSV
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="rnd_seed_setting" disabled id="seedSelfDefine" value="2" {{ 'checked' if process_step1['rnd_seed_setting']=='2'}}> Self-defined CSV
+                    </label>
+                  </div>
+                    <div id="seed_upload_div" class="form-group" style="display: {{ 'none' if process_step1['rnd_seed_setting']=='1'}}">
+                      <label class="col-md-3 control-label"></label>
+                      <!--div class="col-md-5 col-sm-5 input-group" id="rnd_seed_file">Upload</div-->
+                      <div class="form-group">
+                      <div class="col-md-5 col-sm-5 input-group" id="rnd_seed_file">Upload</div>
+                      </div>
+
+                    </div>
+
+                  {% endif %}
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+           <div class="panel-heading">
+             <h4 class="panel-title">
+               <a href="#mixingpattern" data-parent="#accordion-demo" data-toggle="collapse">
+                 Mixing Pattern
+               </a>
+             </h4>
+           </div>
+           <div id="mixingpattern" class="panel-collapse collapse in">
+             <div class="panel-body">
+               <form id="form-mixingpattern">
+                 <div class="form-group">
+                   <div style="margin:0 10px 0px 30px">
+                     <label class="radio-inline" >
+                       <input type="radio" disabled name="mixing_pattern" id="nomixing" value="0" {{ 'checked' if process_step1['mixing_pattern']=='0'}}> No mixing
+                     </label>
+                   </div>
+                   <div style="margin:0 10px 0px 30px">
+                     <label class="radio-inline" >
+                       <input type="radio" name="" id="" value="0" disabled checked>Constant
+                     </label>
+                   </div>
+                   <div class="form-group form-inline"  style="margin:0 10px 0px 30px">
+                     <div class="col-md-1 col-sm-1 input-group"></div>
+                     <div class="col-md-2 col-sm-2 input-group">Stock 1 to 1</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input disabled maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="stock1_to_1" name="stock1_to_1"  value="50" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <div class="col-md-1 col-sm-1 input-group">%</div>
+                     <div class="col-md-2 col-sm-2 input-group">Stock 2 to 1</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input disabled maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="stock2_to_1" name="stock2_to_1" value="50" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <div class="col-md-1 col-sm-1 input-group">%</div>
+                     <div class="col-md-1 col-sm-1 input-group">
+                     </div>
+                   </div>
+                   <div class="form-group form-inline" style="margin:0 10px 0px 30px">
+                     <div class="col-md-1 col-sm-1 input-group"></div>
+                     <div class="col-md-2 col-sm-2 input-group">Stock 1 to 2</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input disabled maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="stock1_to_2" name="stock1_to_2" value="50" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <div class="col-md-1 col-sm-1 input-group">%</div>
+                     <div class="col-md-2 col-sm-2 input-group">Stock 2 to 2</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input disabled maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="stock2_to_2" name="stock2_to_2" value="50" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <div class="col-md-1 col-sm-1 input-group">%</div>
+                     <div class="col-md-1 col-sm-1 input-group">
+                     </div>
+                   </div> <!--form group inline-->
+                 </div> <!--form group-->
+               </form>
+             </div> <!--/.panel-body-->
+           </div> <!-- /#adjusthtml-->
+         </div> <!-- /.panel.panel-default-->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#ibParam" data-parent="#accordion-demo" data-toggle="collapse">
+                  Initial Population
+                </a>
+              </h4>
+            </div>
+            <div id="ibParam" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-ibParam">
+
+                  <!-- <table id="table-ibParam" data-toggle="table"> -->
+                  <table id="table-ibParam">
+
+                  </table>
+                  <div class="form-group form-inline" style="margin-top: 30px">
+                      <label class="col-md-3 col-sm-3 control-label">Stock 1 Population CV (Normal Dist.)</label>
+                      <div class="col-md-4 col-sm-4 input-group">
+                        <input maxlength="5" type="number" disabled class="form-control" style="border-radius: 4px" id="ip_cv_1" name="ip_cv_1" value="{{process_step1['ip_cv_1'] if process_step1['ip_cv_1'] != None else ''}}" placeholder=""/>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline" style="margin-top: 15px">
+                      <label class="col-md-3 col-sm-3 control-label">Stock 2 Population CV (Normal Dist.)</label>
+                      <div class="col-md-4 col-sm-4 input-group">
+                        <input maxlength="5" type="number" disabled class="form-control" style="border-radius: 4px" id="ip_cv_2" name="ip_cv_2" value="{{process_step1['ip_cv_2'] if process_step1['ip_cv_2'] != None else ''}}" placeholder=""/>
+                      </div>
+                    </div>
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#bioParam" data-parent="#accordion-demo" data-toggle="collapse">
+                  Biological Parameters
+                </a>
+              </h4>
+            </div>
+            <div id="bioParam" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-bioParam">
+                  <!-- <table id="table-ibParam" data-toggle="table"> -->
+                  <table id="table-bioParam">
+
+                  </table>
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#naturalmortality" data-parent="#accordion-demo" data-toggle="collapse">
+                  Natural Mortality
+                </a>
+              </h4>
+            </div>
+            <div id="naturalmortality" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-naturalmortality">
+                  <h4>Constant natural mortality
+                    <button id="mortality-pre-btn" style="margin-left: 60px" type="button" class="btn btn-disable">&lt;&lt;&nbsp;Decrease complexity</button>
+                    <button id="mortality-next-btn" style="margin-left: 30px" type="button" class="btn btn-disable">Increase complexity&nbsp;&gt;&gt;</button>
+                    <div id="hidden-mortality" data-mortalitycomplex="{{process_step1['mortality_complexity'] if process_step1['mortality_complexity'] != None else '1'}}"></div>
+                  </h4>
+
+                  <table id="table-mortality">
+                  </table>
+                  <div id="simpleMortality" style="margin-top:30px ">
+                    <div class="form-group">
+                      <label class="col-md-3 control-label">&nbsp;</label>
+                      <label class="radio-inline">
+                        <input type="radio" name="mixing_pattern" disabled id="highm" value="h" {{ 'checked' if process_step1['nm_m']=='h'}}> High M
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" name="mixing_pattern" disabled id="lowm" value="l" {{ 'checked' if process_step1['nm_m']=='l'}}> Low M
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" name="mixing_pattern" disabled id="curm" value="c" {{ 'checked' if process_step1['nm_m']=='c'}}> Current M
+                      </label>
+                    </div>
+                    <div class="form-group form-inline">
+                      <label class="col-md-3 col-sm-3 control-label">CV for Stock1 Population</br>(Log-normal Dist.)</label>
+                      <div class="col-md-4 col-sm-4 input-group">
+                        <input maxlength="5" type="number" class="form-control" disabled style="border-radius: 4px" id="nm_cv_1" name="nm_cv_1" value="{{process_step1['nm_cv_1'] if process_step1['nm_cv_1'] != None else ''}}" placeholder=""/>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <label class="col-md-3 col-sm-3 control-label">CV for Stock2 Population</br>(Log-normal Dist.)</label>
+                      <div class="col-md-4 col-sm-4 input-group">
+                        <input maxlength="5" type="number" class="form-control" disabled style="border-radius: 4px" id="nm_cv_2" name="nm_cv_2" value="{{process_step1['nm_cv_2'] if process_step1['nm_cv_2'] != None else ''}}" placeholder=""/>
+                      </div>
+                    </div>
+                  </div>
+
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#recruitment" data-parent="#accordion-demo" data-toggle="collapse">
+                  Recruitment
+                </a>
+              </h4>
+            </div>
+            <div id="recruitment" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-recruitment">
+                  <div class="form-group form-inline">
+                    <div class="col-sm-2 col-md-3 input-group">
+                      <label  class="control-label">Fraction before Spawning</label>
+                    </div>
+                    <div class="col-sm-2 col-md-2 input-group">
+                      <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px" id="simple_spawning" name="simple_spawning" value="{{process_step1['simple_spawning'] if process_step1['simple_spawning'] != None else '0.5'}}" placeholder="0.83" data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group">years</div>
+                  </div>
+                   <div class="form-group form-inline">
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <label class="control-label">CV for Recruitment</label>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group">
+                      <input type="number" class="form-control" disabled style="border-radius: 4px" id="cvForRecu" name="cvForRecu" value="{{process_step1['cvForRecu'] if process_step1['cvForRecu'] != None else ''}}" placeholder=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <input maxlength="5" type="number" class="form-control" disabled style="border-radius: 4px;width:auto;" id="stock1_amount" name="stock1_amount" value="{{process_step1['stock1_amount'] if process_step1['stock1_amount'] != None else ''}}" placeholder="" />
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group">% to Stock 1</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" class="form-control" disabled style="border-radius: 4px;width:auto;" readonly id="stock2_amount" name="stock2_amount" value="{{process_step1['stock2_amount'] if process_step1['stock2_amount'] != None else ''}}" placeholder=""/>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group">% to Stock 2</div>
+                    <div class="col-md-1 col-sm-1 input-group">
+                    </div>
+                  </div>
+
+                  <div class="form-group form-inline" ><!-- first part -->
+                    <div class="col-md-12 col-sm-12">
+                      <input type="radio" style="margin:0 10px 10px 0px" disabled name="recruitTypeStock1" id="historyStock1" value="1" {{'checked' if process_step1['recruitTypeStock1']=='1'}}>From historical
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" ><!-- first part -->
+                    <div class="col-md-12 col-sm-12">
+                      <input type="radio" style="margin:0 10px 10px 30px" disabled name="fromHisStock1" id="hisin1984" value="1" {{'checked' if process_step1['fromHisStock1']=='1'}}>Include Years Before 1984
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" ><!-- first part -->
+                    <div class="col-md-12 col-sm-12">
+                      <div style="margin:0 0px 10px 70px">Historical R (1000s)</div>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" >
+                    <div class="col-md-2 col-sm-2 input-group" style="margin-left: 80px">
+                      <label class="radio-inline" >
+                          <input type="radio" name="historySt1_early" id="hst1_earlyradio3" disabled value="3" {{'checked' if process_step1['historySt1_early']=='3'}}>Mean
+                      </label>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group" >
+                      <input maxlength="11" type="number" class="input-txt form-control" disabled id="hst1_mean_early" name="hst1_mean_early" value="{{process_step1['hst1_mean_early'] if process_step1['hst1_mean_early'] != None else ''}}" placeholder=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" >
+                    <div class="col-md-2 col-sm-2 input-group" style="margin-left: 80px">
+                      <label class="radio-inline" >
+                        <input type="radio" name="historySt1_early" id="hst1_earlyradio5" disabled value="5" {{'checked' if process_step1['historySt1_early']=='5'}}>Other Percentile
+                      </label>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group" >
+                      <input maxlength="5" type="number" class="input-txt form-control" disabled id="hst1_other_early" name="hst1_other_early" value="{{process_step1['hst1_other_early'] if process_step1['hst1_other_early'] != None else ''}}" placeholder=""/>
+                    </div>
+                     <div class="col-md-1 col-sm-1 input-group" >%</div>
+                    <div class="col-md-1 col-sm-1 input-group" >
+                      <button id="hst1_btn" type="button" class="btn btn-disable">Calculate</button>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group" >
+                      <input maxlength="11" type="number" class="input-txt form-control" disabled id="hst1_cal_early" name="hst1_cal_early" value="{{process_step1['hst1_cal_early'] if process_step1['hst1_cal_early'] != None else ''}}" placeholder=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" ><!-- first part -->
+                    <div class="col-md-12 col-sm-12">
+                      <input type="radio" style="margin:0 10px 10px 30px" name="fromHisStock1" disabled id="hisout1984" value="2" {{'checked' if process_step1['fromHisStock1']=='2'}}>Exclude Years Before 1984
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" ><!-- first part -->
+                    <div class="col-md-12 col-sm-12">
+                      <div style="margin:0 0px 10px 70px">Historical R (1000s)</div>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" >
+                    <div class="col-md-2 col-sm-2 input-group" style="margin-left: 80px">
+                      <label class="radio-inline" >
+                          <input type="radio" name="historySt1" id="hst1radio3" value="3" disabled {{'checked' if process_step1['historySt1']=='3'}}>Mean
+                      </label>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group" >
+                      <input maxlength="11" type="number" class="input-txt form-control" disabled id="hst1_mean" name="hst1_mean" value="{{process_step1['hst1_mean'] if process_step1['hst1_mean'] != None else ''}}" placeholder=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" >
+                    <div class="col-md-2 col-sm-2 input-group" style="margin-left: 80px">
+                      <label class="radio-inline" >
+                        <input type="radio" name="historySt1_early" id="hst1_earlyradio5" disabled value="5" {{'checked' if process_step1['historySt1']=='5'}}>Other Percentile
+                      </label>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group" >
+                      <input maxlength="5" type="number" class="input-txt form-control" disabled id="hst1_other" name="hst1_other" value="{{process_step1['hst1_other'] if process_step1['hst1_other'] != None else ''}}" placeholder=""/>
+                    </div>
+                     <div class="col-md-1 col-sm-1 input-group" >%</div>
+                    <div class="col-md-1 col-sm-1 input-group" >
+                      <button id="hst1_btn" type="button" class="btn btn-disable">Calculate</button>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group" >
+                      <input maxlength="11" type="number" class="input-txt form-control" disabled id="hst1_cal" name="hst1_cal" value="{{process_step1['hst1_cal'] if process_step1['hst1_cal'] != None else ''}}" placeholder=""/>
+                    </div>
+                  </div>
+
+                  <div class="form-group form-inline" ><!-- second part -->
+                    <div class="col-md-12 col-sm-12">
+                      <input type="radio" style="margin:0 10px 10px 0px" name="recruitTypeStock1" disabled id="fmlStock1" value="2" {{'checked' if process_step1['recruitTypeStock1']=='2'}}>From Formula
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" >
+                    <div class="col-md-5 col-sm-5 input-group" style="margin:0 10px 0px 30px">
+                      <label class="radio-inline" >
+                          <input type="radio" name="formulaStock1" id="fml1radioBHM" disabled value="1" {{'checked' if process_step1['formulaStock1']=='1'}}>Modified Beverton-Holt Model
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" ><!-- first part -->
+                    <div class="col-md-12 col-sm-12">
+                      <input type="radio" style="margin:0 10px 10px 50px" name="fromFmlStock1" disabled id="fmlin1984" value="1" {{'checked' if process_step1['fromFmlStock1']=='1'}}>R0 Include Years Before 1984
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group" style="margin-left: 100px">
+                      <label class="control-label">R0</label>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group">
+                      <input type="number" class="form-control" style="border-radius: 4px" disabled id="fml1MbhmR0_early" name="fml1MbhmR0_early" value="{{process_step1['fml1MbhmR0_early'] if process_step1['fml1MbhmR0_early'] != None else ''}}" placeholder=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" ><!-- first part -->
+                    <div class="col-md-12 col-sm-12">
+                      <input type="radio" style="margin:0 10px 10px 50px" name="fromFmlStock1" disabled id="fmlout1984" value="2" {{'checked' if process_step1['fromFmlStock1']=='2'}}>R0 Exclude Years Before 1984
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group" style="margin-left: 100px">
+                      <label class="control-label">R0</label>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group">
+                      <input type="number" class="form-control" style="border-radius: 4px" disabled id="fml1MbhmR0" name="fml1MbhmR0" value="{{process_step1['fml1MbhmR0'] if process_step1['fml1MbhmR0'] != None else ''}}" placeholder=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group" style="margin-left: 60px">
+                      <label class="control-label">SSB0</label>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group">
+                      <input type="number" class="form-control" style="border-radius: 4px" disabled id="fml1MbhmSSB0" name="fml1MbhmSSB0" value="{{process_step1['fml1MbhmSSB0'] if process_step1['fml1MbhmSSB0'] != None else ''}}" placeholder=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group" style="margin-left: 60px">
+                      <label class="control-label">Steepness</label>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group">
+                      <input type="number" class="form-control" style="border-radius: 4px" disabled id="fml1MbhmSteep" name="fml1MbhmSteep" value="{{process_step1['fml1MbhmSteep'] if process_step1['fml1MbhmSteep'] != None else ''}}" placeholder=""/>
+                    </div>
+                  </div><!--/.second part -->
+
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#mgtopt1" data-parent="#accordion-demo" data-toggle="collapse">
+                  Management Options I
+                </a>
+              </h4>
+            </div>
+            <div id="mgtopt1" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-mgtopt1">
+                  <h4>Biological Reference Points</h4>
+
+                  <div class="form-group">
+                    <label class="col-md-2 radio-inline" >SSB<sub>MSY</sub></label>
+                    <div class="col-md-7 col-sm-7 input-group">
+
+                      <input maxlength="20" type="number" class="form-control" style="border-radius: 4px;width:auto;float: none;" disabled id="bio_catch_mt" name="bio_catch_mt" value="{{process_step1['bio_catch_mt'] if process_step1['bio_catch_mt'] != None else ''}}" placeholder=""/>
+                      <span style="margin-left:5px;width:5px">eggs</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 radio-inline" >F<sub>MSY</sub></label>
+                    <div class="col-md-7 col-sm-7 input-group">
+                      <input maxlength="10" type="number" class="form-control" style="border-radius: 4px;width:auto;float: none;" disabled id="bio_f_percent" name="bio_f_percent" value="{{process_step1['bio_f_percent'] if process_step1['bio_f_percent'] != None else ''}}" placeholder="0.05"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <h4>Fisheries Status</h4>
+                    <label class="col-md-4 control-label"></label>
+                    <div id="colorChart" class="col-md-7 input-group" style="height:400px">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <h4>Harvest control rule</h4>
+                    <label class="col-md-4 control-label"></label>
+                    <label class="radio-inline">
+                      <input type="radio" name="hrt_harvest_rule" disabled id="contFRadio" {{'checked' if process_step1['hrt_harvest_rule']=='CF'}} value="CF"> Constant F
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4 control-label"></label>
+                    <div class="col-md-7 col-sm-7 input-group well" style="margin-bottom: -20px" align="center">
+                      <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0.03" data-slider-max="0.08" data-slider-step="0.0002" data-slider-value="{{process_step1['bio_f_percent']*0.75}}"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4 control-label"></label>
+                    <div id="ruleChart" class="col-md-7 input-group" style="height:400px">
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                      <label class="col-md-3 col-sm-3 control-label">CV for Implementation Uncertainty</label>
+                      <div class="col-md-4 col-sm-4 input-group">
+                        <input maxlength="5" type="number" class="form-control" disabled style="border-radius: 4px" id="mg1_cv" name="mg1_cv" value="{{process_step1['mg1_cv'] if process_step1['mg1_cv'] != None else ''}}" placeholder=""/>
+                      </div>
+                    </div>
+
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#mgtopt2" data-parent="#accordion-demo" data-toggle="collapse">
+                  Management Options II
+                </a>
+              </h4>
+            </div>
+            <div id="mgtopt2" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-mgtopt2">
+
+                  <h3 style="font-size:21px">Allocation among Sectors</h3>
+                  <div class="" style="height:34px;margin-top:40px">
+                    <label class="col-md-offset-2 col-sm-4 control-label">Recreational</label>
+                    <label class="col-md-4 col-sm-4 control-label">Commercial</label>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-offset-2 col-sm-2 input-group">
+                      <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;width:auto;" id="sec_recreational" name="sec_recreational" value="{{process_step1['sec_recreational'] if process_step1['sec_recreational'] != None else ''}}" placeholder="3" data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" disabled class="form-control" style="border-radius: 4px;width:auto;" id="sec_commercial" name="sec_commercial" value="{{process_step1['sec_commercial'] if process_step1['sec_commercial'] != None else ''}}" placeholder="3"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-1 input-group">
+                    </div>
+                  </div>
+
+                  <h5 class="control-label" style="height:34px;margin-top:50px;font-weight:bold">Allocation among Commercial Fleets</h5>
+                  <div class="form-group form-inline">
+                    <div class="col-md-2 col-sm-1 input-group">Commercial Vertical Line East</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <input maxlength="5" type="number" disabled value="{{process_step1['chl_e'] if process_step1['chl_e'] != None else 93.8}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="chl_e" name="chl_e" data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-1 input-group">Commercial Vertical Line West</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <input maxlength="5" type="number" disabled value="{{process_step1['chl_w'] if process_step1['chl_w'] != None else 99.3}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="chl_w" name="chl_w" data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-2 col-sm-1 input-group">Commercial Long Line East</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" disabled value="{{process_step1['cll_e'] if process_step1['cll_e'] != None else '0'}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="cll_e" name="cll_e"  data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-1 input-group">Commercial Long Line West</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" disabled value="{{process_step1['cll_w'] if process_step1['cll_w'] != None else '0'}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="cll_w" name="cll_w"  data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+
+
+
+                  <h4 style="padding-top:50px">Allocation among Recreational Components</h4>
+                  <div class="" style="height:34px;margin-top:20px">
+                    <label class="col-md-offset-2 col-sm-4 control-label" style="padding-left: 40px">For-hire</label>
+                    <label class="col-md-4 col-sm-4 control-label">Private Angling</label>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-offset-2 col-sm-2 input-group">
+                      <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;width:auto;" id="sec_hire" name="sec_hire" value="{{process_step1['sec_hire'] if process_step1['sec_hire'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" disabled class="form-control" style="border-radius: 4px;width:auto;" id="sec_private" name="sec_private" value="{{process_step1['sec_private'] if process_step1['sec_private'] != None else ''}}" placeholder=""/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-1 col-sm-1 input-group">
+                    </div>
+                  </div>
+                  <h5 class="control-label" style="height:25px;margin-top:60px;font-weight:bold">Allocation among Private Angling Fleets</h5>
+                  <div class="mb-sm-2" style="height:34px;margin-top:40px">
+                    <div class="col-md-offset-2 col-sm-4 control-label">Private Angling East</div>
+                    <div class="col-md-4 col-sm-4 control-label">Private Angling West</div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-offset-2 col-sm-2 input-group">
+                      <input maxlength="5" type="number" disabled value="{{process_step1['p_e'] if process_step1['p_e'] != None else 79}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="p_e" name="p_e" data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" disabled value="{{process_step1['p_w'] if process_step1['p_w'] != None else 21}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="p_w" name="p_w"  data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+
+                  <h5 style="margin-top:60px;font-weight:bold">Allocation among For-hire Fleets</h5>
+                  <div class="" style="height:34px;margin-top:40px">
+                    <label class="col-md-offset-2 col-sm-4 control-label">For-hire East</label>
+                    <label class="col-md-4 col-sm-4 control-label">For-hire West</label>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-offset-2 col-sm-2 input-group">
+                      <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;width:auto;" id="sec_headboat" name="sec_headboat" value="{{process_step1['sec_headboat'] if process_step1['sec_headboat'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip" />
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" disabled class="form-control" style="border-radius: 4px;width:auto;" id="sec_charterboat" name="sec_charterboat" value="{{process_step1['sec_charterboat'] if process_step1['sec_charterboat'] != None else ''}}" placeholder=""/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-1 col-sm-1 input-group">
+                    </div>
+                  </div>
+                  <div style="padding-top:20px" class="form-group form-inline">
+                    <div class="col-md-2 col-sm-1 input-group">Headboat Fleet East</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <input maxlength="5" type="number" disabled value="{{process_step1['hb_e'] if process_step1['hb_e'] != None else '30.7'}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="hb_e" name="hb_e" data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-1 input-group">Headboat Fleet West</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <input maxlength="5" type="number" disabled value="{{process_step1['hb_w'] if process_step1['hb_w'] != None else '75.7'}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="hb_w" name="hb_w" data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-2 col-sm-1 input-group">Charter Vessel Fleet East</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" disabled value="{{process_step1['cb_e'] if process_step1['cb_e'] != None else '0'}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="cb_e" name="cb_e"  data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-1 input-group">Charter Vessel Fleet West</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" disabled value="{{process_step1['cb_w'] if process_step1['cb_w'] != None else '0'}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="cb_w" name="cb_w"  data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+
+
+                  <h4 style="padding-top:50px">Probability of Overfishing (OFL -> ABC)</h4>
+                  <div class="form-group form-inline" style="margin-top:20px">
+                    <label class="col-md-3 radio-inline" >P<sup>*</sup></label>
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <input maxlength="20" type="number" disabled class="form-control" style="border-radius: 4px;width:auto;float: none;" id="sec_pstar" name="sec_pstar" value="{{process_step1['sec_pstar'] if process_step1['sec_pstar'] != None else ''}}" placeholder="" data-toggle="tooltip" title="<img style=&quot;height:100px&quot; src=&quot;{{url_for('static',filename='assets/images/processView/probability.png')}}&quot; />"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+
+                  <h4 style="padding-top:50px">Acceptable Catch Target (ACT) Buffer</h4>
+                  <div class="form-group form-inline" style="margin-top:20px">
+                    <label class="col-md-3 radio-inline" >For the Commercial Sector</label>
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <input maxlength="20" type="number" disabled class="form-control hints" style="border-radius: 4px;width:auto;float: none;" id="sec_act_com" name="sec_act_com" value="{{process_step1['sec_act_com'] if process_step1['sec_act_com'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <label class="col-md-3 radio-inline" >For the For-hire Component</label>
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <input maxlength="20" type="number" disabled class="form-control hints" style="border-radius: 4px;width:auto;float: none;" id="sec_act_hire" name="sec_act_hire" value="{{process_step1['sec_act_hire'] if process_step1['sec_act_hire'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+                  <div class="form-group form-inline" style="padding-bottom:20px">
+                  <label class="col-md-3 radio-inline" >For the Private Angling Component</label>
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <input maxlength="20" type="number" disabled class="form-control hints" style="border-radius: 4px;width:auto;float: none;" id="sec_act_pri" name="sec_act_pri" value="{{process_step1['sec_act_pri'] if process_step1['sec_act_pri'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+           <div class="panel-heading">
+             <h4 class="panel-title">
+               <a href="#mgtopt3" data-parent="#accordion-demo" data-toggle="collapse">
+                 Management Options III
+               </a>
+             </h4>
+           </div>
+           <div id="mgtopt3" class="panel-collapse collapse in">
+             <div class="panel-body">
+               <form id="form-mgtopt3">
+
+                 <h4>Regulations</h4>
+                 <div class="" style="height:34px;margin-top:20px">
+                   <label class="col-md-4 col-sm-4" style="padding-left: 40px">Legal Size</label>
+                   <label class="col-md-4 col-sm-4"></label>
+                 </div>
+                 <div class="form-group form-inline">
+                   <div class="col-md-1 col-sm-1 input-group"></div>
+                   <div class="col-md-3 col-sm-2 input-group">Minimum Legal Size for Commercial Fleets</div>
+                   <div class="col-md-2 col-sm-2 input-group">
+                       <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;width:auto;" id="mg3_commercial" name="mg3_commercial" value="{{process_step1['mg3_commercial'] if process_step1['mg3_commercial'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                   </div>
+                   <div class="col-md-1 col-sm-1 input-group">inch</div>
+                   <div class="col-md-1 col-sm-1 input-group">
+                   </div>
+                 </div>
+                 <div class="form-group form-inline">
+                   <div class="col-md-1 col-sm-1 input-group"></div>
+                   <div class="col-md-3 col-sm-2 input-group">Minimum Legal Size for Recreational Fleets</div>
+                   <div class="col-md-2 col-sm-2 input-group">
+                       <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;width:auto;" id="mg3_recreational" name="mg3_recreational" value="{{process_step1['mg3_recreational'] if process_step1['mg3_recreational'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                   </div>
+                   <div class="col-md-2 col-sm-2 input-group">inch</div>
+                   <div class="col-md-1 col-sm-1 input-group">
+                   </div>
+                 </div>
+                 <div class="" style="height:34px;margin-top:20px">
+                   <label class="col-md-4 col-sm-4" style="padding-left: 40px">Bag Limit for Recreational Fleets</label>
+                   <label class="col-md-4 col-sm-4"></label>
+                 </div>
+                 <div class="form-group form-inline">
+                   <div class="col-md-1 col-sm-1 input-group"></div>
+                   <div class="col-md-2 col-sm-2 input-group">For For-hire Fleets</div>
+                   <div class="col-md-2 col-sm-2 input-group">
+                       <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;width:auto;" id="mg3_forhire" name="mg3_forhire" value="{{process_step1['mg3_forhire'] if process_step1['mg3_forhire'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Will scale the catch rate"/>
+                   </div>
+                   <div class="col-md-2 col-sm-2 input-group"># of fish per bag</div>
+                   <div class="col-md-1 col-sm-1 input-group">
+                   </div>
+                 </div>
+                 <div class="form-group form-inline">
+                   <div class="col-md-1 col-sm-1 input-group"></div>
+                   <div class="col-md-2 col-sm-2 input-group">For Private Angling Fleets</div>
+                   <div class="col-md-2 col-sm-2 input-group">
+                       <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;width:auto;" id="mg3_private" name="mg3_private" value="{{process_step1['mg3_private'] if process_step1['mg3_private'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Will scale the catch rate"/>
+                   </div>
+                   <div class="col-md-2 col-sm-2 input-group"># of fish per bag</div>
+                   <div class="col-md-1 col-sm-1 input-group">
+                   </div>
+                 </div>
+                 <!-- <div class="" style="height:34px;margin-top:10px">
+                   <label class="col-md-4 col-sm-4" style="color:red;padding-left: 40px">(Hint: will scale the catch rate)</label>
+                   <label class="col-md-4 col-sm-4"></label>
+                 </div> -->
+               </form>
+             </div> <!--/.panel-body -->
+           </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+           <div class="panel-heading">
+             <h4 class="panel-title">
+               <a href="#mgtopt4" data-parent="#accordion-demo" data-toggle="collapse">
+                 Management Options IV
+               </a>
+             </h4>
+           </div>
+           <div id="mgtopt4" class="panel-collapse collapse in">
+             <div class="panel-body">
+                 <form id="form-mgtopt4" class="parentDiv">
+                   <h4 style="padding-bottom:20px">Private Angling Quota Among States (Only used for calculation)</h4>
+                   <div class="form-group form-inline">
+                     <div class="col-md-1 col-sm-1 input-group"></div>
+                     <div class="col-md-1 col-sm-1 input-group">AL</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="6" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="alabama" name="alabama" value="{{process_step1['alabama'] if process_step1['alabama'] != None else 26.298}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <div class="col-md-1 col-sm-1 input-group">%</div>
+                     <div class="col-md-1 col-sm-1 input-group">FL</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="6" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="florida" name="florida" value="{{process_step1['florida'] if process_step1['florida'] != None else 44.822}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <div class="col-md-1 col-sm-1 input-group">%</div>
+                    </div>
+
+                    <div class="form-group form-inline">
+                     <div class="col-md-1 col-sm-1 input-group"></div>
+                     <div class="col-md-1 col-sm-1 input-group">LA</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="6" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="louisiana" name="louisiana" value="{{process_step1['louisiana'] if process_step1['louisiana'] != None else 19.12}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <div class="col-md-1 col-sm-1 input-group">%</div>
+                     <div class="col-md-1 col-sm-1 input-group">MS</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="6" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="mississippi" name="mississippi" value="{{process_step1['mississippi'] if process_step1['mississippi'] != None else 3.55}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <div class="col-md-1 col-sm-1 input-group">%</div>
+                    </div>
+
+                    <div class="form-group form-inline">
+                     <div class="col-md-1 col-sm-1 input-group"></div>
+                     <div class="col-md-1 col-sm-1 input-group">TX</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="6" type="number" disabled class="form-control hints" disabled style="border-radius: 4px;" id="texas" name="texas" value="{{process_step1['texas'] if process_step1['texas'] != None else 6.21}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <div class="col-md-1 col-sm-1 input-group">%</div>
+                    </div>
+                    <div id="states-error" style="color:red" hidden>Please make sure percentages add up to 100!</div>
+                 </form>
+             </div> <!--/.panel-body -->
+           </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+           <div class="panel-heading">
+             <h4 class="panel-title">
+               <a href="#mgtopt5" data-parent="#accordion-demo" data-toggle="collapse">
+                 Management Options V
+               </a>
+             </h4>
+           </div>
+           <div id="mgtopt5" class="panel-collapse collapse in">
+             <div class="panel-body">
+                 <form id="form-mgtopt5">
+                   <h4>Release Mortality</h4>
+                   <!--CV Heading-->
+                   <div class="form-group form-inline">
+                     <div class="col-md-4 col-sm-4 input-group" style="margin-right:17px"></div>
+                     <div class="col-md-1 col-sm-1 input-group text-center" style="margin-right:57px">
+                       CV
+                     </div>
+                     <div class="col-md-4 col-sm-4 input-group" style="margin-right:17px"></div>
+                     <div class="col-md-1 col-sm-1 input-group text-center">
+                       CV
+                     </div>
+                   </div>
+
+                   <div class="form-group form-inline">
+                     <div class="col-md-2 col-sm-2 input-group">Recreational Stock1 Open</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="rec_east_open" name="rec_east_open" value="{{process_step1['mg3_rec_east_open'] if process_step1['mg3_rec_east_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="rec_east_open_cv" name="rec_east_open_cv" value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span style="padding-right:40px">%</span>
+                     <div class="col-md-2 col-sm-2 input-group">Recreational Stock1 Closed</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="rec_east_closed" name="rec_east_closed" value="{{process_step1['mg3_rec_east_closed'] if process_step1['mg3_rec_east_closed'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;"  id="rec_east_closed_cv" name="rec_east_closed_cv" value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span>%</span>
+                    </div>
+
+                    <div class="form-group form-inline">
+                     <div class="col-md-2 col-sm-2 input-group">Recreational Stock2 Open</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="rec_west_open" name="rec_west_open" value="{{process_step1['mg3_rec_west_open'] if process_step1['mg3_rec_west_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="rec_west_open_cv" name="rec_west_open_cv" value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span style="padding-right:40px">%</span>
+                     <div class="col-md-2 col-sm-2 input-group">Recreational Stock2 Closed</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="rec_west_closed" name="rec_west_closed" value="{{process_step1['mg3_rec_west_closed'] if process_step1['mg3_rec_west_closed'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="rec_west_closed_cv" name="rec_west_closed_cv" value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span>%</span>
+                    </div>
+
+                    <div class="form-group form-inline">
+                     <div class="col-md-2 col-sm-2 input-group">Commecial hardline Stock1 Open</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comhard_east_open" name="comhard_east_open" value="{{process_step1['mg3_comhard_east_open'] if process_step1['mg3_comhard_east_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comhard_east_open_cv" name="comhard_east_open_cv" value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span style="padding-right:40px">%</span>
+                     <div class="col-md-2 col-sm-2 input-group">Commecial hardline Stock1 Closed</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comhard_east_closed" name="comhard_east_closed" value="{{process_step1['mg3_comhard_east_closed'] if process_step1['mg3_comhard_east_closed'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;"  id="comhard_east_closed_cv" name="comhard_east_closed_cv" value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span>%</span>
+                    </div>
+
+                    <div class="form-group form-inline">
+                     <div class="col-md-2 col-sm-2 input-group">Commecial hardline Stock2 Open</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comhard_west_open" name="comhard_west_open" value="{{process_step1['mg3_comhard_west_open'] if process_step1['mg3_comhard_west_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comhard_west_open_cv" name="comhard_west_open_cv" value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span style="padding-right:40px">%</span>
+                     <div class="col-md-2 col-sm-2 input-group">Commecial hardline Stock2 Closed</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comhard_west_closed" name="comhard_west_closed" value="{{process_step1['mg3_comhard_west_closed'] if process_step1['mg3_comhard_west_closed'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comhard_west_closed_cv" name="comhard_west_closed_cv" value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span>%</span>
+                    </div>
+
+                    <div class="form-group form-inline">
+                     <div class="col-md-2 col-sm-2 input-group">Commecial longline Stock1 Open</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comlong_east_open" name="comlong_east_open" value="{{process_step1['mg3_comlong_east_open'] if process_step1['mg3_comlong_east_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comlong_east_open_cv" name="comlong_east_open_cv" value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span style="padding-right:40px">%</span>
+                     <div class="col-md-2 col-sm-2 input-group">Commecial longline Stock1 Closed</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comlong_east_closed" name="comlong_east_closed" value="{{process_step1['mg3_comlong_east_closed'] if process_step1['mg3_comlong_east_closed'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comlong_east_closed_cv" name="comlong_east_closed_cv"  value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span>%</span>
+                    </div>
+
+                    <div class="form-group form-inline">
+                     <div class="col-md-2 col-sm-2 input-group">Commecial longline Stock2 Open</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comlong_west_open" name="comlong_west_open" value="{{process_step1['mg3_comlong_west_open'] if process_step1['mg3_comlong_west_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comlong_west_open_cv" name="comlong_west_open_cv" value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span style="padding-right:40px">%</span>
+                     <div class="col-md-2 col-sm-2 input-group">Commecial longline Stock2 Closed</div>
+                     <div class="col-md-2 col-sm-2 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;" id="comlong_west_closed" name="comlong_west_closed" value="{{process_step1['mg3_comlong_west_closed'] if process_step1['mg3_comlong_west_closed'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="tooltip"/>
+                     </div>
+                     <span>%</span>
+                     <div class="col-md-1 col-sm-1 input-group">
+                         <input maxlength="5" type="number" disabled class="form-control hints" style="border-radius: 4px;"  id="comlong_west_closed_cv" name="comlong_west_closed_cv" value="5" placeholder="" data-toggle="tooltip" data-original-title="0 - 60%"/>
+                     </div>
+                     <span>%</span>
+                    </div>
+                 </form>
+             </div> <!--/.panel-body -->
+           </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+           <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#mgtopt6" data-parent="#accordion-demo" data-toggle="collapse">
+                  Management Options VI
+                </a>
+              </h4>
+            </div>
+            <div id="mgtopt6" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-mgtopt4">
+
+                  <h4>Recreational Season length</h4>
+                  <div class="" style="height:34px;margin-top:20px">
+                    <div class="col-md-12 col-sm-12">
+                      <input type="radio" style="margin:0 10px 10px 0px" disabled name="mg4_season" id="mg4_act" value="1" {{'checked' if process_step1['mg4_season']=='1'}}>Determined by ACT
+                    </div>
+                  </div>
+                  <!-- <div class="" style="height:34px;margin-top:10px">
+                    <label class="col-md-8 col-sm-8" style="color:red;padding-left: 40px">(Hint: bag limit for for hire is, current 10/day, planned <span id="act_mg3_bag_hire">{{process_step1['mg3_forhire'] if process_step1['mg3_forhire'] != None else ''}}</span>/day)</label>
+                  </div> -->
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <div class="col-md-3 col-sm-3 input-group" >Catch Rate for For Hire</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" class="form-control" disabled style="border-radius: 4px;width:auto;" id="mg4_act_catch_hire" name="mg4_act_catch_hire" value="{{process_step1['mg4_act_catch_hire'] if process_step1['mg4_act_catch_hire'] != None else ''}}" placeholder=""/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">lb/day</div>
+                  </div>
+                  <!-- <div class="" style="height:34px;margin-top:10px">
+                    <label class="col-md-8 col-sm-8" style="color:red;padding-left: 40px">(Hint: bag limit for private is, current 10/day, planned <span id="act_mg3_bag_private">{{process_step1['mg3_private'] if process_step1['mg3_private'] != None else ''}}</span>/day)</label>
+                  </div> -->
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <div class="col-md-3 col-sm-3 input-group">Catch Rate for Private</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" class="form-control" disabled style="border-radius: 4px;width:auto;" id="mg4_act_catch_private" name="mg4_act_catch_private" value="{{process_step1['mg4_act_catch_private'] if process_step1['mg4_act_catch_private'] != None else ''}}" placeholder=""/>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group">lb/day</div>
+                  </div>
+
+                  <div class="" style="height:34px;margin-top:20px">
+                    <div class="col-md-12 col-sm-12">
+                      <input type="radio" style="margin:0 10px 10px 0px" name="mg4_season" disabled id="mg4_act" value="2" {{'checked' if process_step1['mg4_season']=='2'}}>Input by User
+                    </div>
+                  </div>
+                  <!-- <div class="" style="height:34px;margin-top:10px">
+                    <label class="col-md-8 col-sm-8" style="color:red;padding-left: 40px">(Hint: bag limit for for hire is, current 10/day, planned <span id="input_mg3_bag_hire">{{process_step1['mg3_forhire'] if process_step1['mg3_forhire'] != None else ''}}</span>/day)</label>
+                  </div> -->
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <div class="col-md-3 col-sm-3 input-group">Catch Rate for For Hire</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" class="form-control" style="border-radius: 4px;width:auto;" disabled id="mg4_input_hire" name="mg4_input_hire" value="{{process_step1['mg4_input_hire'] if process_step1['mg4_input_hire'] != None else ''}}" placeholder=""/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">lb/day</div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <div class="col-md-3 col-sm-3 input-group" >Length of Season for For Hire</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" class="form-control" style="border-radius: 4px;width:auto;" disabled id="mg4_hire_length" name="mg4_hire_length" value="{{process_step1['mg4_hire_length'] if process_step1['mg4_hire_length'] != None else ''}}" placeholder=""/>
+                    </div>
+                    <div class="col-md-1 col-sm- input-group">day</div>
+                  </div>
+                  <!-- <div class="" style="height:34px;margin-top:10px">
+                    <label class="col-md-8 col-sm-8" style="color:red;padding-left: 40px">(Hint: bag limit for private is, current 10/day, planned <span id="input_mg3_bag_private">{{process_step1['mg3_private'] if process_step1['mg3_private'] != None else ''}}</span>/day)</label>
+                  </div> -->
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <div class="col-md-3 col-sm-3 input-group">Catch Rate for Private</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" class="form-control" style="border-radius: 4px;width:auto;" disabled id="mg4_input_private" name="mg4_input_private" value="{{process_step1['mg4_input_private'] if process_step1['mg4_input_private'] != None else ''}}" placeholder=""/>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group">lb/day</div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <div class="col-md-3 col-sm-3 input-group" >Length of Season for For Private</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" class="form-control" style="border-radius: 4px;width:auto;" disabled id="mg4_private_length" name="mg4_private_length" value="{{process_step1['mg4_private_length'] if process_step1['mg4_private_length'] != None else ''}}" placeholder=""/>
+                    </div>
+                    <div class="col-md-1 col-sm- input-group">day</div>
+                  </div>
+
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+           </div> <!-- /.panel.panel-default -->
+
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div id="process-result" class="row acc-wizard">
+      <div class="col-md-3" style="padding-left: 2em;">
+        <p style="margin-bottom: 2em;">
+          Show the process result:
+        </p>
+        <ol class="acc-wizard-sidebar">
+          <li class="acc-wizard-todo"><a href="#kobe">Kobe Plot</a></li>
+          <li class="acc-wizard-todo"><a href="#bio">Commercial Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#spr">Recreational Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#hire">For Hire Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#private">Private Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#f">General Fishing Mortality</a></li>
+          <li class="acc-wizard-todo"><a href="#ssb">Total SSB</a></li>
+          <li class="acc-wizard-todo"><a href="#ssb1">SSB in Stock1</a></li>
+          <li class="acc-wizard-todo"><a href="#ssb2">SSB in Stock2</a></li>
+        </ol>
+      </div>
+      <div class="col-md-9" style="padding-right: 2em;">
+        <div id="process-result-panel" class="panel-group">
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#kobe" data-parent="#process-result" data-toggle="collapse">
+                  Kobe Plot
+                </a>
+              </h4>
+            </div>
+            <div id="kobe" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <div id="kobe-plot" class="echart-size">
+                  </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#bio" data-parent="#process-result" data-toggle="collapse">
+                  Commercial Catch
+                </a>
+              </h4>
+            </div>
+            <div id="bio" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <div id="bio-chart-1" class="echart-size">
+                  </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#spr" data-parent="#process-result" data-toggle="collapse">
+                  Recreational Catch
+                </a>
+              </h4>
+            </div>
+            <div id="spr" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="spr-chart-1" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#hire" data-parent="#process-result" data-toggle="collapse">
+                  For Hire Catch
+                </a>
+              </h4>
+            </div>
+            <div id="hire" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="hire-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#private" data-parent="#process-result" data-toggle="collapse">
+                  Private Catch
+                </a>
+              </h4>
+            </div>
+            <div id="private" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="private-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#f" data-parent="#process-result" data-toggle="collapse">
+                  General Fishing Mortality
+                </a>
+              </h4>
+            </div>
+            <div id="f" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="f-chart-1" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#ssb" data-parent="#process-result" data-toggle="collapse">
+                  Total SSB
+                </a>
+              </h4>
+            </div>
+            <div id="ssb" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="ssb-chart-1" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#ssb1" data-parent="#process-result" data-toggle="collapse">
+                  SSB in Stock1
+                </a>
+              </h4>
+            </div>
+            <div id="ssb1" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="ssb1-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+
+           <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#ssb2" data-parent="#process-result" data-toggle="collapse">
+                  SSB in Stock2
+                </a>
+              </h4>
+            </div>
+            <div id="ssb2" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="ssb2-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div style="margin:20px 0 0 20px">
+            <div class="form-group form-inline" >
+                <div class="col-md-2 col-sm-2 input-group" >
+                  <button id="btnReport" type="button" class="btn btn-primary">Generate Report</button>
+                </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div id="mask"></div>
+
+{% endblock %}
+{% block tail_js %}
+    {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/framework/acc-wizard/accwizard.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/moment/min/moment.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/bootstrap-table.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/extensions/editable/bootstrap-table-editable.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/jquery-file-upload/js/jquery.uploadfile.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/echarts/dist/echarts.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/jquery-validation/dist/jquery.validate.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/jspdf/dist/jspdf.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/process-echart.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/process_guest.js')}}"></script>
+
+{% endblock %}

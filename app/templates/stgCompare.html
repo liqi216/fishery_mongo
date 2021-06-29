@@ -1,0 +1,888 @@
+{% extends "appbuilder/base.html" %}
+{% import 'appbuilder/general/lib.html' as lib %}
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+{% endblock %}
+
+{% block content %}
+
+  {{ lib.panel_begin('Strategy Compare') }}
+
+  {% block charts %}
+  <div class="panel panel-default" style="margin-bottom:0">
+    <div class="panel-heading" style="font-size: 1.7em;">Management Strategy Comparison - Essential Figures</div>
+    <div class="panel-body" id="cmpDiv" data-differences="{{differences_str}}" data-mseNames="{{mseNames}}" data-mseSingleLists="{{mseSingleLists}}" data-mseComp="{{mseComp}}" data-scenarios="{{scenarios}}">
+      <h3>Section 1: Basic Comparison</h3>
+      <div class="row">
+        <div class="col" id="catchChart" style="height:700px;padding:30px 100px 0px 100px">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:150px">
+        <div class="col" id="SSBGulf" style="height:700px;padding:30px 100px 0px 100px">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:250px">
+        <div class="col-md-6" id="catch20" style="height:500px">
+        </div>
+        <div class="col-md-6" id="annualCatch20" style="height:500px">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:250px">
+        <div class="col-md-6" id="terminalChart" style="height:500px">
+        </div>
+        <div class="col-md-6" id="lowestChart" style="height:500px">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:250px">
+        <div class="col-md-6" id="percentGreen" style="height:500px">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" id="radarChart_1" style="height:700px;padding:0 100px;margin-bottom:100px">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:100px">
+        <div class="col-md-6" id="totalDiscardsChart" style="height:500px">
+        </div>
+        <div class="col-md-6" id="varDiscardsChart" style="height:500px">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="panel panel-default" style="margin-bottom:0">
+    <div class="panel-heading" style="font-size: 1.7em;">Management Strategy Comparison - Other Detailed Figures</div>
+    <div class="panel-body" >
+      <h3>Section 2: Sector Comparison</h3>
+      <div class="row">
+        <div class="col" id="commCatchChart" style="height:700px;padding:30px 100px 0px 100px">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" id="fedCatchChart" style="height:700px;padding:30px 100px 0px 100px">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:150px">
+        <div class="col" id="privateCatchChart" style="height:700px;padding:30px 100px 0px 100px">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:150px">
+        <div class="col-md-6" id="SSBGulfFirst_Chart" style="height:500px">
+        </div>
+        <div class="col-md-6" id="SSBGulfLast_Chart" style="height:500px">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:120px">
+        <div class="col" id="barRotationChart_1" style="height:600px;padding:30px 100px 0px 100px">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:120px">
+        <div class="col" id="stateCatchFirst_Chart" style="height:600px;padding:30px 100px 0px 100px">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:120px">
+        <div class="col" id="stateCatchLast_Chart" style="height:600px;padding:30px 100px 0px 100px">
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:120px">
+        <div class="col" id="stateSeasFirst_Chart" style="height:600px;padding:30px 100px 0px 100px">
+        </div>
+        <p class="text-center">*TX indicates the TX Private Angling Season Length in Federal Water</p>
+      </div>
+      <div class="row" style="margin-bottom:120px">
+        <div class="col" id="stateSeasLast_Chart" style="height:600px;padding:30px 100px 0px 100px">
+        </div>
+        <p class="text-center">*TX indicates the TX Private Angling Season Length in Federal Water</p>
+      </div>
+      <div class="row" style="margin-bottom:150px">
+        <div class="col-md-6" id="catchFirst_Chart" style="height:500px">
+        </div>
+        <div class="col-md-6" id="catchLast_Chart" style="height:500px">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" id="commDiscardsChart" style="height:700px;padding:30px 100px 0px 100px">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" id="recrDiscardsChart" style="height:700px;padding:30px 100px 0px 100px">
+        </div>
+      </div>
+      <h3 style="margin-bottom: 50px;">Section 3: Within Sector Comparison</h3>
+      <div class="row">
+        <div class="col" id="commRadarChart" style="height:700px;padding:0 100px;margin-bottom:100px">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" id="recrRadarChart" style="height:700px;padding:0 100px;margin-bottom:100px">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading" style="font-size: 1.7em;">Management Strategy Comparison - Inputs</div>
+    <div class="panel-body">
+      {% if differences|length > 0 %}
+        <div class="page-header" style="padding-left: 20px; margin-top:30px">
+          <h4>Below are parameters that differ between scenarios</h4>
+        </div>
+      {% else %}
+        <h4><strong>Parameters are the same for each scenario</strong></h4>
+      {% endif %}
+
+      <div id="inputs" class="row">
+        <div class="col-md-10 col-md-offset-1">
+          {% if differences['stock1_input_file_type'] %}
+            <h4><strong>Random Seed Setting</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                {% if scenario['stock1_input_file_type'] == '1' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span>  Official Stock Assessment Model</li>
+                {% elif scenario['stock1_input_file_type'] == '2' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span>  Self-defined Model</li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['short_term_mgt'] %}
+            <h4><strong>Stock Assessment Frequency </strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['short_term_mgt']}} years </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['long_term_mgt'] %}
+            <h4><strong>Forward Projection </strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['long_term_mgt']}} years </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['Uncertainty'] %}
+            <h4><strong>Forward Projection </strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['Uncertainty']}} iterations </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['sample_size'] %}
+            <h4><strong>Observational Error for Initial Distribution</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['sample_size']}} effective sample size </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['observ_err_EW_stock'] %}
+            <h4><strong>Observational Error for Recruitment Ratio between East and West Stocks</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['observ_err_EW_stock']}} effective sample size </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['rnd_seed_setting'] %}
+            <h4><strong>Random Seed Setting</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                {% if scenario['rnd_seed_setting'] == '1' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> Use Seconds of the System's Clock</li>
+                {% elif scenario['rnd_seed_setting'] == '2' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> Default Seed CSV </li>
+                {% elif scenario['rnd_seed_setting'] == '3' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> Self-defined CSV </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['ip_cv_1'] %}
+            <h4><strong>Stock 1 Population CV (Normal Dist.)</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['ip_cv_1']}} </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['ip_cv_2'] %}
+            <h4><strong>Stock 2 Population CV (Normal Dist.)</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['ip_cv_2']}} </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['nm_m'] %}
+            <h4><strong>Natural Mortality</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                {% if scenario['nm_m'] == 'h' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> High M </li>
+                {% elif scenario['nm_m'] == 'l' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> Low M </li>
+                {% elif scenario['nm_m'] == 'c' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> Current M </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['nm_cv_1'] %}
+            <h4><strong>CV for East Stock(Log-normal Dist.)</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['nm_cv_1']}} </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['nm_cv_2'] %}
+            <h4><strong>CV for West Stock(Log-normal Dist.)</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['nm_cv_2']}} </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['simple_spawning'] %}
+            <h4><strong>Fraction before Spawning</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span>{{scenario['simple_spawning']}} years</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['cvForRecu'] %}
+            <h4><strong>CV for Recruitment(Log-normal Dist.)</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['cvForRecu']}} years</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['stock1_amount'] %}
+            <h4><strong>Recruitment East & West Stock</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['stock1_amount']}}% to East Stock, {{scenario['stock2_amount']}}% to West Stock</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['recruitTypeStock1'] or differences['fromHisStock1'] or differences['historySt1_early'] or differences['hst1_other_early'] or differences['historySt1'] or differences['hst1_other'] 
+          or differences['formulaStock1'] or differences['fromFmlStock1']  or differences['fml1MbhmSSB0'] or differences['fml1MbhmSteep']  %}
+            <h4><strong>Recruitment</strong></h4>
+
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                {% if scenario['recruitTypeStock1'] == '1' %}
+                  {% if scenario['fromHisStock1'] == '1' %}
+                    {% if scenario['historySt1_early'] == '1' %}
+                      <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> From Historical, Include Years Before 1984, 
+                        <p style="margin-left: 30px;">mean: {{scenario['hst1_mean_early']}} </p>
+                      </li>
+                    {% elif scenario['historySt1_early'] == '2' %}
+                      <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> From Historical, Include Years Before 1984, 
+                        <p style="margin-left: 30px;">{{scenario['hst1_other_early']}}% : {{scenario['hst1_cal_early']}}</p>
+                      </li>
+                    {% endif %}
+                  {% elif scenario['fromHisStock1'] == '2' %}
+                    {% if scenario['historySt1'] == '1' %}
+                      <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> From Historical, Exclude Years Before 1984, 
+                        <p style="margin-left: 30px;">mean: {{scenario['hst1_mean']}} </p>
+                      </li>
+                    {% elif scenario['historySt1'] == '2' %}
+                      <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> From Historical, Exclude Years Before 1984, 
+                        <p style="margin-left: 30px;">{{scenario['hst1_other']}}% : {{scenario['hst1_cal']}}</p>
+                      </li>
+                    {% endif %}
+                  {% endif %}
+                  
+                {% elif scenario['recruitTypeStock1'] == '2' %}
+                  {% if scenario['fromFmlStock1'] == '1' %}
+                    <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> From Formula, R<sub>0</sub> Include Years Before 1984 : 
+                      <p style="margin-left: 30px;">R<sub>0</sub>: {{scenario['fml1MbhmR0_early']}} (1000s)  </p>
+                      <p style="margin-left: 30px;">SSB<sub>0</sub>: {{scenario['fml1MbhmSSB0'] }} (1000 eggs)</p>
+                      <p style="margin-left: 30px;">Steepness(h): {{scenario['fml1MbhmSteep'] }}</p>
+                    </li>
+                  {% elif scenario['fromFmlStock1'] == '2' %}
+                    <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> From Formula, R<sub>0</sub> Exclude Years Before 1984 : 
+                      <p style="margin-left: 30px;">R<sub>0</sub>: {{scenario['fml1MbhmR0']}} (1000s)</p> 
+                      <p style="margin-left: 30px;">SSB<sub>0</sub>: {{scenario['fml1MbhmSSB0'] }} (1000 eggs)</p>
+                      <p style="margin-left: 30px;">Steepness(h): {{scenario['fml1MbhmSteep'] }}</p>
+                    </li>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg1_cv'] %}
+            <h4><strong>CV for Implementation Uncertainty</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg1_cv']}}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['harvest_level'] %}
+            <h4><strong>Harvest Control Rule</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> Constant F - Harvest Level {{scenario['harvest_level']}}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+
+          {% if differences['sec_recreational'] %}
+            <h4><strong>Recreational Allocation</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['sec_recreational']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['sec_commercial'] %}
+            <h4><strong>Commercial Allocation</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['sec_commercial']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['sec_hire'] %}
+            <h4><strong>Federal For-hire Allocation</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['sec_hire']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['sec_private'] %}
+            <h4><strong>Private Angling Allocation</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['sec_private']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['sec_pstar'] %}
+            <h4><strong>Probability of Overfishing</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['sec_pstar']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['sec_pstar'] %}
+            <h4><strong>Probability of Overfishing</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['sec_pstar']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['sec_act_com'] %}
+            <h4><strong>Acceptable Catch Target For the Commercial Sector</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['sec_act_com']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['sec_act_hire'] %}
+            <h4><strong>Acceptable Catch Target For the Federal For-hire Component</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['sec_act_hire']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['sec_act_pri'] %}
+            <h4><strong>Acceptable Catch Target For the Private Angling Component</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['sec_act_pri']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_commercial'] %}
+            <h4><strong>Minimum Legal Size for Commercial Fleets</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_commercial']}} inch</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_recreational'] %}
+            <h4><strong>Minimum Legal Size for Recreational Fleets</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_recreational']}} inch</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_forhire'] %}
+            <h4><strong>Bag Limit For Federal For-hire Fleets</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_forhire']}} # of fish per bag</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_forhire'] %}
+            <h4><strong>Bag Limit For Private Angling Fleets</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_forhire']}} # of fish per bag</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_rec_east_open'] %}
+            <h4><strong>Release Mortality for Recreational Stock1 Open</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_rec_east_open']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_rec_east_closed'] %}
+            <h4><strong>Release Mortality for Recreational Stock1 Closed</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_rec_east_closed']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_rec_west_open'] %}
+            <h4><strong>Release Mortality for Recreational Stock2 Open</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_rec_west_open']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_rec_west_closed'] %}
+            <h4><strong>Release Mortality for Recreational Stock2 Closed</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_rec_west_closed']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_comhard_east_open'] %}
+            <h4><strong>Commercial Vertical Line Stock1 Open</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_comhard_east_open']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_comhard_west_open'] %}
+            <h4><strong>Commercial Vertical Line Stock2 Open</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_comhard_west_open']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_comlong_east_open'] %}
+            <h4><strong>Commercial Long Line Stock1 Open</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_comlong_east_open']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_comlong_west_open'] %}
+            <h4><strong>Commercial Long Line Stock2 Open</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_comlong_west_open']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['com_stock1_closed'] %}
+            <h4><strong>Commercial Stock1 Closed</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['com_stock1_closed']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['com_stock2_closed'] %}
+            <h4><strong>Commercial Stock2 Closed</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['com_stock2_closed']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_forhire'] %}
+            <h4><strong>Federal For-hire Multiplier</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                {% set multip = scenario['mg3_forhire']/2.0 %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_forhire']}} / 2 = {{multip}} fish per bag</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['base_fed_forhire'] %}
+            <h4><strong>Base Federal For-hire Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['base_fed_forhire']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['est_fed_forhire'] %}
+            <h4><strong>Est. Federal For-hire Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['est_fed_forhire']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mg3_private'] %}
+            <h4><strong>Private Angling Multiplier</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                {% set multip = scenario['mg3_private']/2.0 %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mg3_private']}} / 2 = {{multip}} fish per bag</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['base_AL_private'] %}
+            <h4><strong>Base AL Private Angling Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['base_AL_private']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['est_AL_private'] %}
+            <h4><strong>Est. AL Private Angling Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['est_AL_private']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['base_FL_private'] %}
+            <h4><strong>Base FL Private Angling Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['base_FL_private']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['est_FL_private'] %}
+            <h4><strong>Est. FL Private Angling Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['est_FL_private']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['base_LA_private'] %}
+            <h4><strong>Base LA Private Angling Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['base_LA_private']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['est_LA_private'] %}
+            <h4><strong>Est. LA Private Angling Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['est_LA_private']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['base_MS_private'] %}
+            <h4><strong>Base MS Private Angling Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['base_MS_private']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['est_MS_private'] %}
+            <h4><strong>Est. MS Private Angling Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['est_MS_private']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['base_MS_forhire'] %}
+            <h4><strong>Base MS For-hire Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['base_MS_forhire']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['est_MS_forhire'] %}
+            <h4><strong>Est. MS For-hire Catch Rate</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['est_MS_forhire']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['base_TX_private'] %}
+            <h4><strong>Base TX Private Angling Catch Rate in Federal Water</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['base_TX_private']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['est_TX_private'] %}
+            <h4><strong>Est. TX Private Angling Catch Rate in Federal Water</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['est_TX_private']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['base_TX_forhire'] %}
+            <h4><strong>Base TX Private Angling Catch Rate in State Water</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['base_TX_forhire']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['est_TX_forhire'] %}
+            <h4><strong>Est. TX Private Angling Catch Rate in State Water</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['est_TX_forhire']}} lb/day</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['season_fed_forhire'] or differences['fed_forhire_length'] %}
+            <h4><strong>Federal For-hire Season Length</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                {% if scenario['season_fed_forhire'] == '1' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> Season Length is Determined by ACT</li>
+                {% elif scenario['season_fed_forhire'] == '2' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['fed_forhire_length']}} days</li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['MS_forhire_length'] %}
+            <h4><strong>MS For-hire Season Length</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['MS_forhire_length']}} days</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['TX_forhire_length'] %}
+            <h4><strong>TX Private Angling Season Length in State Water</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['TX_forhire_length']}} days</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['season_private'] or differences['AL_private_length'] or differences['FL_private_length'] or differences['LA_private_length'] or differences['MS_private_length'] or differences['TX_private_length'] %}
+            <h4><strong>Private Angling Component</strong></h4>
+            <ul style="margin-bottom:60px">
+              {% for scenario in items %}
+                {% if scenario['season_private'] == '1' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> Season Lengths are Determined by ACT</li>
+                {% elif scenario['season_private'] == '2' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> ACT is Determined by Inputs - No Buffers
+                    <p style="margin-left: 30px;">AL Private Angling Season Length: {{scenario['AL_private_length']}} days </p>
+                    <p style="margin-left: 30px;">FL Private Angling Season Length: {{scenario['FL_private_length']}} days </p>
+                    <p style="margin-left: 30px;">LA Private Angling Season Length: {{scenario['LA_private_length']}} days </p>
+                    <p style="margin-left: 30px;">MS Private Angling Season Length: {{scenario['MS_private_length']}} days </p>
+                    <p style="margin-left: 30px;">TX Private Angling Season Length in Federal Water: {{scenario['TX_private_length']}} days </p>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['penalty_switch'] %}
+            <h4><strong>Penalty</strong></h4>
+            <ul style="margin-bottom:30px">
+              {% for scenario in items %}
+                {% if scenario['penalty_switch'] == '0' %}
+                    <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> No Penalty</li>
+                {% elif scenario['penalty_switch'] == '1' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> The exceeded catch will be deduced from the next year, but make sure the actual landing doesn't exceed 95% of the OFL.</li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['carryover_switch'] %}
+            <h4><strong>Carryover</strong></h4>
+            <ul style="margin-bottom:30px">
+              {% for scenario in items %}
+                {% if scenario['carryover_switch'] == '0' %}
+                    <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> No Carryover</li>
+                {% elif scenario['carryover_switch'] == '1' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span>  Carryover to the same state next year, but make sure the actual landing doesn't exceed 95% of the OFL.</li>
+                  {% elif scenario['carryover_switch'] == '2' %}
+                  <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span>  Carryover to the same state next year, but make sure the actual landing doesnt exceed 50% of the difference between ABC and OFL.</li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['alabama'] %}
+            <h4><strong>AL Private Angling Quota</strong></h4>
+            <ul style="margin-bottom:30px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['alabama']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['florida'] %}
+            <h4><strong>FL Private Angling Quota</strong></h4>
+            <ul style="margin-bottom:30px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['florida']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['louisiana'] %}
+            <h4><strong>LA Private Angling Quota</strong></h4>
+            <ul style="margin-bottom:30px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['louisiana']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['mississippi'] %}
+            <h4><strong>MS Private Angling Quota</strong></h4>
+            <ul style="margin-bottom:30px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['mississippi']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if differences['texas'] %}
+            <h4><strong>TX Private Angling Quota</strong></h4>
+            <ul style="margin-bottom:30px">
+              {% for scenario in items %}
+                <li style="list-style:none;"><span class="scenarioName">{{scenarioNames[loop.index0]}} :</span> {{scenario['texas']}}%</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+
+  {% block end_buttons %}
+  <div style="margin:20px 0 0 20px">
+    <div class="form-group form-inline" >
+        <div class="col-md-2 col-sm-2 input-group" >
+          <button id="btnReport" type="button" class="btn btn-primary">Generate Report</button>
+        </div>
+    </div>
+  </div>
+
+  <div class="well well-sm">
+      <a href="{{url_for('ProcessCmpView.list')}}" class="btn btn-sm btn-default" data-toggle="tooltip" rel="tooltip" title="" data-original-title="Back">
+          <i class="fa fa-arrow-left"></i>
+      </a>
+  </div>
+  {% endblock %}
+
+<div id="mask"></div>
+
+{% endblock %}
+
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/node_modules/jquery-validation/dist/jquery.validate.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/echarts/dist/echarts.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/bootstrap-table.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/extensions/editable/bootstrap-table-editable.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/jspdf/dist/jspdf.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/compare_charts.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/stgCompare.js')}}"></script>
+{% endblock %}

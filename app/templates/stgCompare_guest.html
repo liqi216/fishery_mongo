@@ -1,0 +1,20 @@
+{% extends "stgCompare.html" %}
+
+{% block end_buttons %}
+<div class="well well-sm">
+    <a href="{{url_for('GuestProcessCmpView.list')}}" class="btn btn-sm btn-default" data-toggle="tooltip" rel="tooltip" title="" data-original-title="Back">
+        <i class="fa fa-arrow-left"></i>
+    </a>
+</div>
+
+{% endblock %}
+
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/node_modules/jquery-validation/dist/jquery.validate.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/echarts/dist/echarts.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/stgCompare.js')}}"></script>    
+{% endblock %}

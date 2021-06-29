@@ -1,0 +1,599 @@
+{% extends "appbuilder/base.html" %}
+{% block head_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{url_for('static',filename='assets/framework/acc-wizard/acc-wizard.min.css')}}"></link>
+  <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/bootstrap-table.min.css')}}"></link>
+  <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+
+{% endblock %}
+{% block content %}
+
+    {% block heading %}
+        <div class="row">
+            <div class="lead well" style="padding-top: 0.1em; padding-left: 2em; padding-right: 2em;">
+                <p>
+                <h2>Output Examples under Various Commercial Legal Size Regulations</h2>
+                </p>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block dataDiv %}
+    <div id="legalSizeData"  data-mseNames="{{mseNames}}" data-mseSingleLists="{{mseSingleLists}}" data-mseComp="{{mseComp}}" data-scenarios="{{scenarios}}"></div>
+    {% endblock %}
+
+    {% block section1 %}
+        <div id="section1" class="row acc-wizard">
+            <div class="col-md-3" style="padding-left: 2em;">
+                <h3>
+                    Essential Figures:
+                </h3>
+                <p style="margin-bottom: 1em;">Section 1: Basic Comparison</p>
+                <ol class="acc-wizard-sidebar">
+                    <li class="acc-wizard-todo"><a href="#totalCatch">Total Catch</a></li>
+                    <li class="acc-wizard-todo"><a href="#ssbGulfPanel">SSB for the Gulf</a></li>
+                    <li class="acc-wizard-todo"><a href="#catch20Panel">Catch for 20-Year Management</a></li>
+                    <li class="acc-wizard-todo"><a href="#annualCatch20Panel">Annual Catch for 20-Year Management</a></li>
+                    <li class="acc-wizard-todo"><a href="#terminalSSB">Terminal SSB after 20-Year Management</a></li>
+                    <li class="acc-wizard-todo"><a href="#lowestSSB">Lowest SSB during 20-Year Management</a></li>
+                    <li class="acc-wizard-todo"><a href="#percentGreenPanel">Percentage to Green</a></li>
+                    <li class="acc-wizard-todo"><a href="#radar1">Radar Chart</a></li>
+                    <li class="acc-wizard-todo"><a href="#totalDiscards">Discard 20-Year Management</a></li>
+                    <li class="acc-wizard-todo"><a href="#varDiscards">Annual Discard Variation, 20-Year Management</a></li>
+                    
+                </ol>
+            </div>
+
+            <div class="col-md-9" style="padding-right: 2em;padding-top:20px;">
+                <div id="section1Fig-pannel" class="panel-group">
+                    <div class="panel panel-default" style="padding-top: 1px;padding-left:1px">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#totalCatch" data-parent="#section1Fig-pannel" data-toggle="collapse">
+                                    Total Catch
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="totalCatch" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="catchChart" class="echart-size"></div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#ssbGulfPanel" data-parent="#section1Fig-pannel" data-toggle="collapse">
+                                    SSB for the Gulf
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="ssbGulfPanel" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="SSBGulf" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#catch20Panel" data-parent="#section1Fig-pannel" data-toggle="collapse">
+                                    Catch for 20-Year Management
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="catch20Panel" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="catch20" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#annualCatch20Panel" data-parent="#section1Fig-pannel" data-toggle="collapse">
+                                    Annual Catch for 20-Year Management
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="annualCatch20Panel" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="annualCatch20" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#terminalSSB" data-parent="#section1Fig-pannel" data-toggle="collapse">
+                                    Terminal SSB during 20-Year Management
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="terminalSSB" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="terminalChart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#lowestSSB" data-parent="#section1Fig-pannel" data-toggle="collapse">
+                                    Lowest SSB during 20-Year Management
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="lowestSSB" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="lowestChart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#percentGreenPanel" data-parent="#section1Fig-pannel" data-toggle="collapse">
+                                    Percentage to Green
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="percentGreenPanel" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="percentGreen" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#radar1" data-parent="#section1Fig-pannel" data-toggle="collapse">
+                                    Radar Chart
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="radar1" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="radarChart_1" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#totalDiscards" data-parent="#section1Fig-pannel" data-toggle="collapse">
+                                    Discard 20-Year Management
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="totalDiscards" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="totalDiscardsChart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#varDiscards" data-parent="#section1Fig-pannel" data-toggle="collapse">
+                                    Annual Discard Variation, 20-Year Management
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="varDiscards" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="varDiscardsChart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+                </div>
+            </div>  
+        </div>
+    {% endblock %}
+        <hr/>
+
+    {% block inputs %}
+        <div class="row" style="margin-bottom: 40px;">
+            <div class="col-sm-3" style="padding-left: 2em;">
+                <h3>Essential Inputs</h3>
+            </div>
+            <div class="col-sm-9">
+                <h4 style="padding-left:0px;font-weight:bold;margin-top: 20px;">Legal Size for Commercial Fisheries</h4>
+                
+                <p style="margin:10px 0;font-size:15px"><span class="scenarioName">Scenario Comm 13in</span> — legal size = 13 inch</p>
+                <p style="margin:10px 0;font-size:15px"><span class="scenarioName">Scenario Comm 13.5in</span>— legal size = 13.5 inch</p>
+                <p style="margin:10px 0;font-size:15px"><span class="scenarioName">Scenario Comm 14in</span> — legal size = 14 inch</p>
+                <p style="margin:10px 0;font-size:15px"><span class="scenarioName">Scenario Comm 14.5in</span> — legal size = 14.5 inch</p>
+                <p style="margin:10px 0;font-size:15px"><span class="scenarioName">Scenario Comm 15in</span> — legal size = 15 inch</p>
+
+                <ul style="padding-left:15px;font-size:15px;margin-top: 40px;">
+                    <li style="margin:10px 0">Based on 2016 Stock Assessment</li>
+                    <li style="margin:10px 0">Model Type: Stock Synthesis 3</li>
+                    <li style="margin:10px 0">Time Step: 1 year</li>
+                    <li style="margin:10px 0">Start Projection: 2016-01-01</li>
+                    <li style="margin:10px 0">Projection for 20 years (a generation)</li>
+                    <li style="margin:10px 0">Uncertainty is estimated from 100 iterations.</li>
+                    <li style="margin:10px 0">Observational error for initial abundance: CV 0.2.</li>
+                    <li style="margin:10px 0">Observational error for initial distribution: 1000 effective sample size</li>
+                    <li style="margin:10px 0">No mixing for adults between East and West stocks.</li>
+                    <li style="margin:10px 0">The current natural mortality follows the Lorenzen curve.</li>
+                    <li style="margin:10px 0">Fraction before spawning: 0.5 year</li>
+                    <li style="margin:10px 0">Observational error for recruitment ratio between East and West Stocks: 1000 effective sample size</li>
+                    <li style="margin:10px 0">One age-length key for both the East & West Stocks <br/>(The age-length key are inputs of the stock assessment model).</li>
+                    <li style="margin:10px 0">Biological Reference Points:
+                        <div>&nbsp&nbsp&nbspSSB<sub>MSY</sub>&nbsp 1230000000000000 eggs</div>
+                        <div>&nbsp&nbsp&nbspF<sub>MSY</sub>&nbsp 0.0588</div>
+                    </li>
+                    <li style="margin:10px 0">Fishery Status: Green</li>
+                    <li style="margin:10px 0">CVs for Release Mortality (Log-normal Distribution): 0.05</li>
+                    <li style="margin:10px 0">Use default seeds in the format of a csv file</li>
+                    <li style="margin:10px 0">The recruitment is estimated from Beverton-Holt model, from the latest stock assessment</li>
+                    <li style="margin:10px 0">The natural mortality is estimated from the latest stock assessment</li>
+                    <li style="margin:10px 0">Constant-F harvest control rule with F is 75% of the F<sub>MSY</sub></li>
+                    <li style="margin:10px 0">Recreational sector takes 49% of the total catch quota</li>
+                    <li style="margin:10px 0">Federal for-hire component takes 42.3% of the recreational catch</li>
+                    <li style="margin:10px 0">Probability of Overfishing is set at 40%</li>
+                    <li style="margin:10px 0">Commercial ACT buffer: 0%, Federal for-hire ACT buffer: 9%; Private angling ACT buffer: 20%</li>
+                    <li style="margin:10px 0">Current recreational legal size and bag limit regulations are adopted</li>
+                    <li style="margin:10px 0">Release mortality is estimated form the latest stock assessment</li>
+                    <li style="margin:10px 0">Catch rates are estimated according to the 2018-2019 observations</li>
+                    <li style="margin:10px 0">Penalty will be applied if the actual landing exceeds ACT, but no carryover</li>
+                    <li style="margin:10px 0"> Private angling quota among States are: AL 26.3%, FL 44.82%, LA 19.12%, MS 3.55% and TX 6.21%</li>
+                </ul>
+            </div>
+        </div>
+    {% endblock %}
+
+        <hr/>
+
+    {% block links %}
+        <div class="row" style="margin-top:30px;margin-left: 5px; margin-right: 5px;">
+            <!-- <div class="col-md-1"></div> -->
+            <div class="col-md-12 panel panel-default" style="padding:25px">
+                <h4>If you want to test your own MSE scenario, please <a href="{{url_for('PublicMSE.add_public_scenario')}}">create</a>.</h4>
+            <h4>If you want to test more  MSE scenarios and save them, please <a href="/register/form">register</a>.</h4>
+                <h4>If you want to see one basic run, <a href="/demo/basicRun">click here</a>.</h4>
+                <h4>You can also evaluate the effect of using different allocations for Commercial and Recreational Sectors, <a href="/demo/allocation">click here</a>.</h4>
+            </div>
+        </div>
+    {% endblock %}
+
+        <hr/>
+
+    {% block section2 %}
+        <div id="section2" class="row acc-wizard">
+            <div class="col-md-3" style="padding-left: 2em;">
+                <h3>
+                    Other Detailed Figures:
+                </h3>
+                <p style="margin-bottom: 1em;">Section 2: Sector Comparison</p>
+                <ol class="acc-wizard-sidebar">
+                    <li class="acc-wizard-todo"><a href="#commCatch">Commercial Catch</a></li>
+                    <li class="acc-wizard-todo"><a href="#fedCatch">Federal For-hire Catch</a></li>
+                    <li class="acc-wizard-todo"><a href="#privateCatch">Private Angling Catch</a></li>
+                    <li class="acc-wizard-todo"><a href="#ssbFirst">SSB for the Gulf, Ave of First 5-Year</a></li>
+                    <li class="acc-wizard-todo"><a href="#ssbLast">SSB for the Gulf, Ave of Last 5-Year</a></li>
+                    <li class="acc-wizard-todo"><a href="#barRotation">Catches for Federal For-hire and Private Angling Sectors in the First 5 Years</a></li>
+                    <li class="acc-wizard-todo"><a href="#stateCatchFirstPanel">State Private Angling Catch, Ave of First 5-Year</a></li>
+                    <li class="acc-wizard-todo"><a href="#stateCatchLastPanel">State Private Angling Catch, Ave of Last 5-Year</a></li>
+                    <li class="acc-wizard-todo"><a href="#stateSeasFirstPanel">State Private Angling Season Length, Ave of First 5-Year</a></li>
+                    <li class="acc-wizard-todo"><a href="#stateSeasLastPanel">State Private Angling Season Length, Ave of Last 5-Year</a></li>
+                    <li class="acc-wizard-todo"><a href="#catchFirst">Catch, Ave of First 5-Year</a></li>
+                    <li class="acc-wizard-todo"><a href="#catchLast">Catch, Ave of Last 5-Year</a></li>
+                    <li class="acc-wizard-todo"><a href="#commDiscards">Discards</a></li>
+                    <li class="acc-wizard-todo"><a href="#recrDiscards">Annual Discard/Allocation Ratio</a></li>
+                    
+                </ol>
+            </div>
+
+            <div class="col-md-9" style="padding-right: 2em;padding-top:20px;">
+                <div id="section2Fig-pannel" class="panel-group">
+                    <div class="panel panel-default" style="padding-top: 1px;padding-left:1px">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#commCatch" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                    Commercial Catch
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="commCatch" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="commCatchChart" class="echart-size"></div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#fedCatch" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                    Federal For-hire Catch
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="fedCatch" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="fedCatchChart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#privateCatch" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                    Private Angling Catch
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="privateCatch" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="privateCatchChart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#ssbFirst" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                SSB for the Gulf, Ave of First 5-Year
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="ssbFirst" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="SSBGulfFirst_Chart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#ssbLast" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                SSB for the Gulf, Ave of Last 5-Year
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="ssbLast" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="SSBGulfLast_Chart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#barRotation" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                Catches for Federal For-hire and Private Angling Sectors in the First 5 Years
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="barRotation" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="barRotationChart_1" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#stateCatchFirstPanel" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                State Private Angling Catch, Ave of First 5-Year
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="stateCatchFirstPanel" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="stateCatchFirst_Chart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#stateCatchLastPanel" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                State Private Angling Catch, Ave of Last 5-Year
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="stateCatchLastPanel" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="stateCatchLast_Chart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#stateSeasFirstPanel" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                State Private Angling Season Length, Ave of First 5-Year
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="stateSeasFirstPanel" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="stateSeasFirst_Chart" class="echart-size">
+                                </div>
+                                <p class="text-center">*TX indicates the TX Private Angling Season Length in Federal Water</p>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#stateSeasLastPanel" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                State Private Angling Season Length, Ave of Last 5-Year
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="stateSeasLastPanel" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="stateSeasLast_Chart" class="echart-size">
+                                </div>
+                                <p class="text-center">*TX indicates the TX Private Angling Season Length in Federal Water</p>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#catchFirst" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                Catch, Ave of First 5-Year
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="catchFirst" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="catchFirst_Chart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#catchLast" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                Catch, Ave of Last 5-Year
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="catchLast" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="catchLast_Chart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#commDiscards" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                Discards
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="commDiscards" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="commDiscardsChart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#recrDiscards" data-parent="#section2Fig-pannel" data-toggle="collapse">
+                                Annual Discard/Allocation Ratio
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="recrDiscards" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="recrDiscardsChart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                </div>
+            </div>  
+        </div>
+    {% endblock %}
+
+        <hr/>
+
+    {% block section3 %}
+        <div id="section3" class="row acc-wizard" style="margin-top: 50px;margin-bottom: 30px;">
+            <div class="col-md-3" style="padding-left: 2em;">
+                <p style="margin-bottom: 1em;">Section 3: Within Sector Comparison</p>
+                <ol class="acc-wizard-sidebar">
+                    <li class="acc-wizard-todo"><a href="#commRadar">Commercial Sector</a></li>
+                    <li class="acc-wizard-todo"><a href="#recrRadar">Recreational Sector</a></li>                
+                </ol>
+            </div>
+
+            <div class="col-md-9" style="padding-right: 2em;padding-top:20px;">
+                <div id="section3Fig-pannel" class="panel-group">
+                    <div class="panel panel-default" style="padding-top: 1px;padding-left:1px">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#commRadar" data-parent="#section3Fig-pannel" data-toggle="collapse">
+                                    Commercial Sector
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="commRadar" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="commRadarChart" class="echart-size"></div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#recrRadar" data-parent="#section3Fig-pannel" data-toggle="collapse">
+                                    Recreational Sector
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="recrRadar" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="recrRadarChart" class="echart-size">
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> <!-- /.panel.panel-default -->
+
+                </div>
+            </div>  
+        </div>
+    {% endblock %}
+{% endblock %}
+
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/framework/acc-wizard/accwizard.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/echarts/dist/echarts.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/compare_charts.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/legal_size.js')}}"></script>
+{% endblock %}

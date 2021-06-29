@@ -1,0 +1,583 @@
+{% extends "appbuilder/base.html" %}
+{% block head_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{url_for('static',filename='assets/framework/acc-wizard/acc-wizard.min.css')}}"></link>
+  <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/bootstrap-table.min.css')}}"></link>
+  <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+
+{% endblock %}
+{% block content %}
+  <div class="row">
+      <div class="lead well" style="padding-top: 0.1em; padding-left: 2em; padding-right: 2em;">
+      <p>
+      <h2>Output Example of Base Case</h2>
+      </p>
+      </div>
+  </div>
+  
+  <div id="basicRunData" data-scenario="{{scenario}}"></div>
+
+  <div id="basicRun" class="row acc-wizard">
+    <div class="col-md-3" style="padding-left: 2em;">
+      <h3 style="margin-bottom: 1em;">
+        Essential Figures:
+      </h3>
+      <ol class="acc-wizard-sidebar">
+        <li class="acc-wizard-todo"><a href="#totalCatch">Total Catch & Total SSB</a></li>
+        <li class="acc-wizard-todo"><a href="#catch">Catch: Commercial, For-hire, Private</a></li>
+        <li class="acc-wizard-todo"><a href="#ssb">SSB: East & West</a></li>
+        <li class="acc-wizard-todo"><a href="#commCatch">Commercial Catch: East & West</a></li>
+        <li class="acc-wizard-todo"><a href="#forhireCatch">For-hire Catch: East & West</a></li>
+        <li class="acc-wizard-todo"><a href="#privateCatch">Private Angling Catch: East & West</a></li>
+        <li class="acc-wizard-todo"><a href="#fedForhireLength">Federal For-hire Season Length</a></li>
+        <li class="acc-wizard-todo"><a href="#statePrivLength">State Private Angling Season Length</a></li>
+        <li class="acc-wizard-todo"><a href="#kobe">Kobe Plot</a></li>
+        <li class="acc-wizard-todo"><a href="#recruitment">Recruitment: East & West</a></li>
+      </ol>
+    </div>
+
+    <div class="col-md-9" style="padding-right: 2em;padding-top:20px;">
+        <div id="basicRun-pannel" class="panel-group">
+          <div class="panel panel-default" style="padding-top: 1px;padding-left:1px">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a href="#totalCatch" data-parent="#basicRun-pannel" data-toggle="collapse">
+                      Total Catch & Total SSB
+                  </a>
+                </h4>
+              </div>
+              <div id="totalCatch" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div id="totalCatch-chart" class="echart-size"></div>
+                </div> <!--/.panel-body -->
+              </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a href="#catch" data-parent="#basicRun-pannel" data-toggle="collapse">
+                      Catch: Commercial, For-hire, Private
+                  </a>
+                </h4>
+              </div>
+              <div id="catch" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div id="catch-plot" class="echart-size">
+                    </div>
+                </div> <!--/.panel-body -->
+              </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#ssb" data-parent="#basicRun-pannel" data-toggle="collapse">
+                    SSB: East & West
+                </a>
+              </h4>
+            </div>
+            <div id="ssb" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <div id="ssb-plot" class="echart-size">
+                  </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#commCatch" data-parent="#basicRun-pannel" data-toggle="collapse">
+                  Commercial Catch: East & West
+              </a>
+            </h4>
+          </div>
+          <div id="commCatch" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div id="commCatch-plot" class="echart-size">
+                </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#generalinput -->
+        </div> <!-- /.panel.panel-default -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#forhireCatch" data-parent="#basicRun-pannel" data-toggle="collapse">
+                  For-hire Catch: East & West
+              </a>
+            </h4>
+          </div>
+          <div id="forhireCatch" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div id="forhireCatch-plot" class="echart-size">
+                </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#generalinput -->
+        </div> <!-- /.panel.panel-default -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#privateCatch" data-parent="#basicRun-pannel" data-toggle="collapse">
+                  Private Angling Catch Catch: East & West
+              </a>
+            </h4>
+          </div>
+          <div id="privateCatch" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div id="privateCatch-plot" class="echart-size">
+                </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#generalinput -->
+        </div> <!-- /.panel.panel-default -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#fedForhireLength" data-parent="#basicRun-pannel" data-toggle="collapse">
+                  Federal For-hire Season Length
+              </a>
+            </h4>
+          </div>
+          <div id="fedForhireLength" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div id="fedForhireLength-plot" class="echart-size">
+                </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#generalinput -->
+        </div> <!-- /.panel.panel-default -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#statePrivLength" data-parent="#basicRun-pannel" data-toggle="collapse">
+                  State Private Angling Season Length
+              </a>
+            </h4>
+          </div>
+          <div id="statePrivLength" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div id="statePrivLength-plot" class="echart-size">
+                </div>
+                <p style="padding:20px">*TX indicates the TX Private Angling Season Length in Federal Water</p>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#generalinput -->
+        </div> <!-- /.panel.panel-default -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#kobe" data-parent="#basicRun-pannel" data-toggle="collapse">
+                  Kobe Plot
+              </a>
+            </h4>
+          </div>
+          <div id="kobe" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div id="kobe-plot" class="echart-size">
+                </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#generalinput -->
+        </div> <!-- /.panel.panel-default -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#recruitment" data-parent="#basicRun-pannel" data-toggle="collapse">
+                Recruitment: East & West
+              </a>
+            </h4>
+          </div>
+          <div id="recruitment" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div id="recruitment-plot" class="echart-size">
+                </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#generalinput -->
+        </div> <!-- /.panel.panel-default -->
+      </div>
+    </div>  
+  </div>
+
+  <hr/>
+  <div class="row" style="margin-bottom: 40px;">
+    <div class="col-sm-3" style="padding-left: 2em;">
+      <h3>Essential Inputs</h3>
+    </div>
+    <div class="col-sm-9">
+      <ul style="padding-left:0px;font-size:15px">
+        <li style="margin:10px 0">Based on 2016 Stock Assessment</li>
+        <li style="margin:10px 0">Model Type: Stock Synthesis 3</li>
+        <li style="margin:10px 0">Time Step: 1 year</li>
+        <li style="margin:10px 0">Start Projection: 2016-01-01</li>
+        <li style="margin:10px 0">Projection for 20 years (a generation)</li>
+        <li style="margin:10px 0">Uncertainty is estimated from 100 iterations.</li>
+        <li style="margin:10px 0">Observational error for initial abundance: CV 0.2.</li>
+        <li style="margin:10px 0">Observational error for initial distribution: 1000 effective sample size</li>
+        <li style="margin:10px 0">No mixing for adults between East and West stocks.</li>
+        <li style="margin:10px 0">The current natural mortality follows the Lorenzen curve.</li>
+        <li style="margin:10px 0">Fraction before spawning: 0.5 year</li>
+        <li style="margin:10px 0">Observational error for recruitment ratio between East and West Stocks: 1000 effective sample size</li>
+        <li style="margin:10px 0">One age-length key for both the East & West Stocks <br/>(The age-length key are inputs of the stock assessment model).</li>
+        <li style="margin:10px 0">Biological Reference Points:
+          <div>&nbsp&nbsp&nbspSSB<sub>MSY</sub>&nbsp 1230000000000000 eggs</div>
+          <div>&nbsp&nbsp&nbspF<sub>MSY</sub>&nbsp 0.0588</div>
+        </li>
+        <li style="margin:10px 0">Fishery Status: Green</li>
+        <li style="margin:10px 0">CVs for Release Mortality (Log-normal Distribution): 0.05</li>
+        <li style="margin:10px 0">Use default seeds in the format of a csv file</li>
+        <li style="margin:10px 0">The recruitment is estimated from Beverton-Holt model, from the latest stock assessment</li>
+        <li style="margin:10px 0">The natural mortality is estimated from the latest stock assessment</li>
+        <li style="margin:10px 0">Constant-F harvest control rule with F is 75% of the F<sub>MSY</sub></li>
+        <li style="margin:10px 0">Recreational sector takes 49% of the total catch quota</li>
+        <li style="margin:10px 0">Federal for-hire component takes 42.3% of the recreational catch</li>
+        <li style="margin:10px 0">Probability of Overfishing is set at 40%</li>
+        <li style="margin:10px 0">Commercial ACT buffer: 0%, Federal for-hire ACT buffer: 9%; Private angling ACT buffer: 20%</li>
+        <li style="margin:10px 0">Current size and bag limit regulations are adopted</li>
+        <li style="margin:10px 0">Release mortality is estimated form the latest stock assessment</li>
+        <li style="margin:10px 0">Catch rates are estimated according to the 2018-2019 observations</li>
+        <li style="margin:10px 0">Penalty will be applied if the actual landing exceeds ACT, but no carryover</li>
+        <li style="margin:10px 0"> Private angling quota among States are: AL 26.3%, FL 44.82%, LA 19.12%, MS 3.55% and TX 6.21%</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr/>
+  <div class="row" style="margin-top:30px;margin-left: 5px; margin-right: 5px;">
+    <!-- <div class="col-md-1"></div> -->
+    <div class="col-md-12 panel panel-default" style="padding:25px">
+      <h4>If you want to test your own MSE scenario, please <a href="{{url_for('PublicMSE.add_public_scenario')}}">create</a>.</h4>
+      <h4>If you want to test more  MSE scenarios and save them, please <a href="/register/form">register</a>.</h4>
+      <h4>You can also evaluate the effect of using different allocations for Commercial and Recreational Sectors, <a href="/demo/allocation">click here</a>.</h4>
+      <h4>You can also evaluate the effect of using different legal sizes, <a href="/demo/legalSize">click here</a>.</h4>
+    </div>
+  </div>
+
+  <hr/>
+  <div id="otherFigures" class="row acc-wizard">
+    <div class="col-md-3" style="padding-left: 2em">
+      <h3 style="margin-bottom: 1em;">
+        Other Detailed Figures:
+      </h3>
+      <ol class="acc-wizard-sidebar">
+        <li class="acc-wizard-todo"><a href="#bio">Commercial Catch</a></li>
+        <li class="acc-wizard-todo"><a href="#spr">Recreational Catch</a></li>
+        <li class="acc-wizard-todo"><a href="#hire">Federal For-hire Catch</a></li>
+        <li class="acc-wizard-todo"><a href="#private">Private Angling Catch</a></li>
+        <li class="acc-wizard-todo"><a href="#f">General Fishing Mortality</a></li>
+        <li class="acc-wizard-todo"><a href="#ssbE">SSB East</a></li>
+        <li class="acc-wizard-todo"><a href="#ssbW">SSB West</a></li>
+        <li class="acc-wizard-todo"><a href="#ssbGulf">SSB for the Gulf</a></li>
+        <li class="acc-wizard-todo"><a href="#al_Catch">AL Private Angling Catch</a></li>
+        <li class="acc-wizard-todo"><a href="#al_seas_length">AL Private Angling Season Length</a></li>
+        <li class="acc-wizard-todo"><a href="#fl_Catch">FL Private Angling Catch</a></li>
+        <li class="acc-wizard-todo"><a href="#fl_seas_length">FL Private Angling Season Length</a></li>
+        <li class="acc-wizard-todo"><a href="#la_Catch">LA Private Angling Catch</a></li>
+        <li class="acc-wizard-todo"><a href="#la_seas_length">LA Private Angling Season Length</a></li>
+        <li class="acc-wizard-todo"><a href="#ms_Catch">MS Private Angling Catch</a></li>
+        <li class="acc-wizard-todo"><a href="#ms_seas_length">MS Private Angling Sesaon Length</a></li>
+        <li class="acc-wizard-todo"><a href="#tx_Catch">TX Private Angling Catch</a></li>
+        <li class="acc-wizard-todo"><a href="#tx_seas_length">TX Private Angling Season Length in Federal Water</a></li>
+
+      </ol>
+    </div>
+    <div class="col-md-9" style="padding-right: 2em;padding-top: 20px;">
+      <div id="otherFigures-pannel" class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#bio" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                Commercial Catch
+              </a>
+            </h4>
+          </div>
+          <div id="bio" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div id="bio-chart-1" class="echart-size">
+                </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#generalinput -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#spr" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                Recreational Catch
+              </a>
+            </h4>
+          </div>
+          <div id="spr" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="spr-chart-1" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#hire" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                Federal For-hire Catch
+              </a>
+            </h4>
+          </div>
+          <div id="hire" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="hire-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#private" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                Private Angling Catch
+              </a>
+            </h4>
+          </div>
+          <div id="private" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="private-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#f" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                General Fishing Mortality
+              </a>
+            </h4>
+          </div>
+          <div id="f" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="f-chart-1" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#ssbE" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                SSB East
+              </a>
+            </h4>
+          </div>
+          <div id="ssbE" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="ssbE-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#ssbW" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                SSB West
+              </a>
+            </h4>
+          </div>
+          <div id="ssbW" style="margin-bottom:20px" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="ssbW-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#ssbGulf" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                SSB for the Gulf
+              </a>
+            </h4>
+          </div>
+          <div id="ssbGulf" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="ssbGulf-plot" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#al_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                AL Private Angling Catch
+              </a>
+            </h4>
+          </div>
+          <div id="al_Catch" style="margin-bottom:20px" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="al-Catch-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#al_seas_length" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                AL Private Angling Season Length
+              </a>
+            </h4>
+          </div>
+          <div id="al_seas_length" style="margin-bottom:20px" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="al-seas-length-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#fl_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                FL Private Angling Catch
+              </a>
+            </h4>
+          </div>
+          <div id="fl_Catch" style="margin-bottom:20px" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="fl-Catch-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#fl_seas_length" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                FL Private Angling Season Length
+              </a>
+            </h4>
+          </div>
+          <div id="fl_seas_length" style="margin-bottom:20px" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="fl-seas-length-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#la_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                LA Private Angling Catch
+              </a>
+            </h4>
+          </div>
+          <div id="la_Catch" style="margin-bottom:20px" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="la-Catch-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#la_seas_length" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                LA Private Angling Season Length
+              </a>
+            </h4>
+          </div>
+          <div id="la_seas_length" style="margin-bottom:20px" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="la-seas-length-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#ms_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                MS Private Angling Catch
+              </a>
+            </h4>
+          </div>
+          <div id="ms_Catch" style="margin-bottom:20px" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="ms-Catch-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#ms_seas_length" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                MS Private Angling Season Length
+              </a>
+            </h4>
+          </div>
+          <div id="ms_seas_length" style="margin-bottom:20px" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="ms-seas-length-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#tx_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                TX Private Angling Catch
+              </a>
+            </h4>
+          </div>
+          <div id="tx_Catch" style="margin-bottom:20px" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="tx-Catch-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a href="#tx_seas_length" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                TX Private Angling Season Length in Federal Water
+              </a>
+            </h4>
+          </div>
+          <div id="tx_seas_length" style="margin-bottom:20px" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <div id="tx-seas-length-chart" class="echart-size">
+              </div>
+            </div> <!--/.panel-body -->
+          </div> <!-- /#addwizard -->
+        </div> <!-- /.panel.panel-default -->
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/framework/acc-wizard/accwizard.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/bootstrap-table.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/extensions/editable/bootstrap-table-editable.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/echarts/dist/echarts.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/process-echart.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/basic_run.js')}}"></script>
+{% endblock %}

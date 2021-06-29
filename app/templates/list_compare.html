@@ -1,0 +1,20 @@
+{% extends "appbuilder/general/model/list.html" %}
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+{% endblock %}
+
+    {% block list_list scoped %}
+      <div style="overflow:auto;margin:10px">
+        <div class="" style="color: red;float:left">&nbsp;* Please choose 4~7 records for comparison!</div>
+        <div style="float:right;padding-right:20px;font-weight:bold">Rows selected : <span id="selectedCount">0</span> </div>
+      </div>
+        {{ super() }}
+	{% endblock %}
+{% block tail_js %}
+	{{super()}}
+	<script src="{{url_for('static',filename='assets/javascript/list_compare.js')}}"></script>
+	<script language="javascript">
+		var modelActions = new AdminActions();
+	</script>
+{% endblock %}

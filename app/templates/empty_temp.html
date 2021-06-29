@@ -1,0 +1,22 @@
+{% extends "appbuilder/base.html" %}
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/index.css')}}"></link>
+{% endblock %}
+{% block content %}
+<p>We are creating your scenario.</p>
+<script type="text/javascript">
+  window.setTimeout(function(){
+    var st = "http://gomredsnappermsetool.fiu.edu/public/{{id}}";
+    window.location.replace(st);
+     
+    }, 1500);</script>
+{% endblock %}
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/framework/easy-number-animate/dist/jquery.easy_number_animate.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/index.js')}}"></script>   
+{% endblock %}

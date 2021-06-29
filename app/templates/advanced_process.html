@@ -1,0 +1,141 @@
+{% extends "appbuilder/general/model/list.html" %}
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+{% endblock %}
+
+    {% block list_list scoped %}
+        <div style="color: red">&nbsp;* Can only choose 1 record for advanced MSE!</div>
+         <form id="form_compare" method="post" action="{{ url_for('AdvancedMseView.advcalc') }}">
+        {{ super() }}
+        <div class="panel panel-default">
+		  <div class="panel-heading">Management Strategy Comparison - Option</div>
+		  <div class="panel-body">
+		        <h4>Alternative threshold reference</h4>
+		        <div class="form-group form-inline">
+		        	<div class="col-md-2 col-sm-2 col-xs-2">
+					    
+					</div>		            
+		            <div class="col-md-2 col-sm-2 input-group" style="text-align: center;">
+		                <label>Current</label>
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group" style="text-align: center;">
+		                <label>Min</label>
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group" style="text-align: center;">
+		                <label >Max</label>
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group" style="text-align: center;">
+		                <label >Level</label>
+		            </div>
+		        </div>
+		        <div class="form-group form-inline" >
+		        	<div class="col-md-2 col-sm-2 col-xs-2" >
+					    <label>
+					      <input type="checkbox" id="fChk" name="fChk" class="refChk" value="F" onclick="return ValidateSelection();">&nbsp;F
+					    </label>
+					</div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="fCur" name="fCur" placeholder="">
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="fMin" name="fMin" placeholder="0.02">
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="fMax" name="fMax" placeholder="0.082">
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="fLevel" name="fLevel" placeholder="5">
+		            </div>
+		        </div>
+		        <div class="form-group form-inline">
+		            <div class="col-md-2 col-sm-2 col-xs-2" >
+					    <label>
+					      <input type="checkbox" id="sChk" name="sChk" class="refChk" value="S" onclick="return ValidateSelection();">&nbsp;SSB
+					    </label>
+					</div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="sCur" name="sCur" placeholder="">
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="sMin" name="sMin" placeholder="0.02">
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="sMax" name="sMax" placeholder="0.082">
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="sLevel" name="sLevel" placeholder="5">
+		            </div>
+		        </div>
+		        <div class="form-group form-inline">
+		            <div class="col-md-2 col-sm-2 col-xs-2" >
+					    <label>
+					      <input type="checkbox" id="aChk" name="aChk" class="refChk" value="A" onclick="return ValidateSelection();">&nbsp;Allocation
+					    </label>
+					</div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="aCur" name="aCur" placeholder="">
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="aMin" name="aMin" placeholder="0.02">
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="aMax" name="aMax" placeholder="0.082">
+		            </div>
+		            <div class="col-md-2 col-sm-2 input-group">
+		                <input class="form-control input-txt" type="number" min="0" id="aLevel" name="aLevel" placeholder="5">
+		            </div>
+		        </div>
+		        <div class="form-group">
+		            <button id="clearBtn" type="button" class="btn btn-danger" style="width: 120px">Clear</button>
+
+		            <input class="btn btn-info" id="cmpBtn" value="Compare" type="submit">
+		        </div>
+		        <input id="package_selected"  name="package_selected" style="display:none" value="">
+		  </div>
+		  </form>
+		</div>
+
+<script type="text/javascript">  
+function ValidateSelection()  
+{  
+    var checkboxes = document.getElementsByName("refChk");  
+
+		
+<script type="text/javascript">  
+function ValidateSelection()  
+{  
+    var checkboxes = document.getElementsByClass("refChk");  
+
+    var numberOfCheckedItems = 0;  
+    for(var i = 0; i < checkboxes.length; i++)  
+    {  
+        if(checkboxes[i].checked)  
+            numberOfCheckedItems++;  
+    }  
+    if(numberOfCheckedItems > 2)  
+    {  
+        alert("You can't select more than two features!");  
+        return false;  
+    }  
+}  
+</script>
+		<div class="panel panel-default">
+		  <div class="panel-heading">Management Strategy Comparison - Output2</div>
+		  <div class="panel-body">
+		    <div class="row">
+		        <div id="heatChart" class="echart-size"></div>
+		    </div>
+		  </div>
+		</div>
+    {% endblock %}
+
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/node_modules/jquery-validation/dist/jquery.validate.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/echarts/dist/echarts.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/advancedMse.js')}}"></script>    
+{% endblock %}

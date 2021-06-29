@@ -1,0 +1,37 @@
+{% extends "appbuilder/general/model/list.html" %}
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+{% endblock %}
+{% block content %}
+	{{ super() }}
+	<!-- Modal -->
+		
+		<div class="modal" id="defaultModal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Notice</h5>
+		        <button type="button" class="close" style="margin-top: -25px" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <p>  Please notice that you are going to set current file as default, it will take time to read the file and save content into system. Please be patient for waiting system to finish the job once you confirm the request by clicking the [confirm] button!</p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary">Confirm</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div id="mask"></div>
+{% endblock %}
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/javascript/stock_file.js')}}"></script>  
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "appbuilder/general/model/edit.html" %}
+
+{% block head_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+
+{% endblock %}
+{% block tail_js %}
+	  {{super()}}
+    <script>
+      var btn = document.querySelector('button.btn.btn-sm.btn-primary');
+      console.log(btn);
+			btn.textContent = "Reset";
+    </script>
+{% endblock %}

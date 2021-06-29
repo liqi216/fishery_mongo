@@ -1,0 +1,4 @@
+library(plumber)
+r <- plumb("rmongo.r")
+r$run(port=8000)
+quit()

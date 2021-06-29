@@ -1,0 +1,49 @@
+{% extends 'appbuilder/general/lib.html' %}
+
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+{% endblock %}
+
+<!--overriding, Must change the name of the function or the old function will be used instead-->
+<!--Overrided this function to add the can_copy -->
+{% macro btn_crud2(can_copy, can_edit, can_delete, pk, modelview_name, filters) %}
+    <div class="btn-group btn-group-xs" style="display: flex;">
+        {% if can_copy%}
+            {% set path = url_for(modelview_name + '.copy',pk=pk) %}
+            {% set path = path | set_link_filters(filters) %}
+            {{ lnk_copy(path) }}
+        {% endif %}
+        {% if can_edit %}
+            {% set path = url_for(modelview_name + '.edit',pk=pk) %}
+            {% set path = path | set_link_filters(filters) %}
+            {{ lnk_edit(path) }}
+        {% endif %}
+        {% if can_delete %}
+            {{ lnk_delete(url_for(modelview_name + '.delete',pk=pk)) }}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro lnk_copy(my_href) %}
+    <a href="{{my_href}}" class="btn btn-sm btn-default" data-toggle="tooltip" rel="tooltip"
+       title="{{_('Copy record')}}">
+        <i class="fa fa-copy"></i>
+    </a>
+{% endmacro %}
+
+<!--Overrided this function to remove the back button -->
+{% macro render_list_header2(can_add, page, page_size, count, filters, actions, modelview_name) %}
+        {{ render_pagination(page, page_size, count, modelview_name) }}
+        {{ render_set_page_size(page, page_size, count, modelview_name) }}
+    	{% if can_add %}
+		    {% set path = url_for(modelview_name + '.add') %}
+			{% set path = path | set_link_filters(filters) %}
+			&nbsp;{{ lnk_add(path) }}
+        {% endif %}
+        &nbsp;{{ render_actions(actions, modelview_name) }}
+        <!--Removing back  &nbsp;{{ lnk_back() }} -->
+		<div class="pull-right">
+			<strong>{{ _('Record Count') }}:</strong> {{ count }}
+		</div>
+{% endmacro %}

@@ -1,0 +1,1716 @@
+{% extends "appbuilder/base.html" %}
+{% block head_css %}
+  
+    {{ super() }}
+     <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/framework/acc-wizard/acc-wizard.min.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/bootstrap-table.min.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/jquery-file-upload/css/uploadfile.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css')}}"></link>
+
+
+{% endblock %}
+{% block content %}
+
+    <div class="row">
+      <div class="lead well" style="padding-top: 0.1em; padding-left: 2em; padding-right: 2em;">
+      <p>
+        {% if guest %}
+          <h2>Guest Standard Version : {{process_name}}</h2>
+          {{process_description}} <a href="{{url_for('GuestProcessView.list')}}" class="btn btn-warning" role="button" aria-pressed="true">Return</a>
+        {% else %}
+          <h2>Standard Version : {{process_name}}</h2>
+          {{process_description}} <a href="{{url_for('MultipleScenarioView.list')}}" class="btn btn-warning" role="button" aria-pressed="true">Return</a>
+        {% endif %}
+      </p>
+      </div>
+    </div>
+    <div id="process-part" class="row acc-wizard">
+      <div class="col-md-3" style="padding-left: 2em;">
+        <p style="margin-bottom: 2em;">
+          Follow the Management Options below:
+        </p>
+        <ol class="acc-wizard-sidebar">
+          <li class="acc-wizard-todo"><a href="#generalinput">General Inputs</a></li>
+          <li class="acc-wizard-todo"><a href="#naturalmortality">Natural Mortality</a></li>
+          <li class="acc-wizard-todo"><a href="#recruitment">Recruitment</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt1">Management Options I - Harvest Control Rule</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt2">Management Options II - Allocations</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt3">Management Options III - Regulations</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt4">Management Options IV - Release Mortality</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt5">Management Options V - Recreational Sector Options for ACT</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt6">Management Options VI - Penalty & Carryover</a></li>
+          <li class="acc-wizard-todo"><a href="#mgtopt7">Management Options VII - Private Angling Quota among States</a></li>
+        </ol>
+      </div>
+      <div class="col-md-9" style="padding-right: 2em;">
+        <div id="accordion-demo" class="panel-group">
+
+          <div id="step1_id" data-step1id="{{process_step1['id']}}" data-rndfiles="{{process_rndfilenames}}" data-stock1filename="{{process_stock1filename}}" data-current_F_ratio="{{process_current_F_ratio}}" data-current_SSB_ratio="{{process_current_SSB_ratio}}" data-simple="{{isSimple}}" data-guest="{{guest}}"></div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#generalinput" data-parent="#accordion-demo" data-toggle="collapse">
+                  General Inputs
+                </a>
+              </h4>
+            </div>
+            <div id="generalinput" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-generalinput">
+
+                  <button {{'disabled' if notEditable }} type="button" class="btn btn-primary" name="runDefault">Run with Default Setting</button>
+                  <div class=" row" style="margin-top:30px">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-6">
+                      <h4>Descriptions</h4>
+                    </div>
+                  </div>
+                    <div style="margin:0 auto 30px" class="row">
+
+                      <div class="col-sm-2"></div>
+                      <div class="col-sm-10">
+                        <ul style="padding-left:0px;font-size:15px">
+                          <li style="margin:10px 0">Based on 2016 Stock Assessment</li>
+                          <li style="margin:10px 0">Model Type: Stock Synthesis 3</li>
+                          <li style="margin:10px 0">Time Step: 1 year</li>
+                          <li style="margin:10px 0">Start Projection: 2016-01-01</li>
+                          <li style="margin:10px 0">Projection for 20 years (a generation)</li>
+                          <li style="margin:10px 0">Uncertainty is estimated from 100 iterations.</li>
+                          <li style="margin:10px 0">Observational error for initial abundance: CV 0.2.</li>
+                          <li style="margin:10px 0">Observational error for initial distribution: 1000 effective sample size</li>
+                          <li style="margin:10px 0">No mixing for adults between East and West stocks.</li>
+                          <li style="margin:10px 0">The current natural mortality follows the Lorenzen curve.</li>
+                          <li style="margin:10px 0">Fraction before spawning: 0.5 year</li>
+                          <li style="margin:10px 0">Observational error for recruitment ratio between East and West Stocks: 1000 effective sample size</li>
+                          <li style="margin:10px 0">One age-length key for both the East & West Stocks <br/>(The age-length key are inputs of the stock assessment model).</li>
+                          <li style="margin:10px 0">Biological Reference Points:
+                            <div>&nbsp&nbsp&nbspSSB<sub>MSY</sub>&nbsp 1230000000000000 eggs</div>
+                            <div>&nbsp&nbsp&nbspF<sub>MSY</sub>&nbsp 0.0588</div>
+                          </li>
+                          <li style="margin:10px 0">Fishery Status: Green</li>
+                          <li style="margin:10px 0">CVs for Release Mortality (Log-normal Distribution): 0.05</li>
+                          <li style="margin:10px 0">Use default seeds in the format of a csv file.</li>
+                        </ul>
+                      </div>
+                    </div>
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#naturalmortality" data-parent="#accordion-demo" data-toggle="collapse">
+                  Natural Mortality
+                </a>
+              </h4>
+            </div>
+            <div id="naturalmortality" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-naturalmortality">
+                  <h4>Constant Natural Mortality Over Years
+                    <!-- <button id="mortality-pre-btn" style="margin-left: 60px" type="button" class="btn btn-disable">&lt;&lt;&nbsp;Decrease complexity</button>
+                    <button id="mortality-next-btn" style="margin-left: 30px" type="button" class="btn btn-disable">Increase complexity&nbsp;&gt;&gt;</button> -->
+                    <div id="hidden-mortality" data-mortalitycomplex="{{process_step1['mortality_complexity'] if process_step1['mortality_complexity'] != None else '1'}}"></div>
+                  </h4>
+                  <div id="simpleMortality" style="margin-top:50px;margin-bottom:50px ">
+                    <div class="form-group">
+                      <label class="col-md-3 control-label">&nbsp;</label>
+                      <label class="radio-inline">
+                        <input {{'disabled' if notEditable }} type="radio" class="hints" name="nm_m" id="highm" value="h" {{ 'checked' if process_step1['nm_m']=='h'}} data-toggle="tooltip" data-original-title="1.5 times of current M"> High M
+                      </label>
+                      <label class="radio-inline">
+                        <input {{'disabled' if notEditable }} type="radio" class="hints" name="nm_m" id="lowm" value="l" {{ 'checked' if process_step1['nm_m']=='l'}} data-toggle="tooltip" data-original-title="50% of current M"> Low M
+                      </label>
+                      <label class="radio-inline">
+                        <input {{'disabled' if notEditable }} type="radio" class="hints" name="nm_m" id="curm" value="c" {{ 'checked' if process_step1['nm_m']=='c'}} data-toggle="tooltip" data-original-title="Age-specific M values for ages 2 and older followed the Lorenzen curve"> Current M
+                      </label>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-sm-6 col-lg-3 control-label">CV for East Stock</br>(Log-normal Dist.)</div>
+                      <div class="col-md-4 col-sm-4 input-group">
+
+                        <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px" id="nm_cv_1" name="nm_cv_1" value="{{process_step1['nm_cv_1'] if process_step1['nm_cv_1'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="The coefficient variation is assumed to the natural mortality for the East Stock, range from 0 to 1."/>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-sm-6 col-lg-3 control-label">CV for West Stock</br>(Log-normal Dist.)</div>
+                      <div class="col-md-4 col-sm-4 input-group">
+                        <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px" id="nm_cv_2" name="nm_cv_2" value="{{process_step1['nm_cv_2'] if process_step1['nm_cv_2'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="The coefficient variation is assumed to the natural mortality for the We Stock, range from 0 to 1"/>
+                      </div>
+                    </div>
+                  </div>
+                  <table id="table-mortality" hidden>
+                  </table>
+                  <table hidden id="table-ibParam"></table>
+                  <table hidden id="table-bioParam"></table>
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#recruitment" data-parent="#accordion-demo" data-toggle="collapse">
+                  Recruitment
+                </a>
+              </h4>
+            </div>
+            <div id="recruitment" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-recruitment">
+                  <div hidden class="form-group form-inline">
+                    <div class="col-sm-2 col-md-3 input-group">
+                      <label  class="control-label">Fraction before Spawning</label>
+                    </div>
+                    <div class="col-sm-2 col-md-2 input-group">
+                      <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px" id="simple_spawning" name="simple_spawning" value="{{process_step1['simple_spawning'] if process_step1['simple_spawning'] != None else '0.5'}}" placeholder="0.83"  />
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group">years</div>
+                  </div>
+                   <div class="form-group form-inline">
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <label class="control-label">CV for Recruitment</br>(Log-normal Dist.)</label>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group">
+                      <input {{'disabled' if notEditable }} type="number" class="form-control hints" style="border-radius: 4px" id="cvForRecu" name="cvForRecu" value="{{process_step1['cvForRecu'] if process_step1['cvForRecu'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="The coefficient variation is assumed to the annual recruitment for the whole Gulf of Mexico, range from 0.2 to 0.6."/>
+                    </div>
+                  </div>
+                  <div style="padding-bottom:20px" class="form-group form-inline">
+                    <div class="col-md-2 col-sm-2 input-group">
+                      <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;width:auto;" id="stock1_amount" name="stock1_amount" value="{{process_step1['stock1_amount'] if process_step1['stock1_amount'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Percentage of recruits that the eastern stock takes from the whole Gulf of Mexico, range from 0 to 100."/>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group">% to East Stock</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" class="form-control" style="border-radius: 4px;width:auto;" readonly id="stock2_amount" name="stock2_amount" value="{{process_step1['stock2_amount'] if process_step1['stock2_amount'] != None else ''}}" placeholder=""/>
+                    </div> 
+
+                    <div class="col-md-2 col-sm-2 input-group">% to West Stock</div>
+                    <div class="col-md-1 col-sm-1 input-group">
+                    </div>
+                  </div>
+
+                  <div class="form-group form-inline"><!-- first part -->
+                    <div class="col-md-12 col-sm-12">
+                      <input {{'disabled' if notEditable }} type="radio" class= "hints" style="margin:0 10px 10px 0px" name="recruitTypeStock1" id="historyStock1" value="1" {{'checked' if process_step1['recruitTypeStock1']=='1'}} data-toggle="tooltip" data-original-title="The recruitment in the projection is estimated from the historical data.">
+                      Estimate Recruitment from Historical Data (1000s)
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" ><!-- first part -->
+                    <div class="col-md-12 col-sm-12">
+                      <input {{'disabled' if notEditable }} type="radio" class="hints" style="margin:0 10px 10px 30px" name="fromHisStock1" id="hisin1984" value="1" {{'checked' if process_step1['fromHisStock1']=='1'}} data-toggle="tooltip" data-original-title="The historical recruitment data starts from 1872.">Include Years Before 1984
+                    </div>
+                  </div>
+
+                  <div class="form-group form-inline" >
+                    <div class="col-md-2 col-sm-2 input-group" style="margin-left: 80px">
+                      <label class="radio-inline" >
+                          <input {{'disabled' if notEditable }} type="radio" name="historySt1_early" id="hst1_earlyradio3" value="1" {{'checked' if process_step1['historySt1_early']=='1'}}>Mean
+                      </label>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group" >
+                      <input {{'disabled' if notEditable }} maxlength="11" type="number" class="input-txt form-control" id="hst1_mean_early" name="hst1_mean_early" value="{{process_step1['hst1_mean_early'] if process_step1['hst1_mean_early'] != None else ''}}" placeholder=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" >
+                    <div class="col-md-2 col-sm-2 input-group" style="margin-left: 80px">
+                      <label class="radio-inline" >
+                        <input {{'disabled' if notEditable }} type="radio" name="historySt1_early" id="hst1_earlyradio5" value="2" {{'checked' if process_step1['historySt1_early']=='2'}}>Other Percentile
+                      </label>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group" >
+                      <input {{'disabled' if notEditable }} type="number" class="input-txt form-control" id="hst1_other_early" name="hst1_other_early" value="{{process_step1['hst1_other_early'] if process_step1['hst1_other_early'] != None else ''}}" placeholder=""/>
+                    </div>
+                     <div class="col-md-1 col-sm-1 input-group" >%</div>
+                    <div class="col-md-1 col-sm-1 input-group" >
+                      <button id="hst_btn_early" name=calc_btn type="button" class="btn btn-disable">Calculate</button>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group" >
+                      <input {{'disabled' if notEditable }} maxlength="11" type="number" class="input-txt form-control" id="hst1_cal_early" name="hst1_cal_early" value="{{process_step1['hst1_cal_early'] if process_step1['hst1_cal_early'] != None else '0'}}" placeholder=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" ><!-- first part -->
+                    <div class="col-md-12 col-sm-12">
+
+                      <input {{'disabled' if notEditable }} type="radio" class="hints" style="margin:0 10px 10px 30px" name="fromHisStock1" id="hisout1984" value="2" {{'checked' if process_step1['fromHisStock1']=='2'}} data-toggle="tooltip" data-original-title="The historical data covers period starts from 1984">Exclude Years Before 1984
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" >
+                    <div class="col-md-2 col-sm-2 input-group" style="margin-left: 80px">
+                      <label class="radio-inline" >
+                          <input {{'disabled' if notEditable }} type="radio" name="historySt1" id="hst1radio3" value="1" {{'checked' if process_step1['historySt1']=='1'}}>Mean
+                      </label>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group" >
+                      <input {{'disabled' if notEditable }} maxlength="11" type="number" class="input-txt form-control" id="hst1_mean" name="hst1_mean" value="{{process_step1['hst1_mean'] if process_step1['hst1_mean'] != None else ''}}" placeholder=""/>
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" >
+                    <div class="col-md-2 col-sm-2 input-group" style="margin-left: 80px">
+                      <label class="radio-inline" >
+                          <input {{'disabled' if notEditable }} type="radio" name="historySt1" id="hst1radio5" value="2" {{'checked' if process_step1['historySt1']=='2'}}>Other Percentile
+                      </label>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group" >
+                      <input {{'disabled' if notEditable }} maxlength="5" type="number" class="input-txt form-control" id="hst1_other" name="hst1_other" value="{{process_step1['hst1_other'] if process_step1['hst1_other'] != None else ''}}" placeholder=""/>
+                    </div>
+                     <div class="col-md-1 col-sm-1 input-group" >%</div>
+                    <div class="col-md-1 col-sm-1 input-group" >
+                      <button id="hst_btn" name="calc_btn" type="button" class="btn btn-disable">Calculate</button>
+                    </div>
+                    <div class="col-md-3 col-sm-3 input-group" >
+                      <input {{'disabled' if notEditable }} maxlength="11" type="number" class="input-txt form-control" id="hst1_cal" name="hst1_cal" value="{{process_step1['hst1_cal'] if process_step1['hst1_cal'] != None else '0'}}" placeholder=""/>
+                    </div>
+                  </div>
+
+
+                  <div class="form-group form-inline" ><!-- second part -->
+                    <div class="col-md-12 col-sm-12" style="margin:20px 0 40px 0px">
+                      <input {{'disabled' if notEditable }} type="radio" class="hints"  name="recruitTypeStock1" id="fmlStock1" value="2" {{'checked' if process_step1['recruitTypeStock1']=='2'}} data-toggle="tooltip" data-original-title="The recruitment in the projection is estimated from the Modified Beverton-Holt Model.">
+                      From Modified Beverton-Holt Model estimated in the latest stock assessment
+                    </div>
+                  </div>
+                  <div hidden>
+                    <div class="form-group form-inline" >
+                      <div class="col-md-5 col-sm-5 input-group" style="margin:0 10px 0px 30px">
+                        <label class="radio-inline" >
+                            <input {{'disabled' if notEditable }} type="radio" class="hints" name="formulaStock1" id="fml1radioBHM" value="1" {{'checked' if process_step1['formulaStock1']=='1'}}  >Modified Beverton-Holt Model
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline"><!-- first part -->
+                      <div class="col-md-12 col-sm-12">
+                        <input {{'disabled' if notEditable }} type="radio" class="hints" style="margin:0 10px 10px 50px" name="fromFmlStock1" id="fmlin1984" value="1" {{'checked' if process_step1['fromFmlStock1']=='1'}}  >R0 Include Years Before 1984
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group" style="margin-left: 100px">
+                        <label class="control-label"><i>R<sub>0</sub></i></label>
+                      </div>
+                      <div class="col-md-3 col-sm-3 input-group">
+
+                        <input {{'disabled' if notEditable }} type="number" class="form-control hints" style="border-radius: 4px" id="fml1MbhmR0_early" name="fml1MbhmR0_early" value="{{process_step1['fml1MbhmR0_early'] if process_step1['fml1MbhmR0_early'] != None else ''}}" placeholder=""  />
+
+                      </div>
+                    </div>
+                    <div class="form-group form-inline" ><!-- first part -->
+                      <div class="col-md-12 col-sm-12">
+
+                        <input {{'disabled' if notEditable }} type="radio" class="hints" style="margin:0 10px 10px 50px" name="fromFmlStock1" id="fmlout1984" value="2" {{'checked' if process_step1['fromFmlStock1']=='2'}}  >R0 Exclude Years Before 1984
+
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group" style="margin-left: 100px">
+                        <label class="control-label"><i>R<sub>0</sub></i></label>
+                      </div>
+                      <div class="col-md-3 col-sm-3 input-group">
+
+                        <input {{'disabled' if notEditable }} type="number" class="form-control hints" style="border-radius: 4px" id="fml1MbhmR0" name="fml1MbhmR0" value="{{process_step1['fml1MbhmR0'] if process_step1['fml1MbhmR0'] != None else ''}}" placeholder=""  />
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group" style="margin-left: 60px">
+                        <label class="control-label"><i>SSB<sub>0</sub></i></label>
+                      </div>
+                      <div class="col-md-3 col-sm-3 input-group">
+
+                        <input {{'disabled' if notEditable }} type="number" class="form-control hints" style="border-radius: 4px" id="fml1MbhmSSB0" name="fml1MbhmSSB0" value="{{process_step1['fml1MbhmSSB0'] if process_step1['fml1MbhmSSB0'] != None else ''}}" placeholder=""  />
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group" style="margin-left: 60px">
+                        <label class="control-label">Steepness</label>
+                      </div>
+                      <div class="col-md-3 col-sm-3 input-group">
+
+                        <input {{'disabled' if notEditable }} type="number" class="form-control hints" style="border-radius: 4px" id="fml1MbhmSteep" name="fml1MbhmSteep" value="{{process_step1['fml1MbhmSteep'] if process_step1['fml1MbhmSteep'] != None else ''}}" placeholder=""  />
+                      </div>
+                    </div>
+                  </div><!--/.second part -->
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#mgtopt1" data-parent="#accordion-demo" data-toggle="collapse">
+                  Management Options I
+                </a>
+              </h4>
+            </div>
+            <div id="mgtopt1" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-mgtopt1">
+                  <div class="form-group form-inline" style="margin-top:50px;margin-bottom:50px">
+                      <div class="col-md-3 col-sm-3 control-label">CV for Implementation Uncertainty</div>
+                      <div class="col-md-4 col-sm-4 input-group">
+
+                        <input {{'disabled' if notEditable }} type="number" class="form-control hints" style="border-radius: 4px" id="mg1_cv" name="mg1_cv" value="{{process_step1['mg1_cv'] if process_step1['mg1_cv'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Uncertainty due to imperfect implementation of management actions, range from 0 to 0.5."/>
+                      </div>
+                  </div>
+                  <div hidden>
+                    <div  id="colorChart" class="col-md-7 input-group" style="height:400px"></div>
+                  </div>
+                  <div class="form-group">
+                    <h4>Harvest Control Rule</h4>
+                    <label class="col-md-4 control-label"></label>
+                    <label class="radio-inline">
+                      <input type="radio" name="hrt_harvest_rule" disabled id="contFRadio" {{'checked' if process_step1['hrt_harvest_rule']=='CF'}} value="CF"> Constant F
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4 control-label"></label>
+                    <div class="col-md-7 col-sm-7 input-group well" style="margin-bottom: -20px" align="center">
+                      <input id="ex1" data-slider-enabled="{{'false' if notEditable else 'true'}}"  data-slider-id='ex1Slider' type="text" data-slider-min="0.03" data-slider-max="0.08" data-slider-step="0.0002" data-slider-value="{{process_step1['harvest_level'] if process_step1['harvest_level'] != None else 0}}"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4 control-label"></label>
+                    <div id="ruleChart" class="col-md-7 input-group" style="height:400px">
+                    </div>
+                  </div>
+
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#mgtopt2" data-parent="#accordion-demo" data-toggle="collapse">
+                  Management Options II
+                </a>
+              </h4>
+            </div>
+            <div id="mgtopt2" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-mgtopt2">
+
+                  <h3 style="font-size:21px">Allocation among Sectors</h3>
+                  <div class="" style="height:34px;margin-top:40px">
+                    <label class="col-md-offset-2 col-sm-4 control-label">Recreational</label>
+                    <label class="col-md-4 col-sm-4 control-label">Commercial</label>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-offset-2 col-sm-2 input-group">
+
+                      <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;width:auto;" id="sec_recreational" name="sec_recreational" value="{{process_step1['sec_recreational'] if process_step1['sec_recreational'] != None else ''}}" placeholder="3" data-toggle="tooltip" data-original-title="Percentage of the recreational quota takes from the annual catch target, must between 0 to 100."/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" class="form-control" style="border-radius: 4px;width:auto;" readonly id="sec_commercial" name="sec_commercial" value="{{process_step1['sec_commercial'] if process_step1['sec_commercial'] != None else ''}}" placeholder="3"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-1 input-group">
+                    </div>
+                  </div>
+         
+                  <h4 style="padding-top:50px">Allocation among Recreational Components</h4>
+                  <div class="" style="height:34px;margin-top:20px">
+                    <label class="col-md-offset-2 col-sm-4 control-label" style="padding-left: 40px">Federal For-hire</label>
+                    <label class="col-md-4 col-sm-4 control-label">Private Angling</label>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-offset-2 col-sm-2 input-group">
+
+                      <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;width:auto;" id="sec_hire" name="sec_hire" value="{{process_step1['sec_hire'] if process_step1['sec_hire'] != None else ''}}" placeholder=""  />
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" class="form-control" style="border-radius: 4px;width:auto;" readonly id="sec_private" name="sec_private" value="{{process_step1['sec_private'] if process_step1['sec_private'] != None else ''}}" placeholder=""/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-1 col-sm-1 input-group">
+                    </div>
+                  </div>
+                  <h5 class="control-label" style="margin-top:60px;font-weight:bold">Allocation among Private Angling Fleets</h5>
+                  <p>(Only used for demonstrating results)</p>
+                  <div class="mb-sm-2" style="height:34px;margin-top:40px">
+                    <label class="col-md-offset-2 col-sm-4 control-label">Private Angling East</label>
+                    <label class="col-md-4 col-sm-4 control-label">Private Angling West</label>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-offset-2 col-sm-2 input-group">
+
+                      <input disabled maxlength="5" type="number" value="{{process_step1['p_e'] if process_step1['p_e'] != None else 0}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="p_e" name="p_e"  />
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input maxlength="5" type="number" disabled value="{{process_step1['p_w'] if process_step1['p_w'] != None else 0}}" class="form-control hints" style="border-radius: 4px;width:auto;" id="p_w" name="p_w"   />
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+
+                  <h5 style="margin-top:60px;font-weight:bold">Allocation among Federal For-hire Fleets</h5>
+                  <p>(Only used for demonstrating results)</p>
+                  <div class="" style="height:34px;margin-top:40px">
+                    <label style="padding-right:0px" class="col-md-offset-2 col-sm-4 control-label">Federal For-hire East</label>
+                    <label style="padding-left:0px;padding-right:0px" class="col-md-4 col-sm-4 control-label">Federal For-hire West</label>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-offset-2 col-sm-2 input-group">
+
+                      <input disabled maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;width:auto;" id="sec_headboat" name="sec_headboat" value="{{process_step1['sec_headboat'] if process_step1['sec_headboat'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Federal For-hire Components takes from the annual recreation allocation" />
+
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+                        <input disabled maxlength="5" type="number" class="form-control" style="border-radius: 4px;width:auto;" id="sec_charterboat" name="sec_charterboat" value="{{process_step1['sec_charterboat'] if process_step1['sec_charterboat'] != None else ''}}" placeholder=""/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                    <div class="col-md-1 col-sm-1 input-group">
+                    </div>
+                  </div>
+
+                  <div class="text-center" style="float:right;margin:50px 50px 0 0 ">
+                    <img style="height:200px" src="{{url_for('static',filename='assets/images/processView/probability.png')}}"/>
+                  </div>
+
+                  <h4 style="padding-top:50px">Probability of Overfishing (OFL -> ABC)</h4>
+                  <div class="form-group form-inline" style="margin-top:20px">
+                    <label class="col-md-3 radio-inline" >P<sup>*</sup></label>
+                    <div class="col-md-2 col-sm-2 input-group">
+
+                      <input {{'disabled' if notEditable }} maxlength="20" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" id="sec_pstar" name="sec_pstar" value="{{process_step1['sec_pstar'] if process_step1['sec_pstar'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="The acceptable biological catch was calculated at a P* of the pdf of overfishing limit. Must between 0.3 to 0.5."/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+
+                  <h4 style="padding-top:50px">Acceptable Catch Target (ACT) Buffer</h4>
+                  <div class="form-group form-inline" style="margin-top:20px">
+                    <label class="col-md-3 radio-inline" >For the Commercial Sector</label>
+                    <div class="col-md-2 col-sm-2 input-group">
+
+                      <input {{'disabled' if notEditable }} maxlength="20" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" id="sec_act_com" name="sec_act_com" value="{{process_step1['sec_act_com'] if process_step1['sec_act_com'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="The ACT buffer for the Commercial Sector."/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <label class="col-md-3 radio-inline" >For the Federal For-hire Component</label>
+                    <div class="col-md-2 col-sm-2 input-group">
+
+                      <input {{'disabled' if notEditable }} maxlength="20" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" id="sec_act_hire" name="sec_act_hire" value="{{process_step1['sec_act_hire'] if process_step1['sec_act_hire'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="The ACT buffer for the Federal For-hire Component."/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+                  <div class="form-group form-inline" style="padding-bottom:20px">
+                  <label class="col-md-3 radio-inline" >For the Private Angling Component</label>
+                    <div class="col-md-2 col-sm-2 input-group">
+
+                      <input {{'disabled' if notEditable }} maxlength="20" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" id="sec_act_pri" name="sec_act_pri" value="{{process_step1['sec_act_pri'] if process_step1['sec_act_pri'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="The ACT buffer for the Private Angling Component."/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">%</div>
+                  </div>
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+          </div> <!-- /.panel.panel-default -->
+
+           <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#mgtopt3" data-parent="#accordion-demo" data-toggle="collapse">
+                  Management Options III
+                </a>
+              </h4>
+            </div>
+            <div id="mgtopt3" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-mgtopt3">
+
+                  <h4>Regulations</h4>
+                  <div class="" style="height:34px;margin-top:20px">
+                    <label class="col-md-4 col-sm-4" style="padding-left: 40px">Legal Size</label>
+                    <label class="col-md-4 col-sm-4"></label>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <div class="col-md-3 col-sm-2 input-group">Minimum Legal Size for Commercial Fleets</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+
+                        <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;width:auto;" id="mg3_commercial" name="mg3_commercial" value="{{process_step1['mg3_commercial'] if process_step1['mg3_commercial'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Must be between 12 to 16 in"/>
+                    </div>
+                    <div class="col-md-1 col-sm-1 input-group">inch</div>
+                    <div class="col-md-1 col-sm-1 input-group">
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <div class="col-md-3 col-sm-2 input-group">Minimum Legal Size for Recreational Fleets</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+
+                        <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;width:auto;" id="mg3_recreational" name="mg3_recreational" value="{{process_step1['mg3_recreational'] if process_step1['mg3_recreational'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Must be between 12 to 16 in"/>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group">inch</div>
+                    <div class="col-md-1 col-sm-1 input-group">
+                    </div>
+                  </div>
+                  <div class="" style="height:34px;margin-top:20px">
+                    <label class="col-md-4 col-sm-4" style="padding-left: 40px">Bag Limit for Recreational Fleets</label>
+                    <label class="col-md-4 col-sm-4"></label>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <div class="col-md-2 col-sm-2 input-group">For Federal For-hire Fleets</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+
+                        <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;width:auto;" id="mg3_forhire" name="mg3_forhire" value="{{process_step1['mg3_forhire'] if process_step1['mg3_forhire'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Number of fish per person, bag limit for the For-hire fleets."/>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group"># of fish per bag</div>
+                    <div class="col-md-1 col-sm-1 input-group">
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <div class="col-md-2 col-sm-2 input-group">For Private Angling Fleets</div>
+                    <div class="col-md-2 col-sm-2 input-group">
+
+                        <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;width:auto;" id="mg3_private" name="mg3_private" value="{{process_step1['mg3_private'] if process_step1['mg3_private'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Number of fish per person, bag limit for the Private Angling fleets."/>
+                    </div>
+                    <div class="col-md-2 col-sm-2 input-group"># of fish per bag</div>
+                    <div class="col-md-1 col-sm-1 input-group">
+                    </div>
+                  </div>
+                  <!-- <div class="" style="height:34px;margin-top:10px">
+                    <label class="col-md-4 col-sm-4" style="color:red;padding-left: 40px">(Hint: will scale the catch rate)</label>
+                    <label class="col-md-4 col-sm-4"></label>
+                  </div> -->
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+           </div> <!-- /.panel.panel-default -->
+
+           <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#mgtopt4" data-parent="#accordion-demo" data-toggle="collapse">
+                  Management Options IV
+                </a>
+              </h4>
+            </div>
+            <div id="mgtopt4" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <form id="form-mgtopt4">
+                    <h4 style="margin-bottom:30px">Release Mortality</h4>
+
+                    <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-2 input-group">Recreational Stock1 Open</div>
+                      <div class="col-md-3 col-sm-2 input-group">
+
+                          <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="rec_east_open" name="rec_east_open" value="{{process_step1['mg3_rec_east_open'] if process_step1['mg3_rec_east_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Recreational release mortality for MRIP and headboat discard in the East Gulf, must between 0 to 100."/>
+
+                      </div>
+                      <span style="padding-right:40px">%</span>
+                      <div class="col-md-2 col-sm-2 input-group">Recreational Stock1 Closed</div>
+                      <div class="col-md-3 col-sm-2 input-group">
+
+                          <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="rec_east_closed" name="rec_east_closed" value="{{process_step1['mg3_rec_east_closed'] if process_step1['mg3_rec_east_closed'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Recreational release mortality during the non-fishing season in the East Gulf, must between 0 to 100."/>
+                      </div>
+                      <span>%</span>
+                     </div>
+
+                     <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-2 input-group">Recreational Stock2 Open</div>
+                      <div class="col-md-3 col-sm-2 input-group">
+
+                          <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="rec_west_open" name="rec_west_open" value="{{process_step1['mg3_rec_west_open'] if process_step1['mg3_rec_west_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Recreational release mortality for MRIP and headboat discards in the West Gulf, must between 0 to 100."/>
+                      </div>
+                      <span style="padding-right:40px">%</span>
+                      <div class="col-md-2 col-sm-2 input-group">Recreational Stock2 Closed</div>
+                      <div class="col-md-3 col-sm-2 input-group">
+
+                          <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="rec_west_closed" name="rec_west_closed" value="{{process_step1['mg3_rec_west_closed'] if process_step1['mg3_rec_west_closed'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Recreational release mortality during the non-fishing season in the West Gulf, must between 0 to 100."/>
+                      </div>
+                      <span>%</span>
+                     </div>
+
+                     <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-2 input-group">Commercial Vertical Line Stock1 Open</div>
+                      <div class="col-md-3 col-sm-2 input-group">
+
+                          <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="comhard_east_open" name="comhard_east_open" value="{{process_step1['mg3_comhard_east_open'] if process_step1['mg3_comhard_east_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Commercial release mortality for vertical line discard in the East Gulf, must between 0 to 100."/>
+
+                      </div>
+                      <span style="padding-right:40px">%</span>
+                      <div class="col-md-2 col-sm-2 input-group">Commercial Stock1 Closed</div>
+                      <div class="col-md-3 col-sm-2 input-group">
+
+                          <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="com_stock1_closed" name="com_stock1_closed" value="{{process_step1['com_stock1_closed'] if process_step1['com_stock1_closed'] != None else 0}}" placeholder="" data-toggle="tooltip" data-original-title="Commercial release mortality during the non-fishing season in the East Gulf, must between 0 to 100."/>
+                      </div>
+                      <span>%</span>
+                     </div>
+
+                     <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-2 input-group">Commercial Vertical Line Stock2 Open</div>
+                      <div class="col-md-3 col-sm-2 input-group">
+
+                          <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="comhard_west_open" name="comhard_west_open" value="{{process_step1['mg3_comhard_west_open'] if process_step1['mg3_comhard_west_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Commercial release mortality for vertical line discard in the West Gulf, must between 0 to 100."/>
+
+                      </div>
+                      <span style="padding-right:40px">%</span>
+                      <div class="col-md-2 col-sm-2 input-group">Commercial Stock2 Closed</div>
+                      <div class="col-md-3 col-sm-2 input-group">
+
+                          <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="com_stock2_closed" name="com_stock2_closed" value="{{process_step1['com_stock2_closed'] if process_step1['com_stock2_closed'] != None else 0}}" placeholder="" data-toggle="tooltip" data-original-title="Commercial release mortality during the non-fishing season in the West Gulf, must between 0 to 100."/>
+                      </div>
+                      <span>%</span>
+                     </div>
+
+                     <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-2 input-group">Commercial Long Line Stock1 Open</div>
+                      <div class="col-md-3 col-sm-2 input-group">
+
+                          <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="comlong_east_open" name="comlong_east_open" value="{{process_step1['mg3_comlong_east_open'] if process_step1['mg3_comlong_east_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Commercial release mortality for longline discard in the East Gulf, must between 0 to 100."/>
+
+                      </div>
+                      <span style="padding-right:40px">%</span>
+                     </div>
+
+                     <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-2 input-group">Commercial Long Line Stock2 Open</div>
+                      <div class="col-md-3 col-sm-2 input-group">
+
+                          <input {{'disabled' if notEditable }} maxlength="5" type="number" class="form-control hints" style="border-radius: 4px;" id="comlong_west_open" name="comlong_west_open" value="{{process_step1['mg3_comlong_west_open'] if process_step1['mg3_comlong_west_open'] != None else ''}}" placeholder="" data-toggle="tooltip" data-original-title="Commercial release mortality for longline discard in the West Gulf, must between 0 to 100."/>
+
+                      </div>
+                      <span style="padding-right:40px">%</span>
+                     </div>
+                  </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+           </div> <!-- /.panel.panel-default -->
+
+           <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#mgtopt5" data-parent="#accordion-demo" data-toggle="collapse">
+                  Management Options V
+                </a>
+              </h4>
+            </div>
+            <div id="mgtopt5" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <form id="form-mgtopt5">
+                    <h3 style="font-size:21px;margin-bottom:30px">Recreational Sector Options for ACT</h3>
+                    <h4 style="margin-left:20px">Catch Rate</h4>
+
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <label class="col-md-3 col-sm-3 input-group" >Federal For-hire Multiplier</label>
+                      <div class="col-md-7 col-sm-7 input-group">
+                        <span id="fed_multiplier">{{process_step1['mg3_forhire'] if process_step1['mg3_forhire'] != None else 2}}</span>
+                        <span style="margin-left:5px;width:5px">/ 2 &nbsp= </span>
+                        <span id="fed_mult_result" style="margin-left:5px;width:5px">{{process_step1['mg3_forhire']/2 if process_step1['mg3_forhire'] != None else 1}}</span>
+                        <span style="margin-left:5px;width:5px">fish per bag<span>
+                      </div>
+                    </div>
+
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Base Federal For-hire</br>Catch Rate</div>
+                      <div class="col-md-7 col-sm-7 input-group">
+
+                        <input {{'disabled' if notEditable }} id="base_fed_forhire" name="base_fed_forhire"  type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" data-toggle="tooltip" data-original-title="The Federal For-hire catch rate estimation, based on the bag limit is 2-fish per bag" value="{{process_step1['base_fed_forhire'] if process_step1['base_fed_forhire'] != None else 0}}"/>
+                        <span style="margin-left:5px;width:5px">lb/day</span>
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom:30px"class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Est. Federal For-hire</br>Catch Rate</div>
+                      <div class="col-md-1 col-sm-1 input-group" >
+                        <button data-baseid="base_fed_forhire" data-estid="est_fed_forhire" data-multiplier="fed_multiplier" name="estimateBtn" type="button" class="btn-sm btn-primary">Calculate</button>
+                      </div>
+                      <div  class="col-sm-1 input-group">
+                        <!-- 46077 -->
+                        <input id="est_fed_forhire"  type="number" disabled class="form-control" style="border-radius: 4px;width:95px;float: none;{{'background-color:white' if notEditable == False}}" value="{{process_step1['est_fed_forhire'] if process_step1['est_fed_forhire'] != None else 0}}"/>
+                      </div>
+                      <div class="col input-group">lb/day</div>
+                    </div>
+
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <label class="col-md-3 col-sm-3 input-group" >Private Angling Multiplier</label>
+                      <div class="col-md-7 col-sm-7 input-group">
+                        <span id="private_multiplier">{{process_step1['mg3_private'] if process_step1['mg3_private'] != None else 0}}</span>
+                        <span style="margin-left:5px;width:5px">/ 2 &nbsp= </span>
+                        <span id="private_mult_result" style="margin-left:5px;width:5px">{{process_step1['mg3_private']/2 if process_step1['mg3_private'] != None else 1}}</span>
+                        <span style="margin-left:5px;width:5px">fish per bag<span>
+                      </div>
+                    </div>
+
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Base AL Private Angling</br>Catch Rate</div>
+                      <div class="col-md-7 col-sm-7 input-group">
+
+                        <input {{'disabled' if notEditable }} id="base_AL_private" name="base_AL_private"  type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" data-toggle="tooltip" data-original-title="The AL Private Angling catch rate estimation, based on the bag limit is 2-fish per bag." value="{{process_step1['base_AL_private'] if process_step1['base_AL_private'] != None else 0}}"/>
+                        <span style="margin-left:5px;width:5px">lb/day</span>
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom:50px" class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Est. AL Private Angling</br>Catch Rate</div>
+                      <div class="col-md-1 col-sm-1 input-group" >
+                        <button  data-baseid="base_AL_private" data-estid="est_AL_private" data-multiplier="private_multiplier" name="estimateBtn" type="button" class="btn-sm btn-primary">Calculate</button>
+                      </div>
+                      <div  class="col-sm-1 input-group">
+                        <!-- 46077 -->
+                        <input id="est_AL_private"  type="number" disabled class="form-control" style="border-radius: 4px;width:95px;float: none;{{'background-color:white' if notEditable == False}}" value="{{process_step1['est_AL_private'] if process_step1['est_AL_private'] != None else 0}}"/>
+                      </div>
+                      <div class="col input-group">lb/day</div>
+                    </div>
+
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Base FL Private Angling</br>Catch Rate</div>
+                      <div class="col-md-7 col-sm-7 input-group">
+
+                        <input {{'disabled' if notEditable }} id="base_FL_private" name="base_FL_private"  type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" data-toggle="tooltip" data-original-title="The FL Private Angling catch rate estimation, based on the bag limit is 2-fish per bag." value="{{process_step1['base_FL_private'] if process_step1['base_FL_private'] != None else 0}}"/>
+                        <span style="margin-left:5px;width:5px">lb/day</span>
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom:50px" class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Est. FL Private Angling</br>Catch Rate</div>
+                      <div class="col-md-1 col-sm-1 input-group" >
+                        <button data-baseid="base_FL_private" data-estid="est_FL_private" data-multiplier="private_multiplier" name="estimateBtn" type="button" class="btn-sm btn-primary">Calculate</button>
+                      </div>
+                      <div  class="col-sm-1 input-group">
+                        <!-- 46077 -->
+                        <input id="est_FL_private" type="number" disabled class="form-control" style="border-radius: 4px;width:95px;float: none;{{'background-color:white' if notEditable == False}}" value="{{process_step1['est_FL_private'] if process_step1['est_FL_private'] != None else 0}}"/>
+                      </div>
+                      <div class="col input-group">lb/day</div>
+                    </div>
+
+                    <div  class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Base LA Private Angling</br>Catch Rate</div>
+                      <div class="col-md-7 col-sm-7 input-group">
+
+                        <input {{'disabled' if notEditable }} id="base_LA_private" name="base_LA_private" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" data-toggle="tooltip" data-original-title="The LA Private Angling catch rate estimation, based on the bag limit is 2-fish per bag." value="{{process_step1['base_LA_private'] if process_step1['base_LA_private'] != None else 0}}"/>
+                        <span style="margin-left:5px;width:5px">lb/day</span>
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom:50px" class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Est. LA Private Angling</br>Catch Rate</div>
+                      <div class="col-md-1 col-sm-1 input-group" >
+                        <button data-baseid="base_LA_private" data-estid="est_LA_private" data-multiplier="private_multiplier" name="estimateBtn" type="button" class="btn-sm btn-primary">Calculate</button>
+                      </div>
+                      <div  class="col-sm-1 input-group">
+                        <!-- 46077 -->
+                        <input id="est_LA_private"   type="number" disabled class="form-control" style="border-radius: 4px;width:95px;float: none;{{'background-color:white' if notEditable == False}}" value="{{process_step1['est_LA_private'] if process_step1['est_LA_private'] != None else 0}}"/>
+                      </div>
+                      <div class="col input-group">lb/day</div>
+                    </div>
+
+                    <div  class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Base MS Private Angling</br>Catch Rate</div>
+                      <div class="col-md-7 col-sm-7 input-group">
+
+                        <input {{'disabled' if notEditable }} id="base_MS_private" name="base_MS_private"  type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" data-toggle="tooltip" data-original-title="The MS Private Angling catch rate estimation, based on the bag limit is 2-fish per bag." value="{{process_step1['base_MS_private'] if process_step1['base_MS_private'] != None else 0}}"/>
+                        <span style="margin-left:5px;width:5px">lb/day</span>
+                      </div>
+                    </div>
+
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Est. MS Private Angling</br>Catch Rate</div>
+                      <div class="col-md-1 col-sm-1 input-group" >
+                        <button data-baseid="base_MS_private" data-estid="est_MS_private" data-multiplier="private_multiplier" name="estimateBtn" type="button" class="btn-sm btn-primary">Calculate</button>
+                      </div>
+                      <div  class="col-sm-1 input-group">
+                        <!-- 46077 -->
+                        <input id="est_MS_private"  type="number" disabled class="form-control" style="border-radius: 4px;width:95px;float: none;{{'background-color:white' if notEditable == False}}" value="{{process_step1['est_MS_private'] if process_step1['est_MS_private'] != None else 0}}"/>
+                      </div>
+                      <div class="col input-group">lb/day</div>
+                    </div>
+
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Base MS For-hire</br>Catch Rate</div>
+                      <div class="col-md-7 col-sm-7 input-group">
+
+                        <input {{'disabled' if notEditable }} id="base_MS_forhire" name="base_MS_forhire"  type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" data-toggle="tooltip" data-original-title="The MS For-hire catch rate estimation, based on the bag limit is 2-fish per bag" value="{{process_step1['base_MS_forhire'] if process_step1['base_MS_forhire'] != None else 0}}"/>
+                        <span style="margin-left:5px;width:5px">lb/day</span>
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom:50px" class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Est. MS For-hire</br>Catch Rate</div>
+                      <div class="col-md-1 col-sm-1 input-group" >
+                        <button data-baseid="base_MS_forhire" data-estid="est_MS_forhire" data-multiplier="private_multiplier" name="estimateBtn" type="button" class="btn-sm btn-primary">Calculate</button>
+                      </div>
+                      <div  class="col-sm-1 input-group">
+                        <!-- 46077 -->
+                        <input id="est_MS_forhire"  type="number" disabled class="form-control" style="border-radius: 4px;width:95px;float: none;{{'background-color:white' if notEditable == False}}" value="{{process_step1['est_MS_forhire'] if process_step1['est_MS_forhire'] != None else 0}}"/>
+                      </div>
+                      <div class="col input-group">lb/day</div>
+                    </div>
+
+                    <div  class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Base TX Private Angling</br>Catch Rate in Federal Water</div>
+                      <div class="col-md-7 col-sm-7 input-group">
+
+                        <input {{'disabled' if notEditable }} id="base_TX_private" name="base_TX_private"  type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" data-toggle="tooltip" data-original-title="The TX Private Angling catch rate estimation in Federal Water, based on the bag limit is 2-fish per bag" value="{{process_step1['base_TX_private'] if process_step1['base_TX_private'] != None else 0}}"/>
+                        <span style="margin-left:5px;width:5px">lb/day</span>
+                      </div>
+                    </div>
+
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Est. TX Private Angling</br>Catch Rate in Federal Water</div>
+                      <div class="col-md-1 col-sm-1 input-group" >
+                        <button data-baseid="base_TX_private" data-estid="est_TX_private" data-multiplier="private_multiplier" name="estimateBtn" type="button" class="btn-sm btn-primary">Calculate</button>
+                      </div>
+                      <div  class="col-sm-1 input-group">
+                        <!-- 46077 -->
+                        <input id="est_TX_private"  type="number" disabled class="form-control" style="border-radius: 4px;width:95px;float: none;{{'background-color:white' if notEditable == False}}" value="{{process_step1['est_TX_private'] if process_step1['est_TX_private'] != None else 0}}"/>
+                      </div>
+                      <div class="col input-group">lb/day</div>
+                    </div>
+
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Base TX Private Angling</br>Catch Rate in State Water</div>
+                      <div class="col-md-7 col-sm-7 input-group">
+
+                        <input {{'disabled' if notEditable }} id="base_TX_forhire" name="base_TX_forhire" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none;" data-toggle="tooltip" data-original-title="The TX Private Angling catch rate estimation in State Water, based on the bag limit is 2-fish per bag." value="{{process_step1['base_TX_forhire'] if process_step1['base_TX_forhire'] != None else 0}}"/>
+                        <span style="margin-left:5px;width:5px">lb/day</span>
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom:50px" class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <div class="col-md-3 col-sm-3 input-group" >Est. TX Private Angling</br>Catch Rate in State Water</div>
+                      <div class="col-md-1 col-sm-1 input-group" >
+                        <button data-baseid="base_TX_forhire" data-estid="est_TX_forhire" data-multiplier="private_multiplier" name="estimateBtn" type="button" class="btn-sm btn-primary">Calculate</button>
+                      </div>
+                      <div  class="col-sm-1 input-group">
+                        <!-- 46077 -->
+                        <input id="est_TX_forhire"  type="number" disabled class="form-control" style="border-radius: 4px;width:95px;float: none;{{'background-color:white' if notEditable == False}}" value="{{process_step1['est_TX_forhire'] if process_step1['est_TX_forhire'] != None else 0}}"/>
+                      </div>
+                      <div class="col input-group">lb/day</div>
+                    </div>
+
+                    <h4 style="margin-left:20px">Season Length</h4>
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <label class="col-md-3 col-sm-3 input-group" >Federal For-hire Component</label>
+                    </div>
+                    <div class="form-group form-inline" style="margin-bottom:0px">
+                      <div class="col-md-12 col-sm-12 input-group">
+
+                        <input {{'disabled' if notEditable }} type="radio" name="season_fed_forhire" id="season_fed_ACT" class="hints" style="margin:0 10px 10px 100px" {{'checked' if process_step1['season_fed_forhire']=='1'}} value="1" data-toggle="tooltip" data-original-title="The ACT is determined by the ACT and the buffers.">Season Length is Determined by ACT
+                      </div>
+                      <div class="col-md-12 col-sm-12 input-group">
+                        <input {{'disabled' if notEditable }} type="radio" name="season_fed_forhire" id="season_fed_input" class="hints" style="margin:0 10px 10px 100px" {{'checked' if process_step1['season_fed_forhire']=='2'}}  value="2" data-toggle="tooltip" data-original-title="The ACT is determined by the catch rates and season lengths.">ACT is Determined by Inputs - No Buffers
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-1 input-group"></div>
+                      <div class="col-md-4 col-sm-3 input-group" >Federal For-hire Season Length</div>
+                      <div class="col-md input-group">
+
+                        <input {{'disabled' if notEditable }}  type="number" id="fed_forhire_length" name="fed_forhire_length" class="form-control hints" style="border-radius: 4px;width:auto;float: none" data-toggle="tooltip" data-original-title="Must between 0 to 365." value="{{process_step1['fed_forhire_length'] if process_step1['fed_forhire_length'] != None else 0}}"/>
+                        <span style="margin-left:10px">days</span>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <label class="col-md-6 col-sm-6 input-group" >State For-hire Component and Private Angling in State Water</label>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-4 col-sm-3 input-group" style="margin-left:100px;margin-right: 40px;" >MS For-hire Season Length</div>
+                      <div class="col-md input-group">
+
+                        <input {{'disabled' if notEditable }}  id="MS_forhire_length" name="MS_forhire_length" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none"   value="{{process_step1['MS_forhire_length'] if process_step1['MS_forhire_length'] != None else 0}}"/>
+                        <span style="margin-left:10px">days</span>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-4 col-sm-3 input-group" style="margin-left:100px;margin-right: 40px;" >TX Private Angling Season Length in State Water</div>
+                      <div class="col-md input-group">
+
+                        <input {{'disabled' if notEditable }}  id="TX_forhire_length" name="TX_forhire_length" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none"   value="{{process_step1['TX_forhire_length'] if process_step1['TX_forhire_length'] != None else 0}}"/>
+                        <span style="margin-left:10px">days</span>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-1 col-sm-1 input-group"></div>
+                      <label class="col-md-3 col-sm-3 input-group" >Private Angling Component</label>
+                    </div>
+                    <div class="form-group form-inline" style="margin-bottom:0px">
+                      <div class="col-md-12 col-sm-12 input-group">
+
+                        <input {{'disabled' if notEditable }} type="radio" name="season_private" id="season_private_ACT" class="hints" style="margin:0 10px 10px 100px" {{'checked' if process_step1['season_private']=='1'}} value="1" data-toggle="tooltip" data-original-title="The ACT is determined by the ACT and the buffers.">Season Lengths are Determined by ACT
+                      </div>
+                      <div class="col-md-12 col-sm-12 input-group">
+                        <input {{'disabled' if notEditable }} type="radio" name="season_private" id="season_private_input" class="hints" style="margin:0 10px 10px 100px"  {{'checked' if process_step1['season_private']=='2'}}  value="2" data-toggle="tooltip" data-original-title="The ACT is determined by the catch rates and season lengths.">ACT is Determined by Inputs - No Buffers
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-1 input-group"></div>
+                      <div class="col-md-4 col-sm-3 input-group" >AL Private Angling Season Length</div>
+                      <div class="col-md input-group">
+
+                        <input {{'disabled' if notEditable }}  id="AL_private_length" name="AL_private_length" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none" data-toggle="tooltip" data-original-title="Must between 0 to 365." value="{{process_step1['AL_private_length'] if process_step1['AL_private_length'] != None else 0}}"/>
+                        <span style="margin-left:10px">days</span>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-1 input-group"></div>
+                      <div class="col-md-4 col-sm-3 input-group" >FL Private Angling Season Length</div>
+                      <div class="col-md input-group">
+
+                        <input {{'disabled' if notEditable }}  id="FL_private_length" name="FL_private_length" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none" data-toggle="tooltip" data-original-title="Must between 0 to 365." value="{{process_step1['FL_private_length'] if process_step1['FL_private_length'] != None else 0}}"/>
+                        <span style="margin-left:10px">days</span>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-1 input-group"></div>
+                      <div class="col-md-4 col-sm-3 input-group" >LA Private Angling Season Length</div>
+                      <div class="col-md input-group">
+
+                        <input {{'disabled' if notEditable }}  id="LA_private_length" name="LA_private_length" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none" data-toggle="tooltip" data-original-title="Must between 0 to 365." value="{{process_step1['LA_private_length'] if process_step1['LA_private_length'] != None else 0}}"/>
+                        <span style="margin-left:10px">days</span>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-1 input-group"></div>
+                      <div class="col-md-4 col-sm-3 input-group" >MS Private Angling Season Length</div>
+                      <div class="col-md input-group">
+
+                        <input {{'disabled' if notEditable }}  id="MS_private_length" name="MS_private_length" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none" data-toggle="tooltip" data-original-title="Must between 0 to 365." value="{{process_step1['MS_private_length'] if process_step1['MS_private_length'] != None else 0}}"/>
+                        <span style="margin-left:10px">days</span>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <div class="col-md-2 col-sm-1 input-group"></div>
+                      <div class="col-md-4 col-sm-3 input-group" >TX Private Angling Season Length in Federal Water</div>
+                      <div class="col-md input-group">
+
+                        <input {{'disabled' if notEditable }}  id="TX_private_length" name="TX_private_length" type="number" class="form-control hints" style="border-radius: 4px;width:auto;float: none" data-toggle="tooltip" data-original-title="Must between 0 to 365." value="{{process_step1['TX_private_length'] if process_step1['TX_private_length'] != None else 0}}"/>
+                        <span style="margin-left:10px">days</span>
+                      </div>
+                    </div>
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+           </div> <!-- /.panel.panel-default -->
+
+           <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#mgtopt6" data-parent="#accordion-demo" data-toggle="collapse">
+                  Management Options VI
+                </a>
+              </h4>
+            </div>
+            <div id="mgtopt6" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <form id="form-mgtopt6">
+                  <h4 style="margin-bottom:30px">Penalty & Carryover</h4>
+                  <div class="form-group form-inline" style="margin-bottom:0px">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <label class="col input-group" >Penalty - If the actual landing exceeds ACT</label>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-2 col-sm-1 input-group"></div>
+                    <div class="col-md-3 col-sm-3 input-group">
+
+                      <input {{'disabled' if notEditable }} type="radio" name="penalty_switch" class="hints"  style="margin-right:10px" {{'checked' if process_step1['penalty_switch'] == '0'}} value="0">No Penalty
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-2 col-sm-1 input-group"></div>
+
+                    <div class="col-md-6 input-group"><span><input {{'disabled' if notEditable }} type="radio" name="penalty_switch" class="hints" style="margin-right:10px" {{'checked' if process_step1['penalty_switch'] == '1'}} value="1"></span>
+                      The exceeded catch will be deduced from the next year, but make sure the actual landing doesn't exceed 95% of the OFL.
+                    </div>
+                  </div>
+                  <div class="form-group form-inline" style="margin-bottom:0px">
+                    <div class="col-md-1 col-sm-1 input-group"></div>
+                    <label class="col input-group" >Carryover - If ACT isn't fully harvested</label>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-2 col-sm-1 input-group"></div>
+                    <div class="col-md-3 col-sm-3 input-group">
+
+                      <input {{'disabled' if notEditable }} type="radio" class="hints"  name="carryover_switch" style="margin-right:10px" {{'checked' if process_step1['carryover_switch'] == '0'}} value="0">No Carryover
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-2 col-sm-1 input-group"></div>
+
+                    <div class="col-md-6 input-group"><span><input {{'disabled' if notEditable }} type="radio" name="carryover_switch" class="hints" style="margin-right:10px" {{'checked' if process_step1['carryover_switch'] == '1'}} value="1"></span>
+                      Carryover to the same state next year, but make sure the actual landing doesn't exceed 95% of the OFL.
+                    </div>
+                  </div>
+                  <div class="form-group form-inline">
+                    <div class="col-md-2 col-sm-1 input-group"></div>
+
+                    <div class="col-md-6 input-group"><span><input {{'disabled' if notEditable }} type="radio" name="carryover_switch" class="hints" style="margin-right:10px" {{'checked' if process_step1['carryover_switch'] == '2'}} value="2"></span>
+                      Carryover to the same state next year, but make sure the actual landing doesnt exceed 50% of the difference between ABC and OFL.
+                    </div>
+                  </div>
+                </form>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#adjusthtml -->
+           </div> <!-- /.panel.panel-default -->
+
+           <div class="panel panel-default">
+             <div class="panel-heading">
+               <h4 class="panel-title">
+                 <a href="#mgtopt7" data-parent="#accordion-demo" data-toggle="collapse">
+                   Management Options VII
+                 </a>
+               </h4>
+             </div>
+             <div id="mgtopt7" class="panel-collapse collapse in">
+               <div class="panel-body">
+                 <form id="form-mgtopt7" class="parentDiv">
+                     <h4 style="padding-bottom:20px">Private Angling Quota among States</h4>
+                     <div class="form-group form-inline">
+                       <div class="col-md-1 col-sm-1 input-group"></div>
+                       <div class="col-md-1 col-sm-1 input-group">AL</div>
+                       <div class="col-md-2 col-sm-2 input-group">
+
+                           <input {{'disabled' if notEditable }} maxlength="6" type="number" class="form-control hints" style="border-radius: 4px;" id="alabama" name="alabama" value="{{process_step1['alabama'] if process_step1['alabama'] != None else 26.298}}" placeholder="" data-toggle="tooltip" data-original-title="According to the 2019 State ACL, AL takes 26.755% of the Private Angling ACL."/>
+                       </div>
+                       <div class="col-md-1 col-sm-1 input-group">%</div>
+                       <div class="col-md-1 col-sm-1 input-group">FL</div>
+                       <div class="col-md-2 col-sm-2 input-group">
+
+                           <input {{'disabled' if notEditable }} maxlength="6" type="number" class="form-control hints" style="border-radius: 4px;" id="florida" name="florida" value="{{process_step1['florida'] if process_step1['florida'] != None else 44.822}}" placeholder="" data-toggle="tooltip" data-original-title="According to the 2019 State ACL, FL takes 42.68% of the Private Angling ACL."/>
+
+                       </div>
+                       <div class="col-md-1 col-sm-1 input-group">%</div>
+                      </div>
+
+                      <div class="form-group form-inline">
+                       <div class="col-md-1 col-sm-1 input-group"></div>
+                       <div class="col-md-1 col-sm-1 input-group">LA</div>
+                       <div class="col-md-2 col-sm-2 input-group">
+
+                           <input {{'disabled' if notEditable }} maxlength="6" type="number" class="form-control hints" style="border-radius: 4px;" id="louisiana" name="louisiana" value="{{process_step1['louisiana'] if process_step1['louisiana'] != None else 19.12}}" placeholder="" data-toggle="tooltip" data-original-title="According to the 2019 State ACL, LA takes 20.235% of the Private Angling ACL."/>
+
+                       </div>
+                       <div class="col-md-1 col-sm-1 input-group">%</div>
+                       <div class="col-md-1 col-sm-1 input-group">MS</div>
+                       <div class="col-md-2 col-sm-2 input-group">
+
+                           <input {{'disabled' if notEditable }} maxlength="6" type="number" class="form-control hints" style="border-radius: 4px;" id="mississippi" name="mississippi" value="{{process_step1['mississippi'] if process_step1['mississippi'] != None else 3.55}}" placeholder="" data-toggle="tooltip" data-original-title="According to the 2019 State ACL, MS takes 3.76% of the Private Angling ACL."/>
+
+                       </div>
+                       <div class="col-md-1 col-sm-1 input-group">%</div>
+                      </div>
+
+                      <div class="form-group form-inline">
+                       <div class="col-md-1 col-sm-1 input-group"></div>
+                       <div class="col-md-1 col-sm-1 input-group">TX</div>
+                       <div class="col-md-2 col-sm-2 input-group">
+
+                           <input maxlength="6" type="number" class="form-control hints" disabled style="border-radius: 4px;" id="texas" name="texas" value="{{process_step1['texas'] if process_step1['texas'] != None else 6.21}}" placeholder="" data-toggle="tooltip" data-original-title="According to the 2019 State ACL, TX takes 6.57% of the Private Angling ACL. "/>
+
+                       </div>
+                       <div class="col-md-1 col-sm-1 input-group">%</div>
+                      </div>
+                      <div id="states-error" style="color:red" hidden>Please make sure percentages add up to 100!</div>
+                 </form>
+               </div> <!--/.panel-body -->
+             </div> <!-- /#adjusthtml -->
+           </div> <!-- /.panel.panel-default -->
+
+
+
+        </div>
+      </div>
+    </div>
+
+    <hr>
+    {% if not guest %}
+      <div style="margin:20px 0 60px 20px">
+        <div class="form-group form-inline" >
+            <div class="col-sm-2 input-group" >
+              <button id="btnReport" type="button" class="btn btn-primary">Generate Report</button>
+            </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <div id="EssentialFigures" class="row acc-wizard">
+      <div class="col-md-3" style="padding-left: 2em;">
+        <h3 style="margin-bottom: 1em;">
+          Essential Figures:
+        </h3>
+        <ol class="acc-wizard-sidebar">
+          <li class="acc-wizard-todo"><a href="#totalCatch">Total Catch & Total SSB</a></li>
+          <li class="acc-wizard-todo"><a href="#catch">Catch: Commercial, For-hire, Private</a></li>
+          <li class="acc-wizard-todo"><a href="#ssb">SSB: East & West</a></li>
+          <li class="acc-wizard-todo"><a href="#commCatch">Commercial Catch: East & West</a></li>
+          <li class="acc-wizard-todo"><a href="#forhireCatch">For-hire Catch: East & West</a></li>
+          <li class="acc-wizard-todo"><a href="#privateCatch">Private Angling Catch: East & West</a></li>
+          <li class="acc-wizard-todo"><a href="#fedForhireLength">Federal For-hire Season Length</a></li>
+          <li class="acc-wizard-todo"><a href="#statePrivLength">State Private Angling Season Length</a></li>
+          <li class="acc-wizard-todo"><a href="#kobe">Kobe Plot</a></li>
+          <li class="acc-wizard-todo"><a href="#recruitmentFig">Recruitment: East & West</a></li>
+        </ol>
+      </div>
+  
+      <div class="col-md-9" style="padding-right: 2em;padding-top:20px;">
+          <div id="EssentialFigures-pannel" class="panel-group">
+            <div class="panel panel-default" style="padding-top: 1px;padding-left:1px">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a href="#totalCatch" data-parent="#EssentialFigures-pannel" data-toggle="collapse">
+                        Total Catch & Total SSB
+                    </a>
+                  </h4>
+                </div>
+                <div id="totalCatch" class="panel-collapse collapse in">
+                  <div class="panel-body">
+                      <div id="totalCatch-chart" class="echart-size"></div>
+                  </div> <!--/.panel-body -->
+                </div> <!-- /#generalinput -->
+            </div> <!-- /.panel.panel-default -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a href="#catch" data-parent="#EssentialFigures-pannel" data-toggle="collapse">
+                        Catch: Commercial, For-hire, Private
+                    </a>
+                  </h4>
+                </div>
+                <div id="catch" class="panel-collapse collapse in">
+                  <div class="panel-body">
+                      <div id="catch-plot" class="echart-size">
+                      </div>
+                  </div> <!--/.panel-body -->
+                </div> <!-- /#generalinput -->
+            </div> <!-- /.panel.panel-default -->
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a href="#ssb" data-parent="#EssentialFigures-pannel" data-toggle="collapse">
+                      SSB: East & West
+                  </a>
+                </h4>
+              </div>
+              <div id="ssb" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div id="ssb-plot" class="echart-size">
+                    </div>
+                </div> <!--/.panel-body -->
+              </div> <!-- /#generalinput -->
+            </div> <!-- /.panel.panel-default -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#commCatch" data-parent="#EssentialFigures-pannel" data-toggle="collapse">
+                    Commercial Catch: East & West
+                </a>
+              </h4>
+            </div>
+            <div id="commCatch" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <div id="commCatch-plot" class="echart-size">
+                  </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#forhireCatch" data-parent="#EssentialFigures-pannel" data-toggle="collapse">
+                    For-hire Catch: East & West
+                </a>
+              </h4>
+            </div>
+            <div id="forhireCatch" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <div id="forhireCatch-plot" class="echart-size">
+                  </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#privateCatch" data-parent="#EssentialFigures-pannel" data-toggle="collapse">
+                    Private Angling Catch Catch: East & West
+                </a>
+              </h4>
+            </div>
+            <div id="privateCatch" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <div id="privateCatch-plot" class="echart-size">
+                  </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#fedForhireLength" data-parent="#EssentialFigures-pannel" data-toggle="collapse">
+                    Federal For-hire Season Length
+                </a>
+              </h4>
+            </div>
+            <div id="fedForhireLength" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <div id="fedForhireLength-plot" class="echart-size">
+                  </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#statePrivLength" data-parent="#EssentialFigures-pannel" data-toggle="collapse">
+                    State Private Angling Season Length
+                </a>
+              </h4>
+            </div>
+            <div id="statePrivLength" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <div id="statePrivLength-plot" class="echart-size">
+                  </div>
+                  <p style="padding:20px">*TX indicates the TX Private Angling Season Length in Federal Water</p>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#kobe" data-parent="#EssentialFigures-pannel" data-toggle="collapse">
+                    Kobe Plot
+                </a>
+              </h4>
+            </div>
+            <div id="kobe" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <div id="kobe-plot" class="echart-size">
+                  </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#recruitmentFig" data-parent="#EssentialFigures-pannel" data-toggle="collapse">
+                  Recruitment: East & West
+                </a>
+              </h4>
+            </div>
+            <div id="recruitmentFig" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <div id="recruitment-plot" class="echart-size">
+                  </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+        </div>
+      </div>  
+    </div>
+  
+    <hr/>
+    <div id="otherFigures" class="row acc-wizard">
+      <div class="col-md-3" style="padding-left: 2em">
+        <h3 style="margin-bottom: 1em;">
+          Other Detailed Figures:
+        </h3>
+        <ol class="acc-wizard-sidebar">
+          <li class="acc-wizard-todo"><a href="#bio">Commercial Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#spr">Recreational Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#hire">Federal For-hire Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#private">Private Angling Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#f">General Fishing Mortality</a></li>
+          <li class="acc-wizard-todo"><a href="#ssbE">SSB East</a></li>
+          <li class="acc-wizard-todo"><a href="#ssbW">SSB West</a></li>
+          <li class="acc-wizard-todo"><a href="#ssbGulf">SSB for the Gulf</a></li>
+          <li class="acc-wizard-todo"><a href="#al_Catch">AL Private Angling Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#al_seas_length">AL Private Angling Season Length</a></li>
+          <li class="acc-wizard-todo"><a href="#fl_Catch">FL Private Angling Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#fl_seas_length">FL Private Angling Season Length</a></li>
+          <li class="acc-wizard-todo"><a href="#la_Catch">LA Private Angling Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#la_seas_length">LA Private Angling Season Length</a></li>
+          <li class="acc-wizard-todo"><a href="#ms_Catch">MS Private Angling Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#ms_seas_length">MS Private Angling Sesaon Length</a></li>
+          <li class="acc-wizard-todo"><a href="#tx_Catch">TX Private Angling Catch</a></li>
+          <li class="acc-wizard-todo"><a href="#tx_seas_length">TX Private Angling Season Length in Federal Water</a></li>
+  
+        </ol>
+      </div>
+      <div class="col-md-9" style="padding-right: 2em;padding-top: 20px;">
+        <div id="otherFigures-pannel" class="panel-group">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#bio" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  Commercial Catch
+                </a>
+              </h4>
+            </div>
+            <div id="bio" class="panel-collapse collapse in">
+              <div class="panel-body">
+                  <div id="bio-chart-1" class="echart-size">
+                  </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#generalinput -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#spr" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  Recreational Catch
+                </a>
+              </h4>
+            </div>
+            <div id="spr" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="spr-chart-1" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#hire" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  Federal For-hire Catch
+                </a>
+              </h4>
+            </div>
+            <div id="hire" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="hire-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#private" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  Private Angling Catch
+                </a>
+              </h4>
+            </div>
+            <div id="private" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="private-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#f" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  General Fishing Mortality
+                </a>
+              </h4>
+            </div>
+            <div id="f" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="f-chart-1" class="echart-size">
+                </div>
+                <p style="padding:20px">Note: The Fishing mortality here is a percentage, instead of an additive instantaneous rate.</p>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#ssbE" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  SSB East
+                </a>
+              </h4>
+            </div>
+            <div id="ssbE" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="ssbE-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#ssbW" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  SSB West
+                </a>
+              </h4>
+            </div>
+            <div id="ssbW" style="margin-bottom:20px" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="ssbW-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#ssbGulf" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  SSB for the Gulf
+                </a>
+              </h4>
+            </div>
+            <div id="ssbGulf" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="ssbGulf-plot" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#al_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  AL Private Angling Catch
+                </a>
+              </h4>
+            </div>
+            <div id="al_Catch" style="margin-bottom:20px" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="al-Catch-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#al_seas_length" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  AL Private Angling Season Length
+                </a>
+              </h4>
+            </div>
+            <div id="al_seas_length" style="margin-bottom:20px" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="al-seas-length-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#fl_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  FL Private Angling Catch
+                </a>
+              </h4>
+            </div>
+            <div id="fl_Catch" style="margin-bottom:20px" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="fl-Catch-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#fl_seas_length" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  FL Private Angling Season Length
+                </a>
+              </h4>
+            </div>
+            <div id="fl_seas_length" style="margin-bottom:20px" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="fl-seas-length-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#la_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  LA Private Angling Catch
+                </a>
+              </h4>
+            </div>
+            <div id="la_Catch" style="margin-bottom:20px" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="la-Catch-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#la_seas_length" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  LA Private Angling Season Length
+                </a>
+              </h4>
+            </div>
+            <div id="la_seas_length" style="margin-bottom:20px" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="la-seas-length-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#ms_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  MS Private Angling Catch
+                </a>
+              </h4>
+            </div>
+            <div id="ms_Catch" style="margin-bottom:20px" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="ms-Catch-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#ms_seas_length" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  MS Private Angling Season Length
+                </a>
+              </h4>
+            </div>
+            <div id="ms_seas_length" style="margin-bottom:20px" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="ms-seas-length-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#tx_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  TX Private Angling Catch
+                </a>
+              </h4>
+            </div>
+            <div id="tx_Catch" style="margin-bottom:20px" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="tx-Catch-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+  
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#tx_seas_length" data-parent="#otherFigures-pannel" data-toggle="collapse">
+                  TX Private Angling Season Length in Federal Water
+                </a>
+              </h4>
+            </div>
+            <div id="tx_seas_length" style="margin-bottom:20px" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div id="tx-seas-length-chart" class="echart-size">
+                </div>
+              </div> <!--/.panel-body -->
+            </div> <!-- /#addwizard -->
+          </div> <!-- /.panel.panel-default -->
+        </div>
+      </div>
+    </div>
+
+    
+</div>
+    <div id="mask"></div>
+    
+    <div id="myConfirmModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+          </div>
+          <div class="modal-body">
+            <h4>Do you want to reset to default values and run the result?</h4>
+          </div>
+          <div class="modal-footer">
+            <button id="confirmDefaultBtn" type="button" class="btn btn-primary" data-dismiss="modal">Confirm</button>
+            <button id="cancelDefaultBtn" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="noResultModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+          </div>
+          <div class="modal-body">
+            <h4>You do not have any output yet, please review the management options and run the result.</h4>
+          </div>
+          <div class="modal-footer">
+            <button id="confirmDefaultBtn" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/framework/acc-wizard/accwizard.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/moment/min/moment.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/bootstrap-table.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-table/dist/extensions/editable/bootstrap-table-editable.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/jquery-file-upload/js/jquery.uploadfile.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/echarts/dist/echarts.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/jquery-validation/dist/jquery.validate.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/jspdf/dist/jspdf.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/process-echart.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/process_report.js')}}"></script>
+    {% if notEditable %}
+      <script src="{{url_for('static',filename='assets/javascript/process_guest.js')}}"></script>
+    {% else %}
+        <script src="{{url_for('static',filename='assets/javascript/process_steps.js')}}"></script>
+    {% endif %}
+
+{% endblock %}

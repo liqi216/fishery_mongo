@@ -1,0 +1,31 @@
+version: "3.2"
+
+services:
+  demo:
+    image: yingxindocker/fishery:cwebserver
+    command: --tls-cert=/etc/letsencrypt/live/gomredsnappermsetool.fiu.edu/fullchain.pem --tls-key=/etc/letsencrypt/live/gomredsnappermsetool.fiu.edu/privkey.pem
+    deploy:
+      replicas: 1
+      labels:
+        com.docker.lb.hosts: gomredsnappermsetool.fiu.edu
+        com.docker.lb.network: demo-network
+        com.docker.lb.port: 8000
+        com.docker.lb.ssl_passthrough: "true"
+    environment:
+      METADATA: end-to-end-TLS
+    networks:
+      - demo-network
+    secrets:
+      - source: gomredsnappermsetool.fiu.edu.cert
+        target: /etc/letsencrypt/live/gomredsnappermsetool.fiu.edu/fullchain.pem
+      - source: gomredsnappermsetool.fiu.edu.key
+        target: /etc/letsencrypt/live/gomredsnappermsetool.fiu.edu/privkey.pem
+
+networks:
+  demo-network:
+    driver: overlay
+secrets:
+  gomredsnappermsetool.fiu.edu.cert:
+    file: ./gomredsnappermsetool.fiu.edu.cert
+  gomredsnappermsetool.fiu.edu.key:
+    file: ./gomredsnappermsetool.fiu.edu.key

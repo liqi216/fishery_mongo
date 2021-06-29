@@ -1,0 +1,108 @@
+{% extends "appbuilder/base.html" %}
+{% import 'appbuilder/general/lib.html' as lib %}
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+{% endblock %}
+{% block content %}
+
+{{ lib.panel_begin('Stratagy Compare') }}
+
+<div class="panel panel-default">
+  <div class="panel-heading">Management Strategy Comparison - Output1</div>
+  <div class="panel-body">
+    <div class="row">
+        <div class="col-md-6" id="barChart" style="height:400px">
+        </div>
+        <div class="col-md-6" id="radarChart" style="height:400px">
+        </div>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">Management Strategy Comparison - Option</div>
+  <div class="panel-body">
+    <form id="form_compare" >
+        <h4>Basic management strategy</h4>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="reportPath">Report path</label>
+            <input class="col-md-4" type="text" class="form-control" id="reportPath" name="reportPath" maxlength="80" placeholder="c:\Users\admin\MSE_base1.rp">
+            <button type="button" class="btn btn-info" style="margin: -5px 0 0 60px">select</button>
+
+        </div>
+        <h4>Alternative threshhold reference</h4>
+        <div class="form-group form-inline" >
+            <label class="col-md-1">F</label>
+            <div class="col-md-1 input-group">
+                <label>Min</label>
+            </div>
+            <div class="col-md-2 input-group">
+                <input type="number" maxlength="5" id="fMin" name="fMin" placeholder="0.02">
+            </div>
+            <div class="col-md-1 input-group">
+                <label >Max</label>
+            </div>
+            <div class="col-md-2 input-group">
+                <input type="number" maxlength="5" id="fMax" name="fMax" placeholder="0.082">
+            </div>
+            <div class="col-md-1 input-group">
+                <label >Level</label>
+            </div>
+            <div class="col-md-2 input-group">
+                <input type="number" maxlength="5" id="fLevel" name="fLevel" placeholder="120">
+            </div>
+        </div>
+        <div class="form-group form-inline">
+            <label class="col-md-1">SSB</label>
+            <div class="col-md-1 input-group">
+                <label >Min</label>
+            </div>
+            <div class="col-md-2 input-group">
+                <input type="number" maxlength="5" id="sMin" name="sMin" placeholder="0.02">
+            </div>
+            <div class="col-md-1 input-group">
+                <label>Max</label>
+            </div>
+            <div class="col-md-2 input-group">
+                <input type="number" maxlength="5" id="sMax" name="sMax" placeholder="0.082">
+            </div>
+            <div class="col-md-1 input-group">
+                <label>Level</label>
+            </div>
+            <div class="col-md-2 input-group">
+                <input type="number" maxlength="5" id="sLevel" name="sLevel" placeholder="120">
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="clearBtn" type="button" class="btn btn-danger" style="width: 120px">Clear</button>
+            <button id="cmpBtn" type="button" class="btn btn-primary" style="width: 120px">Compare</button>
+        </div>
+    </form>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">Management Strategy Comparison - Output2</div>
+  <div class="panel-body">
+    <div class="row">
+        <div id="heatChart" style="height:600px"></div>
+    </div>
+  </div>
+</div>
+
+<div class="well well-sm">
+    <a href="{{url_for('ProcessView.list')}}" class="btn btn-sm btn-default" data-toggle="tooltip" rel="tooltip" title="" data-original-title="Back">
+        <i class="fa fa-arrow-left"></i>
+    </a>
+</div>
+
+{% endblock %}
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/node_modules/jquery-validation/dist/jquery.validate.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/echarts/dist/echarts.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/stgCompare.js')}}"></script>    
+{% endblock %}

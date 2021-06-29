@@ -1,0 +1,14 @@
+{% extends "appbuilder/general/model/edit.html" %}
+
+{% block head_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+
+{% endblock %}
+{% block edit_form %}
+    <div style="margin:10px 5px">You can change the scenario name and description. Click save to save your copy.</div>
+    <div id="Home" class="tab-pane active">
+        {{ widgets.get('copy')(form_action=form_action)|safe }}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "appbuilder/base.html" %}
+{% import 'appbuilder/general/lib.html' as lib %}
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/bootstrap-toggle/css/bootstrap-toggle.min.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+{% endblock %}
+
+{% block content %}
+
+    <div id="myConfirmModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+          </div>
+          <div class="modal-body">
+            <h4>You are about to hit limit of 3 public scenarios. Would you like to continue?</h4>
+          </div>
+          <div class="modal-footer">
+            <button id="confirmPublicBtn" type="button" class="btn btn-primary" data-dismiss="modal">Confirm</button>
+            <button id="cancelPublicBtn" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{{ lib.panel_begin(title) }}
+    {% block list_list scoped %}
+
+        {% for view_widget in views_widgets %}
+            <div>
+            {% call lib.accordion_tag(views[loop.index - 1].__class__.__name__,views[loop.index - 1].title, True) %}
+              {% if loop.index - 1 == 0 %}
+                <div style="color: red">&nbsp;* Can only make 3 records public!</div>
+              {% else %}
+                {% block list_search scoped %}
+                    {% call lib.accordion_tag(tags[loop.index-1],_("Search"), False) %}
+                        {{ search_widgets[loop.index-1]()|safe }}
+                    {% endcall %}
+                {% endblock %}
+              {% endif %}
+                {{ views_widgets[loop.index-1]()|safe }}
+            {% endcall %}
+            </div>
+        {% endfor %}
+    {% endblock %}
+{{ lib.panel_end() }}
+<script type="text/javascript">
+  var element = document.getElementsByClassName("btn btn-sm btn-primary");
+  
+  var i;
+  for (i = 0; i < element.length; i++) {
+  element[i].setAttribute("title", "Add a new scenario");
+  
+} 
+var el = document.getElementsByClassName("well well-sm pull-right");
+console.log(el);
+
+</script>
+
+{% endblock %}
+
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-toggle/js/bootstrap-toggle.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/list_process_editable.js')}}"></script>
+{% endblock %}

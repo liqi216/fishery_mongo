@@ -1,0 +1,90 @@
+{% extends "legalSize.html" %}
+
+{% block heading %}
+    <div class="row">
+        <div class="lead well" style="padding-top: 0.1em; padding-left: 2em; padding-right: 2em;">
+            <p>
+            <h2>Output Examples under Various Recreational:Commercial Ratios</h2>
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block dataDiv %}
+    <div id="allocationData"  data-mseNames="{{mseNames}}" data-mseSingleLists="{{mseSingleLists}}" data-mseComp="{{mseComp}}" data-scenarios="{{scenarios}}"></div>
+{% endblock %}
+
+{% block inputs %}
+    <div class="row" style="margin-bottom: 40px;">
+        <div class="col-sm-3" style="padding-left: 2em;">
+            <h3>Essential Inputs</h3>
+        </div>
+        <div class="col-sm-9">
+            <h4 style="padding-left:0px;font-weight:bold;margin-top: 20px;">Allocation between Recreational and Commercial Sectors</h4>
+            
+            <p style="margin:10px 0;font-size:15px"><span class="scenarioName">Scenario 49:51</span> — Recreational sector takes 49% of the landing quota</p>
+            <p style="margin:10px 0;font-size:15px"><span class="scenarioName">Scenario 50:50</span> — Recreational sector takes 50% of the landing quota </p>
+            <p style="margin:10px 0;font-size:15px"><span class="scenarioName">Scenario 51:49</span> — Recreational sector takes 51% of the landing quota</p>
+            <p style="margin:10px 0;font-size:15px"><span class="scenarioName">Scenario 52:48</span> — Recreational sector takes 52% of the landing quota</p>
+            <p style="margin:10px 0;font-size:15px"><span class="scenarioName">Scenario 53:47</span> — Recreational sector takes 53% of the landing quota</p>
+
+            <ul style="padding-left:15px;font-size:15px;margin-top: 40px;">
+                <li style="margin:10px 0">Based on 2016 Stock Assessment</li>
+                <li style="margin:10px 0">Model Type: Stock Synthesis 3</li>
+                <li style="margin:10px 0">Time Step: 1 year</li>
+                <li style="margin:10px 0">Start Projection: 2016-01-01</li>
+                <li style="margin:10px 0">Projection for 20 years (a generation)</li>
+                <li style="margin:10px 0">Uncertainty is estimated from 100 iterations.</li>
+                <li style="margin:10px 0">Observational error for initial abundance: CV 0.2.</li>
+                <li style="margin:10px 0">Observational error for initial distribution: 1000 effective sample size</li>
+                <li style="margin:10px 0">No mixing for adults between East and West stocks.</li>
+                <li style="margin:10px 0">The current natural mortality follows the Lorenzen curve.</li>
+                <li style="margin:10px 0">Fraction before spawning: 0.5 year</li>
+                <li style="margin:10px 0">Observational error for recruitment ratio between East and West Stocks: 1000 effective sample size</li>
+                <li style="margin:10px 0">One age-length key for both the East & West Stocks <br/>(The age-length key are inputs of the stock assessment model).</li>
+                <li style="margin:10px 0">Biological Reference Points:
+                    <div>&nbsp&nbsp&nbspSSB<sub>MSY</sub>&nbsp 1230000000000000 eggs</div>
+                    <div>&nbsp&nbsp&nbspF<sub>MSY</sub>&nbsp 0.0588</div>
+                </li>
+                <li style="margin:10px 0">Fishery Status: Green</li>
+                <li style="margin:10px 0">CVs for Release Mortality (Log-normal Distribution): 0.05</li>
+                <li style="margin:10px 0">Use default seeds in the format of a csv file</li>
+                <li style="margin:10px 0">The recruitment is estimated from Beverton-Holt model, from the latest stock assessment</li>
+                <li style="margin:10px 0">The natural mortality is estimated from the latest stock assessment</li>
+                <li style="margin:10px 0">Constant-F harvest control rule with F is 75% of the F<sub>MSY</sub></li>
+                <li style="margin:10px 0">Recreational sector takes 49% of the total catch quota</li>
+                <li style="margin:10px 0">Federal for-hire component takes 42.3% of the recreational catch</li>
+                <li style="margin:10px 0">Probability of Overfishing is set at 40%</li>
+                <li style="margin:10px 0">Commercial ACT buffer: 0%, Federal for-hire ACT buffer: 9%; Private angling ACT buffer: 20%</li>
+                <li style="margin:10px 0">Current size and bag limit regulations are adopted</li>
+                <li style="margin:10px 0">Release mortality is estimated form the latest stock assessment</li>
+                <li style="margin:10px 0">Catch rates are estimated according to the 2018-2019 observations</li>
+                <li style="margin:10px 0">Penalty will be applied if the actual landing exceeds ACT, but no carryover</li>
+                <li style="margin:10px 0"> Private angling quota among States are: AL 26.3%, FL 44.82%, LA 19.12%, MS 3.55% and TX 6.21%</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block links %}
+    <div class="row" style="margin-top:30px;margin-left: 5px; margin-right: 5px;">
+        <!-- <div class="col-md-1"></div> -->
+        <div class="col-md-12 panel panel-default" style="padding:25px">
+            <h4>If you want to test your own MSE scenario, please <a href="{{url_for('PublicMSE.add_public_scenario')}}">create</a>.</h4>
+            <h4>If you want to test more  MSE scenarios and save them, please <a href="/register/form">register</a>.</h4>
+            <h4>If you want to see one basic run, <a href="/demo/basicRun">click here</a>.</h4>
+            <h4>You can also evaluate the effect of using different legal sizes, <a href="/demo/legalSize">click here</a>.</h4>
+        </div>
+    </div>
+{% endblock %}
+
+{% block tail_js %}
+	  {{super.super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/framework/acc-wizard/accwizard.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/node_modules/echarts/dist/echarts.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/compare_charts.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/allocation.js')}}"></script>
+{% endblock %}

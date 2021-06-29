@@ -1,0 +1,18 @@
+{% extends "appbuilder/list.html" %}
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/node_modules/bootstrap-toggle/css/bootstrap-toggle.min.css')}}"></link>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/common.css')}}"></link>
+{% endblock %}
+{% block list_list scoped %}
+    <div style="color: red">&nbsp;* Can only make 3 records public!</div>
+    {{ super() }}
+{% endblock %}
+{% block tail_js %}
+	  {{super()}}
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{url_for('static',filename='assets/node_modules/bootstrap-toggle/js/bootstrap-toggle.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/javascript/list_process_editable.js')}}"></script>
+{% endblock %}
