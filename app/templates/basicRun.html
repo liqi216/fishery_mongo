@@ -10,7 +10,7 @@
   <div class="row">
       <div class="lead well" style="padding-top: 0.1em; padding-left: 2em; padding-right: 2em;">
       <p>
-      <h2>Output Example of Base Case</h2>
+      <h2>Output Example of a Base Case Scenario</h2>
       </p>
       </div>
   </div>
@@ -24,7 +24,7 @@
       </h3>
       <ol class="acc-wizard-sidebar">
         <li class="acc-wizard-todo"><a href="#totalCatch">Total Catch & Total SSB</a></li>
-        <li class="acc-wizard-todo"><a href="#catch">Catch: Commercial, For-hire, Private</a></li>
+        <li class="acc-wizard-todo"><a href="#catch">Catch: Commercial, For-hire, Private Angling</a></li>
         <li class="acc-wizard-todo"><a href="#ssb">SSB: East & West</a></li>
         <li class="acc-wizard-todo"><a href="#commCatch">Commercial Catch: East & West</a></li>
         <li class="acc-wizard-todo"><a href="#forhireCatch">For-hire Catch: East & West</a></li>
@@ -49,6 +49,7 @@
               <div id="totalCatch" class="panel-collapse collapse in">
                 <div class="panel-body">
                     <div id="totalCatch-chart" class="echart-size"></div>
+	<p style="padding:20px">The dynamics of the median total catch (upper) and the median total spawning stock biomass (SSB; lower) during the projection period.</p>
                 </div> <!--/.panel-body -->
               </div> <!-- /#generalinput -->
           </div> <!-- /.panel.panel-default -->
@@ -56,14 +57,14 @@
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a href="#catch" data-parent="#basicRun-pannel" data-toggle="collapse">
-                      Catch: Commercial, For-hire, Private
+                      Catch: Commercial, For-hire, Private Angling
                   </a>
                 </h4>
               </div>
               <div id="catch" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <div id="catch-plot" class="echart-size">
-                    </div>
+                    <div id="catch-plot" class="echart-size"></div>
+	 <p style="padding:20px">The dynamics of the median catches for the Commercial Sector, the For-hire Component, and the Private Angling Component during the projection period.</p>
                 </div> <!--/.panel-body -->
               </div> <!-- /#generalinput -->
           </div> <!-- /.panel.panel-default -->
@@ -79,6 +80,7 @@
               <div class="panel-body">
                   <div id="ssb-plot" class="echart-size">
                   </div>
+	 <p style="padding:20px">The dynamics of the median spawning stock biomass (SSB) in the East Gulf and West Gulf during the projection period.</p>
               </div> <!--/.panel-body -->
             </div> <!-- /#generalinput -->
           </div> <!-- /.panel.panel-default -->
@@ -93,8 +95,9 @@
           <div id="commCatch" class="panel-collapse collapse in">
             <div class="panel-body">
                 <div id="commCatch-plot" class="echart-size">
-                </div>
-            </div> <!--/.panel-body -->
+                </div> 	
+	<p style="padding:20px">The dynamics of the median Commercial catches in the East Gulf and West Gulf during the projection period.</p>
+	   </div> <!--/.panel-body -->
           </div> <!-- /#generalinput -->
         </div> <!-- /.panel.panel-default -->
         <div class="panel panel-default">
@@ -109,7 +112,8 @@
             <div class="panel-body">
                 <div id="forhireCatch-plot" class="echart-size">
                 </div>
-            </div> <!--/.panel-body -->
+	<p style="padding:20px">The dynamics of the median For-hire catches in the East Gulf and West Gulf during the projection period.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#generalinput -->
         </div> <!-- /.panel.panel-default -->
         <div class="panel panel-default">
@@ -123,8 +127,9 @@
           <div id="privateCatch" class="panel-collapse collapse in">
             <div class="panel-body">
                 <div id="privateCatch-plot" class="echart-size">
-                </div>
-            </div> <!--/.panel-body -->
+                </div>		
+	<p style="padding:20px">The dynamics of the median Private Angling catches in the East Gulf and West Gulf during the projection period.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#generalinput -->
         </div> <!-- /.panel.panel-default -->
         <div class="panel panel-default">
@@ -138,7 +143,8 @@
           <div id="fedForhireLength" class="panel-collapse collapse in">
             <div class="panel-body">
                 <div id="fedForhireLength-plot" class="echart-size">
-                </div>
+                </div>			
+	<p style="padding:20px">The estimated median lengths of the fishing seasons for the Federal For-hire component and the variations during the projection period.</p>
             </div> <!--/.panel-body -->
           </div> <!-- /#generalinput -->
         </div> <!-- /.panel.panel-default -->
@@ -154,7 +160,8 @@
             <div class="panel-body">
                 <div id="statePrivLength-plot" class="echart-size">
                 </div>
-                <p style="padding:20px">*TX indicates the TX Private Angling Season Length in Federal Water</p>
+      <p style="padding:20px">The estimated median season lengths for the Private Angling component in each state during the projection period.</p> 
+      <p style="padding:20px">Note: The season length is estimated based on the quota and the average catch rate in 2018.</p>
             </div> <!--/.panel-body -->
           </div> <!-- /#generalinput -->
         </div> <!-- /.panel.panel-default -->
@@ -170,6 +177,7 @@
             <div class="panel-body">
                 <div id="kobe-plot" class="echart-size">
                 </div>
+	<p style="padding:20px">Kobe plot with median fishing mortality ratio (relative to F<sub>SPR26%</sub>) and median spawning biomass ratio (relative to SSB<sub>SPR26%</sub>). The Kobe plot is divided into four panels: The red panel (upper left) corresponds to the “overfished and overfishing phase” area. The light green panel (lower right) is the “no risk” area. The orange panel (lower left) corresponds to the “overfished, but not overfishing” area. The olive-green panel (upper right) is the “overfishing, but no overfished” area. This Kobe plot characterizes the mediate situations. Blue circles represent the annual trajectory of the Gulf of Mexico red snapper fishery over time. </p>
             </div> <!--/.panel-body -->
           </div> <!-- /#generalinput -->
         </div> <!-- /.panel.panel-default -->
@@ -184,7 +192,8 @@
           <div id="recruitment" class="panel-collapse collapse in">
             <div class="panel-body">
                 <div id="recruitment-plot" class="echart-size">
-                </div>
+		</div>
+	<p style="padding:20px">The dynamics of the median recruitment in the East Gulf and West Gulf during the projection period.</p>
             </div> <!--/.panel-body -->
           </div> <!-- /#generalinput -->
         </div> <!-- /.panel.panel-default -->
@@ -199,38 +208,38 @@
     </div>
     <div class="col-sm-9">
       <ul style="padding-left:0px;font-size:15px">
-        <li style="margin:10px 0">Based on 2016 Stock Assessment</li>
+        <li style="margin:10px 0">Based on the 2016 Stock Assessment</li>
         <li style="margin:10px 0">Model Type: Stock Synthesis 3</li>
         <li style="margin:10px 0">Time Step: 1 year</li>
         <li style="margin:10px 0">Start Projection: 2016-01-01</li>
         <li style="margin:10px 0">Projection for 20 years (a generation)</li>
         <li style="margin:10px 0">Uncertainty is estimated from 100 iterations.</li>
-        <li style="margin:10px 0">Observational error for initial abundance: CV 0.2.</li>
+        <li style="margin:10px 0">Observational error for initial abundance: CV=0.2</li>
         <li style="margin:10px 0">Observational error for initial distribution: 1000 effective sample size</li>
-        <li style="margin:10px 0">No mixing for adults between East and West stocks.</li>
-        <li style="margin:10px 0">The current natural mortality follows the Lorenzen curve.</li>
+        <li style="margin:10px 0">No mixing for adults between East and West stocks</li>
+        <li style="margin:10px 0">The current natural mortality follows the Lorenzen curve</li>
         <li style="margin:10px 0">Fraction before spawning: 0.5 year</li>
         <li style="margin:10px 0">Observational error for recruitment ratio between East and West Stocks: 1000 effective sample size</li>
-        <li style="margin:10px 0">One age-length key for both the East & West Stocks <br/>(The age-length key are inputs of the stock assessment model).</li>
+        <li style="margin:10px 0">One age-length key for both the East & West Stocks <br/>(The age-length key are inputs of the stock assessment model)</li>
         <li style="margin:10px 0">Biological Reference Points:
-          <div>&nbsp&nbsp&nbspSSB<sub>MSY</sub>&nbsp 1230000000000000 eggs</div>
+          <div>&nbsp&nbsp&nbspSSB<sub>MSY</sub>&nbsp 1230 trillion eggs</div>
           <div>&nbsp&nbsp&nbspF<sub>MSY</sub>&nbsp 0.0588</div>
         </li>
         <li style="margin:10px 0">Fishery Status: Green</li>
         <li style="margin:10px 0">CVs for Release Mortality (Log-normal Distribution): 0.05</li>
         <li style="margin:10px 0">Use default seeds in the format of a csv file</li>
-        <li style="margin:10px 0">The recruitment is estimated from Beverton-Holt model, from the latest stock assessment</li>
+        <li style="margin:10px 0">The recruitment is estimated from the Beverton-Holt model, from the latest stock assessment</li>
         <li style="margin:10px 0">The natural mortality is estimated from the latest stock assessment</li>
         <li style="margin:10px 0">Constant-F harvest control rule with F is 75% of the F<sub>MSY</sub></li>
-        <li style="margin:10px 0">Recreational sector takes 49% of the total catch quota</li>
-        <li style="margin:10px 0">Federal for-hire component takes 42.3% of the recreational catch</li>
-        <li style="margin:10px 0">Probability of Overfishing is set at 40%</li>
-        <li style="margin:10px 0">Commercial ACT buffer: 0%, Federal for-hire ACT buffer: 9%; Private angling ACT buffer: 20%</li>
+        <li style="margin:10px 0">The Recreational Sector takes 49% of the total catch quota</li>
+        <li style="margin:10px 0">The Federal For-hire Component takes 42.3% of the recreational catch</li>
+        <li style="margin:10px 0">The Probability of Overfishing is set at 40%</li>
+        <li style="margin:10px 0">Commercial ACT buffer: 0%, Federal For-hire ACT buffer: 9%; Private angling ACT buffer: 20%</li>
         <li style="margin:10px 0">Current size and bag limit regulations are adopted</li>
-        <li style="margin:10px 0">Release mortality is estimated form the latest stock assessment</li>
+        <li style="margin:10px 0">The Release mortality is estimated from the latest stock assessment</li>
         <li style="margin:10px 0">Catch rates are estimated according to the 2018-2019 observations</li>
-        <li style="margin:10px 0">Penalty will be applied if the actual landing exceeds ACT, but no carryover</li>
-        <li style="margin:10px 0"> Private angling quota among States are: AL 26.3%, FL 44.82%, LA 19.12%, MS 3.55% and TX 6.21%</li>
+        <li style="margin:10px 0">The Penalty will be applied if the actual landing exceeds ACT, but no carryover</li>
+        <li style="margin:10px 0">Private angling quota among States are: AL 26.3%, FL 44.82%, LA 19.12%, MS 3.55% and TX 6.21%</li>
       </ul>
     </div>
   </div>
@@ -255,12 +264,12 @@
       <ol class="acc-wizard-sidebar">
         <li class="acc-wizard-todo"><a href="#bio">Commercial Catch</a></li>
         <li class="acc-wizard-todo"><a href="#spr">Recreational Catch</a></li>
-        <li class="acc-wizard-todo"><a href="#hire">Federal For-hire Catch</a></li>
+        <li class="acc-wizard-todo"><a href="#hire">For-hire Catch</a></li>
         <li class="acc-wizard-todo"><a href="#private">Private Angling Catch</a></li>
         <li class="acc-wizard-todo"><a href="#f">General Fishing Mortality</a></li>
         <li class="acc-wizard-todo"><a href="#ssbE">SSB East</a></li>
         <li class="acc-wizard-todo"><a href="#ssbW">SSB West</a></li>
-        <li class="acc-wizard-todo"><a href="#ssbGulf">SSB for the Gulf</a></li>
+        <li class="acc-wizard-todo"><a href="#ssbGulf">Total SSB</a></li>
         <li class="acc-wizard-todo"><a href="#al_Catch">AL Private Angling Catch</a></li>
         <li class="acc-wizard-todo"><a href="#al_seas_length">AL Private Angling Season Length</a></li>
         <li class="acc-wizard-todo"><a href="#fl_Catch">FL Private Angling Catch</a></li>
@@ -269,7 +278,7 @@
         <li class="acc-wizard-todo"><a href="#la_seas_length">LA Private Angling Season Length</a></li>
         <li class="acc-wizard-todo"><a href="#ms_Catch">MS Private Angling Catch</a></li>
         <li class="acc-wizard-todo"><a href="#ms_seas_length">MS Private Angling Sesaon Length</a></li>
-        <li class="acc-wizard-todo"><a href="#tx_Catch">TX Private Angling Catch</a></li>
+        <li class="acc-wizard-todo"><a href="#tx_Catch">TX Private Angling Catch in Federal Water </a></li>
         <li class="acc-wizard-todo"><a href="#tx_seas_length">TX Private Angling Season Length in Federal Water</a></li>
 
       </ol>
@@ -288,6 +297,7 @@
             <div class="panel-body">
                 <div id="bio-chart-1" class="echart-size">
                 </div>
+	<p style="padding:20px">The dynamics of the median Commercial catch and the variation during the projection period.</p>
             </div> <!--/.panel-body -->
           </div> <!-- /#generalinput -->
         </div> <!-- /.panel.panel-default -->
@@ -304,7 +314,8 @@
             <div class="panel-body">
               <div id="spr-chart-1" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">The dynamics of the median Recreational catch and the variation during the projection period.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -312,7 +323,7 @@
           <div class="panel-heading">
             <h4 class="panel-title">
               <a href="#hire" data-parent="#otherFigures-pannel" data-toggle="collapse">
-                Federal For-hire Catch
+                For-hire Catch
               </a>
             </h4>
           </div>
@@ -320,9 +331,10 @@
             <div class="panel-body">
               <div id="hire-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">The dynamics of the median For-hire catch and the variation during the projection period.</p>
+   	 </div> <!--/.panel-body">
           </div> <!-- /#addwizard -->
-        </div> <!-- /.panel.panel-default -->
+	        </div> <!-- /.panel.panel-default -->
 
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -336,6 +348,7 @@
             <div class="panel-body">
               <div id="private-chart" class="echart-size">
               </div>
+	<p style="padding:20px">The dynamics of the median Private Angling catch and the variation during the projection period. </p>
             </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
@@ -352,7 +365,8 @@
             <div class="panel-body">
               <div id="f-chart-1" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">The dynamics of the median fishing mortality and the variation during the projection period.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -368,8 +382,9 @@
             <div class="panel-body">
               <div id="ssbE-chart" class="echart-size">
               </div>
+	<p style="padding:20px">The dynamics of the median spawning stock biomass (SSB) in the East Gulf and the variation during the projection period.</p> 
             </div> <!--/.panel-body -->
-          </div> <!-- /#addwizard -->
+	  </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
         <div class="panel panel-default">
@@ -384,7 +399,8 @@
             <div class="panel-body">
               <div id="ssbW-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">The dynamics of the median spawning stock biomass (SSB) in the West Gulf and the variation during the projection period. </p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -393,7 +409,7 @@
           <div class="panel-heading">
             <h4 class="panel-title">
               <a href="#ssbGulf" data-parent="#otherFigures-pannel" data-toggle="collapse">
-                SSB for the Gulf
+                Total SSB
               </a>
             </h4>
           </div>
@@ -401,7 +417,8 @@
             <div class="panel-body">
               <div id="ssbGulf-plot" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">The dynamics of the median total spawning stock biomass (SSB) and the variation during the projection period.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -417,7 +434,8 @@
             <div class="panel-body">
               <div id="al-Catch-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">Estimated median Private Angling catch in the Alabama State (AL) and the variation during the projection period.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -433,10 +451,13 @@
             <div class="panel-body">
               <div id="al-seas-length-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">Estimated median Private Angling season length in the Alabama State (AL) and the variation during the projection period.</p>
+	<p style="padding:20px">Note: The season length is estimated based on the quota and the average catch rate in 2018.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
-        <div class="panel panel-default">
+        
+	<div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
               <a href="#fl_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
@@ -448,7 +469,8 @@
             <div class="panel-body">
               <div id="fl-Catch-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">Estimated median Private Angling catch in the Florida State (FL) and the variation during the projection period.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -464,7 +486,9 @@
             <div class="panel-body">
               <div id="fl-seas-length-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">Estimated median Private Angling season length in the Florida State (FL) and the variation during the projection period.</p>
+	<p style="padding:20px">Note: The season length is estimated based on the quota and the average catch rate in 2018.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -480,7 +504,8 @@
             <div class="panel-body">
               <div id="la-Catch-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">Estimated median Private Angling catch in the Louisiana State (LA) and the variation during the projection period.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -496,7 +521,9 @@
             <div class="panel-body">
               <div id="la-seas-length-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">Estimated median Private Angling season length in the Louisiana State (LA) and the variation during the projection period.</p>
+	<p style="padding:20px">Note: The season length is estimated based on the quota and the average catch rate in 2018.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -512,7 +539,8 @@
             <div class="panel-body">
               <div id="ms-Catch-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">Estimated median Private Angling catch in the Mississippi State (MS) and the variation during the projection period.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -528,7 +556,9 @@
             <div class="panel-body">
               <div id="ms-seas-length-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">Estimated median Private Angling season length in the Mississippi State (MS) and the variation during the projection period.</p>
+	<p style="padding:20px">Note: The season length is estimated based on the quota and the average catch rate in 2018.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -536,7 +566,7 @@
           <div class="panel-heading">
             <h4 class="panel-title">
               <a href="#tx_Catch" data-parent="#otherFigures-pannel" data-toggle="collapse">
-                TX Private Angling Catch
+                TX Private Angling Catch in Federal Water
               </a>
             </h4>
           </div>
@@ -544,7 +574,8 @@
             <div class="panel-body">
               <div id="tx-Catch-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">Estimated median Private Angling catch in the Texas State (TX) and the variation during the projection period.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
 
@@ -560,7 +591,9 @@
             <div class="panel-body">
               <div id="tx-seas-length-chart" class="echart-size">
               </div>
-            </div> <!--/.panel-body -->
+        <p style="padding:20px">Estimated median Private Angling season length in the Texas State (TX) and the variation during the projection period.</p>
+	<p style="padding:20px">Note: The season length is estimated based on the quota and the average catch rate in 2018.</p>
+	    </div> <!--/.panel-body -->
           </div> <!-- /#addwizard -->
         </div> <!-- /.panel.panel-default -->
       </div>

@@ -234,7 +234,7 @@ function drawChart(chartdata){
 			type: 'continuous',
 			seriesIndex: 1,
 			min: 800000000000,
-			max: 1500000000000
+			max: 1800000000000
 		}],
 
 
@@ -264,7 +264,7 @@ function drawChart(chartdata){
 			}
 		}, {
 			splitLine: {show: false},
-			name:'SSB (1000 eggs)',
+			name:'SSB (trillion eggs)',
 			gridIndex: 1,
 			axisLabel: {
 				formatter: function (value){
@@ -273,7 +273,7 @@ function drawChart(chartdata){
 			},
 			max: function (value) {
 				var newVal = value.max * 1.2;
-				return Math.round(newVal/1e+11)*1e+11
+				return Math.round(newVal/1e+12)*1e+3
 			}
 		}],
 		grid: [{
@@ -294,10 +294,11 @@ function drawChart(chartdata){
 		}]
 	};
 
-	//Catch: Commercial, For-hire, Private
+	//Catch: Commercial, For-hire, Private Angling
 	var catchPlotOption = {
 		title: {
-			text: 'Catch: Commercial, For-hire, Private'
+			left: 'center',
+			text: 'Catch: Commercial, For-hire, Private Angling'
 		},
 		tooltip: {
 			trigger: 'axis',
@@ -309,7 +310,7 @@ function drawChart(chartdata){
 			}
 		},
 		legend: {
-			data: ['Commercial','For-hire','Private'],
+			data: ['Commercial','For-hire','Private Angling'],
 			align:'right',
 			padding: [40, 20]
 		},
@@ -372,7 +373,8 @@ function drawChart(chartdata){
 	//SSB: East & West
 	var ssbOption = {
 		title: {
-			text: 'East and West Spawning Stock Biomass'
+			left: 'center',
+			text: 'Spawning Stock Biomass: East and West'
 		},
 		tooltip: {
 			trigger: 'axis',
@@ -405,7 +407,7 @@ function drawChart(chartdata){
 		yAxis: [
 			{
 				type: 'value',
-				name:'SSB (1000 eggs)',
+				name:'SSB (trillion eggs)',
 				axisLabel: {
 					formatter: function (value){
 						return toScientific(value);
@@ -413,7 +415,7 @@ function drawChart(chartdata){
 				},
 				max: function (value) {
 					var newVal = value.max * 1.2;
-					return Math.floor(newVal/1e+11)*1e+11;
+					return Math.round(newVal/1e+12)*1e+3;
 				}
 			}
 		],
@@ -446,6 +448,7 @@ function drawChart(chartdata){
 	//Commercial Catch: East & West
 	var commCatchOption = {
 		title: {
+			left: 'center',
 			text: 'Commercial Catch: East & West'
 		},
 		tooltip: {
@@ -515,7 +518,8 @@ function drawChart(chartdata){
 	//For-hire Catch: East & West
 	var forhireCatchOption = {
 		title: {
-			text: 'For-hire Catch in the East and West Gulf'
+			left: 'center',
+			text: 'For-hire Catch: East & West'
 		},
 		tooltip: {
 			trigger: 'axis',
@@ -584,6 +588,7 @@ function drawChart(chartdata){
 	//Private Angling Catch: East & West
 	var privateCatchOption = {
 		title: {
+			left: 'center',
 			text: 'Private Angling Catch: East & West'
 		},
 		tooltip: {
@@ -721,7 +726,8 @@ function drawChart(chartdata){
 	//Federal For-hire Season Length
 	var fedForhire_option = {
 		title:{
-			text:"Estimated Fishing Season Length for Federal For-hire"
+			left: 'center',
+			text:"Federal For-hire Season Length"
 		},
 		xAxis: {
 			type: 'category',
@@ -754,6 +760,7 @@ function drawChart(chartdata){
 	var statePrivLength_option = {
 		title:[
 			{
+				left: 'center',
 				text:'State Private Angling Season Length'
 			}
 		],
@@ -829,6 +836,7 @@ function drawChart(chartdata){
 	
 	kobe_option = {
     title: {
+		left: 'center',
 	        text: 'Kobe Plot'
 	},
     color:[
@@ -845,7 +853,7 @@ function drawChart(chartdata){
         min:0,
         interval:0.5,
         type: 'value',
-		name: '{a|SSB / SSB} {b|SPR26}',
+		name: '{a|SSB / SSB}{b|SPR26%}',
         nameTextStyle:{
 			//for subscript
             rich: {
@@ -867,7 +875,7 @@ function drawChart(chartdata){
         interval:0.5,
         type: 'value',
         splitLine:{show:false},
-		name: '{a|F / F} {b|SPR26}',
+		name: '{a|F / F}{b|SPR26%}',
         nameTextStyle:{
 			//for subscript
             rich: {
@@ -1605,7 +1613,7 @@ function drawChart(chartdata){
 	    },
 	    yAxis: {
 	        type: 'value',
-			name: 'SSB (1000 eggs)',
+			name: 'SSB (trillion eggs)',
 			axisLabel: {
 				formatter: function (value){
 					return toScientific(value);
@@ -1613,7 +1621,7 @@ function drawChart(chartdata){
 			},
 			max: function (value) {
 				var newVal = value.max * 1.2;
-				return Math.round(newVal/1e+11)*1e+11;
+				return Math.round(newVal/1e+12)*1e+3;
 			}
 	    },
 	    series: [
@@ -1705,7 +1713,7 @@ function drawChart(chartdata){
 	    },
 	    yAxis: {
 	        type: 'value',
-			name: 'SSB (1000 eggs)',
+			name: 'SSB (trillion eggs)',
 			axisLabel: {
 				formatter: function (value){
 					return toScientific(value);
@@ -1713,7 +1721,7 @@ function drawChart(chartdata){
 			},
 			max: function (value) {
 				var newVal = value.max * 1.2;
-				return Math.round(newVal/1e+11)*1e+11;
+				return Math.round(newVal/1e+12)*1e+3;
 			}
 	    },
 	    series: [
@@ -1805,7 +1813,7 @@ function drawChart(chartdata){
 	    },
 	    yAxis: {
 	        type: 'value',
-			name: 'SSB (1000 eggs)',
+			name: 'SSB (trillion eggs)',
 			axisLabel: {
 				formatter: function (value){
 					return toScientific(value);
@@ -1813,7 +1821,7 @@ function drawChart(chartdata){
 			},
 			max: function (value) {
 				var newVal = value.max * 1.2;
-				return Math.round(newVal/1e+11)*1e+11;
+				return Math.round(newVal/1e+12)*1e+3;
 			}
 	    },
 	    series: [
@@ -2878,7 +2886,7 @@ function drawChart(chartdata){
         	totalCatch_xAxisData.push(el.year);
 			totalCatch_data.push(el.total_catch_median);
 			totalSSB_xAxisData.push(el.year);
-			totalSSB_data.push(el.total_SSB_median);
+			totalSSB_data.push(el.total_SSB_median/1e+9);
 		});
 		
 		totalCatchOption.xAxis[0].data = totalCatch_xAxisData;
