@@ -2068,30 +2068,23 @@ class DemoView(BaseView):
         mseComp = []
         mseSingleLists = []
         scenarios = []
-        print(len(processes))
 
         if processes is None or len(processes) < 5:
-            print("process is none")
             return self.render_template('legalSize.html')
 
         #processes.sort(key=lambda x: x.process_name.split('comm ')[1].split('in')[0], reverse=False)
         i = 0
         for process in processes:
             i = i + 1
-            print(i)
             if i<6 :
                 if process.created_by.roles[0].name == 'Admin' :
-                    print("the role is admin")
                     pgi = ProcessGenInput.objects(process_id=process.id).first()
-                    print(pgi)
                     result = MseResultList.objects(process_gen_id=str(pgi.id)).first()
-                    print(result)
                     if result is None:
                         return self.render_template('legalSize.html')
 
                     #get names
                     mseNames.append(process.process_name)
-                    print(mseNames)
                     mse_dict = json.loads(result.to_json())
 
                     #get single list
@@ -2103,7 +2096,6 @@ class DemoView(BaseView):
             else:
                 pass
         if len(scenarios) != 5:
-            print("len is not right")
             return self.render_template('legalSize.html')
 
         return self.render_template('legalSize.html',mseNames=json.dumps(mseNames),mseComp=json.dumps(mseComp),mseSingleLists=json.dumps(mseSingleLists),scenarios=json.dumps(scenarios))
