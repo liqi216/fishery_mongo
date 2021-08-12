@@ -2062,7 +2062,7 @@ class DemoView(BaseView):
     @has_access
     def legalSize(self):
 
-        processes = Process.objects(Q(process_name="comm 13in")|Q(process_name="comm 14.5in")|Q(process_name="49:51")|Q(process_name="52:48")|Q(process_name="50:50"))
+        processes = Process.objects(Q(process_name="comm 13in")|Q(process_name="comm 14.5in")|Q(process_name="49:51")|Q(process_name="52:48")|Q(process_name="comm 15in"))
         
         mseNames = []
         mseComp = []
@@ -2079,7 +2079,8 @@ class DemoView(BaseView):
         for process in processes:
             i = i + 1
             print(i)
-            if process.created_by.roles[0].name == 'Admin':
+
+            if process.created_by.roles[0].name == 'Admin' && (i<6):
                 print("the role is admin")
                 pgi = ProcessGenInput.objects(process_id=process.id).first()
                 print(pgi)
