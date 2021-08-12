@@ -2080,7 +2080,7 @@ class DemoView(BaseView):
             i = i + 1
             print(i)
 
-            if process.created_by.roles[0].name == 'Admin' && (i<6):
+            if process.created_by.roles[0].name == 'Admin' & (i<6):
                 print("the role is admin")
                 pgi = ProcessGenInput.objects(process_id=process.id).first()
                 print(pgi)
