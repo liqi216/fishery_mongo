@@ -2079,28 +2079,29 @@ class DemoView(BaseView):
         for process in processes:
             i = i + 1
             print(i)
+            if i<6 :
+                if process.created_by.roles[0].name == 'Admin' :
+                    print("the role is admin")
+                    pgi = ProcessGenInput.objects(process_id=process.id).first()
+                    print(pgi)
+                    result = MseResultList.objects(process_gen_id=str(pgi.id)).first()
+                    print(result)
+                    if result is None:
+                        return self.render_template('legalSize.html')
 
-            if process.created_by.roles[0].name == 'Admin' & (i<6):
-                print("the role is admin")
-                pgi = ProcessGenInput.objects(process_id=process.id).first()
-                print(pgi)
-                result = MseResultList.objects(process_gen_id=str(pgi.id)).first()
-                print(result)
-                if result is None:
-                    return self.render_template('legalSize.html')
-                
-                #get names
-                mseNames.append(process.process_name)
-                print(mseNames)
-                mse_dict = json.loads(result.to_json())
-                
-                #get single list 
-                mseSingleLists.append(mse_dict['resultlist'])
+                    #get names
+                    mseNames.append(process.process_name)
+                    print(mseNames)
+                    mse_dict = json.loads(result.to_json())
 
-                #get list of fields that are used for graphs in mse comparison page
-                mseComp.append(mse_dict['mseCompFields'])
-                scenarios.append(json.loads(pgi.to_json()))
-        
+                    #get single list
+                    mseSingleLists.append(mse_dict['resultlist'])
+
+                    #get list of fields that are used for graphs in mse comparison page
+                    mseComp.append(mse_dict['mseCompFields'])
+                    scenarios.append(json.loads(pgi.to_json()))
+            else:
+                pass
         if len(scenarios) != 5:
             print("len is not right")
             return self.render_template('legalSize.html')
