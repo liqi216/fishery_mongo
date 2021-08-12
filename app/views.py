@@ -2077,6 +2077,7 @@ class DemoView(BaseView):
 
         for process in processes:
             if process.created_by.roles[0].name == 'Admin':
+                print("the role is admin")
                 pgi = ProcessGenInput.objects(process_id=process.id).first()
                 result = MseResultList.objects(process_gen_id=str(pgi.id)).first()
                 
@@ -2085,6 +2086,7 @@ class DemoView(BaseView):
                 
                 #get names
                 mseNames.append(process.process_name)
+                print(mseNames)
                 mse_dict = json.loads(result.to_json())
                 
                 #get single list 
@@ -2095,6 +2097,7 @@ class DemoView(BaseView):
                 scenarios.append(json.loads(pgi.to_json()))
         
         if len(scenarios) != 5:
+            print("len is not right")
             return self.render_template('legalSize.html')
 
         return self.render_template('legalSize.html',mseNames=json.dumps(mseNames),mseComp=json.dumps(mseComp),mseSingleLists=json.dumps(mseSingleLists),scenarios=json.dumps(scenarios))
