@@ -2068,14 +2068,17 @@ class DemoView(BaseView):
         mseComp = []
         mseSingleLists = []
         scenarios = []
-
+        print(len(processes))
 
         if processes is None or len(processes) < 5:
+            print("process is none")
             return self.render_template('legalSize.html')
 
         #processes.sort(key=lambda x: x.process_name.split('comm ')[1].split('in')[0], reverse=False)
-
+        i = 0
         for process in processes:
+            i = i + 1
+            print(i)
             if process.created_by.roles[0].name == 'Admin':
                 print("the role is admin")
                 pgi = ProcessGenInput.objects(process_id=process.id).first()
