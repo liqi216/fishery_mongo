@@ -2028,6 +2028,7 @@ class MultipleScenarioView(MultipleView):
             views_widgets.append(widget.get('list'))
             search_widgets.append(widget.get('search'))
             tags.append(index)
+            print(tags)
             index = index + 1
         self.update_redirect()
         return self.render_template(self.list_template,
