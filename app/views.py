@@ -175,16 +175,16 @@ class ProcessView(CopyModelView):
     base_filters = [['created_by', FilterEqualFunction, get_user]]
 
     def pre_add(self, item):
-        #check if passed limit for scenarios
-        # if current_user.roles[0].name != 'Admin' and Process.objects(Q(created_by=current_user.id)).count() >= 20:
-        #     raise Exception('Unable to add scenario, max 20 scenarios reached')
-        # #check if current user already has scenario with the same name
-        # if Process.objects(Q(created_by=current_user.id) & Q(process_name=item.process_name)):
-        #     raise Exception('You have already created a scenario with the same name')
-        #
-        # if GlobalSettings.objects.first() == None:
-        #     raise Exception('Could not get default values from global settings')
+        # check if passed limit for scenarios
+        if current_user.roles[0].name != 'Admin' and Process.objects(Q(created_by=current_user.id)).count() >= 20:
+            raise Exception('Unable to add scenario, max 20 scenarios reached')
+        #check if current user already has scenario with the same name
+        if Process.objects(Q(created_by=current_user.id) & Q(process_name=item.process_name)):
+            raise Exception('You have already created a scenario with the same name')
 
+        if GlobalSettings.objects.first() == None:
+            raise Exception('Could not get default values from global settings')
+        print("add sce")
         item.created_by = current_user.id
         item.changed_by = current_user.id
         item.process_public = False
