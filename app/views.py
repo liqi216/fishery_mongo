@@ -2047,7 +2047,7 @@ class DemoView(BaseView):
         processes = Process.objects(process_name="Basic Run")
         mseresult = None
         for process in processes:
-            print(process.created_by.roles[0].name)
+            print(process.created_by.roles[0])
             if process.created_by.roles[0].name == 'Admin':
                 pgi = ProcessGenInput.objects(process_id=process.id).first()
                 mseresult = MseResultList.objects(process_gen_id=str(pgi.id)).first()
