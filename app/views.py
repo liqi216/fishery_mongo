@@ -2047,13 +2047,13 @@ class DemoView(BaseView):
         processes = Process.objects(process_name="Basic Run")
         mseresult = None
         for process in processes:
-            print(process.created_by.roles[0])
-            if process.created_by.roles[0].name == 'Admin':
-                pgi = ProcessGenInput.objects(process_id=process.id).first()
-                mseresult = MseResultList.objects(process_gen_id=str(pgi.id)).first()
-                
-                if mseresult!=None and mseresult.resultlist != None and len(mseresult.resultlist)>0:
-                    return self.render_template('basicRun.html',scenario=mseresult.to_json())
+            # print(process.created_by.roles[0])
+            # if process.created_by.roles[0].name == 'Admin':
+            pgi = ProcessGenInput.objects(process_id=process.id).first()
+            mseresult = MseResultList.objects(process_gen_id=str(pgi.id)).first()
+
+            if mseresult!=None and mseresult.resultlist != None and len(mseresult.resultlist)>0:
+                return self.render_template('basicRun.html',scenario=mseresult.to_json())
 
         if mseresult != None:
             return self.render_template('basicRun.html',scenario=mseresult.to_json())
