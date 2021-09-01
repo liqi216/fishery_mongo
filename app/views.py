@@ -2079,23 +2079,23 @@ class DemoView(BaseView):
         for process in processes:
             i = i + 1
             if i<6 :
-                if process.created_by.roles[0].name == 'Admin' :
-                    pgi = ProcessGenInput.objects(process_id=process.id).first()
-                    result = MseResultList.objects(process_gen_id=str(pgi.id)).first()
-                    if result is None:
-                        return self.render_template('legalSize.html')
+                # if process.created_by.roles[0].name == 'Admin' :
+                pgi = ProcessGenInput.objects(process_id=process.id).first()
+                result = MseResultList.objects(process_gen_id=str(pgi.id)).first()
+                if result is None:
+                    return self.render_template('legalSize.html')
 
-                    #get names
-                    mseNames.append(process.process_name)
-                    mse_dict = json.loads(result.to_json())
+                #get names
+                mseNames.append(process.process_name)
+                mse_dict = json.loads(result.to_json())
 
-                    #get single list
-                    mseSingleLists.append(mse_dict['resultlist'])
+                #get single list
+                mseSingleLists.append(mse_dict['resultlist'])
 
-                    #get list of fields that are used for graphs in mse comparison page
-                    mseComp.append(mse_dict['mseCompFields'])
-                    scenarios.append(json.loads(pgi.to_json()))
-            else:
+                #get list of fields that are used for graphs in mse comparison page
+                mseComp.append(mse_dict['mseCompFields'])
+                scenarios.append(json.loads(pgi.to_json()))
+        else:
                 pass
         if len(scenarios) != 5:
             return self.render_template('legalSize.html')
@@ -2116,24 +2116,24 @@ class DemoView(BaseView):
             return self.render_template('allocation.html')
 
         for process in processes:
-            if process.created_by.roles[0].name == 'Admin':
-                pgi = ProcessGenInput.objects(process_id=process.id).first()
-                result = MseResultList.objects(process_gen_id=str(pgi.id)).first()
-                
-                if result is None:
-                    return self.render_template('allocation.html')
-                
-                #get names
-                mseNames.append(process.process_name)
-                mse_dict = json.loads(result.to_json())
-                
-                #get single list 
-                mseSingleLists.append(mse_dict['resultlist'])
+            # if process.created_by.roles[0].name == 'Admin':
+            pgi = ProcessGenInput.objects(process_id=process.id).first()
+            result = MseResultList.objects(process_gen_id=str(pgi.id)).first()
 
-                #get list of fields that are used for graphs in mse comparison page
-                mseComp.append(mse_dict['mseCompFields'])
-                scenarios.append(json.loads(pgi.to_json()))
-        
+            if result is None:
+                return self.render_template('allocation.html')
+
+            #get names
+            mseNames.append(process.process_name)
+            mse_dict = json.loads(result.to_json())
+
+            #get single list
+            mseSingleLists.append(mse_dict['resultlist'])
+
+            #get list of fields that are used for graphs in mse comparison page
+            mseComp.append(mse_dict['mseCompFields'])
+            scenarios.append(json.loads(pgi.to_json()))
+
         if len(scenarios) != 5:
             return self.render_template('allocation.html')
 
