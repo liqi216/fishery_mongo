@@ -134,6 +134,7 @@ class CopyModelView(ModelView):
             self._fill_form_exclude_cols(exclude_cols, form)
             successful_pre_add = True
             if form.validate():
+                print("add")
                 self.process_form(form, True)
                 item = self.datamodel.obj()
                 form.populate_obj(item)
